@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile</title>
+    <th:block th:include="~{_shared/head}"/>
+</head>
+<body>
+
+<div class="super_container">
+    <th:block th:include="~{_shared/header}"/>
+    <th:block th:include="~{_shared/menu}"/>
+
+
+    <div class="last">
+        <div class="last_background parallax-window" data-parallax="scroll"
+             data-image-src="/images/client_profile_background.webp"
+             data-speed="0.8"></div>
+        <!-- PAGE STUFF -->
+
+        <div class="rela-block container">
+            <div class="rela-block profile-card">
+                <img class="profile-pic" id="profile_pic" th:src="${guide.logo}">
+                <div class="rela-block profile-name-container">
+                    <div class="rela-block user-name" id="user_name"><strong>[[${guide.name}]]</strong></div>
+                    <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${guide.email}]]</div>
+                </div>
+                <div class="profile-card-stats description_profile">
+                    <strong>Planet:</strong><br>[[${guide.planet.name}]]
+                </div>
+                <div class="profile-card-stats description_profile">
+                    <strong>Price per hour:</strong><br>$[[${guide.price}]]
+                </div>
+                <div class="description_profile"><strong>Description:</strong></div>
+                <div class="description_profile">[[${guide.description}]]</div>
+                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{name}(name=${guide.username})}">Edit</a>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="~{_shared/footer}"/>
+</div>
+<th:block th:include="~{_shared/scripts}"/>
+</body>
+</html>

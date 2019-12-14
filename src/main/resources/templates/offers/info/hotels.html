@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile</title>
+    <th:block th:include="~{_shared/head}"/>
+</head>
+<body>
+
+<div class="super_container">
+    <th:block th:include="~{_shared/header}"/>
+    <th:block th:include="~{_shared/menu}"/>
+
+
+    <div class="last">
+        <div class="last_background parallax-window" data-parallax="scroll"
+             data-image-src="/images/client_profile_background.webp"
+             data-speed="0.8"></div>
+        <!-- PAGE STUFF -->
+
+        <div class="rela-block container">
+            <div class="rela-block profile-card">
+                <img class="profile-pic" id="profile_pic" th:src="${offer.picture}">
+                <div class="rela-block profile-name-container">
+                    <div class="rela-block user-name" id="user_name"><strong>[[${offer.name}]]</strong></div>
+                    <div class="rela-block user-desc" id="user_description"><strong>Planet:</strong> [[${offer.planet}]]</div>
+                </div>
+                <div class="rela-block profile-card-stats">
+                    <div class="justify-content-center">Price per adult: <strong>[[${offer.pricePerAdult}]]</strong></div>
+                    <div class="justify-content-center">Price per child: <strong>[[${offer.pricePerChildren}]]</strong></div>
+                </div>
+                <div class="description_profile"><strong>Description:</strong></div>
+                <div class="description_profile">[[${offer.description}]]</div>
+                <a class="btn btn-info text-white mb-3 d-inline-block" id="offer_edit_btn" th:href="@{/profile/edit/{name}(name=${offer.name})}">Edit</a>
+                <a class="btn btn-info text-white mb-3 d-inline-block" id="offer_delete_btn" th:href="@{/profile/edit/{name}(name=${offer.name})}">Delete</a>
+            </div>
+            <a class="btn about_button text-white position-relative" th:href="@{/offers/add/{offer}(offer=${session.sector})}">Add Offer</a>
+        </div>
+    </div>
+    <th:block th:include="~{_shared/footer}"/>
+</div>
+<th:block th:include="~{_shared/scripts}"/>
+</body>
+</html>

@@ -3,10 +3,11 @@ package project.imaginarium.service.models.user;
 import lombok.Getter;
 import lombok.Setter;
 import project.imaginarium.data.models.Planet;
-import project.imaginarium.data.models.Role;
 import project.imaginarium.data.models.Sector;
+import project.imaginarium.data.models.users.Role;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,7 +17,7 @@ public class PartnerRegisterServiceModel {
     private String password;
     private String confirmPassword;
     private String email;
-    private Role role;
+    private Set<Role> authorities;
     private String name;
     private String description;
     private String logo;

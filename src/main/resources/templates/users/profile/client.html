@@ -32,7 +32,10 @@
             </div>
             <div class="rela-block content">
                 <th:block th:each="offer : ${client.offers}">
-                    <div class="rela-inline image"><img src="offer.picture"></div>
+                    <div class="rela-inline image">
+                        <div class="offer_name">[[${offer.name}]]</div>
+                        <img class="offer_pic" th:src="${offer.picture}">
+                    </div>
                 </th:block>
             </div>
         </div>

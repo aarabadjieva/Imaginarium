@@ -4,7 +4,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import project.imaginarium.exeptions.NoSuchUser;
+import project.imaginarium.service.services.ArticlesService;
 import project.imaginarium.service.services.user.UserService;
+import project.imaginarium.web.models.articles.ArticleViewModel;
+import project.imaginarium.web.models.user.UserMainView;
 import project.imaginarium.web.models.user.edit.ClientEditModel;
 import project.imaginarium.web.models.user.edit.GuideEditModel;
 import project.imaginarium.web.models.user.edit.PartnerEditModel;
@@ -14,6 +18,7 @@ import project.imaginarium.web.models.user.view.PartnerViewModel;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/profile")
@@ -21,11 +26,13 @@ public class ProfileController {
 
     private final ModelMapper mapper;
     private final UserService userService;
+    private final ArticlesService articlesService;
     private final List<String> countries;
 
-    public ProfileController(ModelMapper mapper, UserService userService, List<String> countries) {
+    public ProfileController(ModelMapper mapper, UserService userService, ArticlesService articlesService, List<String> countries) {
         this.mapper = mapper;
         this.userService = userService;
+        this.articlesService = articlesService;
         this.countries = countries;
     }
 
@@ -46,6 +53,14 @@ public class ProfileController {
                 modelAndView.addObject("guide", guide);
                 break;
             case "admin":
+                List<UserMainView> allUsers = userService.findAllUsers().stream()
+                        .map(u->mapper.map(u, UserMainView.class))
+                        .collect(Collectors.toList());
+                List<ArticleViewModel> allArticles = articlesService.findAllArticles().stream()
+                        .map(a->mapper.map(a, ArticleViewModel.class))
+                        .collect(Collectors.toList());
+                modelAndView.addObject("users", allUsers);
+                modelAndView.addObject("articles", allArticles);
                 break;
         }
         return modelAndView;
@@ -57,9 +72,8 @@ public class ProfileController {
         return new ModelAndView("redirect:/");
     }
 
-    @GetMapping("/edit/{name}")
-    public ModelAndView editProfile(@PathVariable String name, ModelAndView modelAndView, HttpSession session) {
-        String role = session.getAttribute("role").toString();
+    @GetMapping("/edit/{role}/{name}")
+    public ModelAndView editProfile(@PathVariable String name, @PathVariable String role, ModelAndView modelAndView) {
         switch (role) {
             case "client":
                 modelAndView.setViewName("/users/profile/edit/client.html");
@@ -83,13 +97,13 @@ public class ProfileController {
         return modelAndView;
     }
 
-    @PostMapping("/edit/{name}")
-    public ModelAndView updateProfile(@PathVariable String name, ModelAndView modelAndView,
+    @PostMapping("/edit/{role}/{name}")
+    public ModelAndView updateProfile(@PathVariable String name, @PathVariable String role,
+                                      ModelAndView modelAndView,
                                       @ModelAttribute ClientEditModel client,
                                       @ModelAttribute PartnerEditModel partner,
-                                      @ModelAttribute GuideEditModel guide,
-                                      HttpSession session) {
-        switch (session.getAttribute("role").toString()) {
+                                      @ModelAttribute GuideEditModel guide) {
+        switch (role) {
             case "client":
                 client.setUsername(name);
                 try {
@@ -120,6 +134,36 @@ public class ProfileController {
                     modelAndView.setViewName("redirect:/profile/edit/" + name);
                 }
         }
+        return modelAndView;
+    }
+
+    @GetMapping("/{user}/save/{offer}")
+    public ModelAndView saveOffer(ModelAndView modelAndView, @PathVariable String user,
+                                  @PathVariable String offer){
+        userService.clientAddOffer(user, offer);
+        modelAndView.setViewName("redirect:/profile/client/"+user);
+        return modelAndView;
+    }
+
+    @PostMapping("/create/admin/{name}")
+    public ModelAndView createAdmin(ModelAndView modelAndView, @PathVariable String name, HttpSession session){
+        userService.makeAdmin(name);
+        modelAndView.setViewName("redirect:/profile/admin/"+session.getAttribute("username"));
+        return modelAndView;
+    }
+
+    @PostMapping("/delete/admin/{name}")
+    public ModelAndView deleteAdmin(ModelAndView modelAndView, @PathVariable String name, HttpSession session){
+        userService.deleteAdmin(name);
+        modelAndView.setViewName("redirect:/profile/admin/"+session.getAttribute("username"));
+        return modelAndView;
+    }
+
+    @ExceptionHandler(NoSuchUser.class)
+    public ModelAndView handleException(Exception exception){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error-custom.html");
+        modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
     }
 }

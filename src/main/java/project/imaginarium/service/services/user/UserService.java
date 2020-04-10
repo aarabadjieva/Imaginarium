@@ -31,4 +31,12 @@ public interface UserService {
     void updatePartner(PartnerEditModel partner) throws Exception;
 
     void updateGuide(GuideEditModel guide) throws Exception;
+
+    void clientAddOffer(String user, String offer);
+
+    List<UserServiceModel> findAllUsers();
+
+    void makeAdmin(String name);
+
+    void deleteAdmin(String name);
 }

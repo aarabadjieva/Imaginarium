@@ -30,18 +30,18 @@
                 </div>
                     <div class="description_profile"><strong>Description:</strong></div>
                     <div class="description_profile">[[${partner.description}]]</div>
-                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{name}(name=${partner.username})}">Edit</a>
+                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role=${session.user.role.name}, name=${session.user.username})}">Edit</a>
             </div>
             <div class="rela-block content justify-content-center">
                 <th:block th:each="offer : ${partner.offers}">
                     <div class="rela-inline image">
                         <div class="offer_name">[[${offer.name}]]</div>
-                        <img th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${session.sector}, name=${offer.name})} + '\'' " class="offer_pic" th:src="${offer.picture}">
+                        <img th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${session.user.sector.name}, name=${offer.name})} + '\'' " class="offer_pic" th:src="${offer.picture}">
 
                     </div>
                 </th:block>
             </div>
-            <a class="btn about_button text-white position-relative" th:href="@{/offers/add/{offer}(offer=${session.sector})}">Add Offer</a>
+            <a class="btn about_button text-white position-relative" th:href="@{/offers/{partner}/add/{offer}(partner=${session.user.username}, offer=${session.user.sector.name})}">Add Offer</a>
         </div>
     </div>
         <th:block th:include="~{_shared/footer}"/>

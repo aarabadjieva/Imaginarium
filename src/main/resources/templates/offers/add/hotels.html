@@ -23,14 +23,18 @@
                     <div class="last_item">
                         <div class="last_item_content edit">
                             <div class="last_subtitle">Add offer</div>
-                            <form class="mx-auto w-15" method="post">
-                                <div class="form-group">
+                            <!--/*@thymesVar id="accommodation" type="project.imaginarium.web.models.offer.add.AccommodationAdd"*/-->
+                            <form class="mx-auto w-15" th:object="${accommodation}" th:method="post">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'alert-danger'">
                                     <div class="label-holder textCol d-flex justify-content-center">
                                         <label for="name" class="h4 mb-2 last_text">Name</label>
                                     </div>
-                                    <input type="text" class="form-control" id="name" name="name"/>
+                                    <input type="text" th:field="*{name}" class="form-control" id="name" name="name"/>
+                                    <ul th:if="${#fields.errors('name')}">
+                                        <li th:each="error : ${#fields.errors('name')}" th:text="${error}"></li>
+                                    </ul>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('planet')}? 'alert-danger'">
                                     <div class="label-holder text-white textCol d-flex justify-content-center">
                                         <div class="label-holder textCol d-flex justify-content-center">
                                             <label for="planet"
@@ -38,13 +42,16 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <select name="planet" id="planet" class="form-control">
+                                        <select name="planet" id="planet" class="form-control" th:field="*{planet}">
                                             <option th:each="planet : ${T(project.imaginarium.data.models.Planet).values()}"
                                                     th:value="${planet}" th:text="${planet}"></option>
+                                            <ul th:if="${#fields.errors('planet')}">
+                                                <li th:each="error : ${#fields.errors('planet')}" th:text="${error}"></li>
+                                            </ul>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('days')}? 'alert-danger'">
                                     <div class="label-holder text-white textCol d-flex justify-content-center">
                                         <div class="label-holder textCol d-flex justify-content-center">
                                             <label for="days"
@@ -53,7 +60,10 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <input class="form-control" type="number" id="days" name="days">
+                                        <input class="form-control" type="number" id="days" name="days" th:field="*{days}">
+                                        <ul th:if="${#fields.errors('days')}">
+                                            <li th:each="error : ${#fields.errors('days')}" th:text="${error}"></li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -64,38 +74,36 @@
                                     <input class="form-control" type="url"
                                            id="picture" name="picture" placeholder="Url to your picture">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'alert-danger'">
                                     <div class="label-holder text-white textCol d-flex justify-content-center">
                                         <label for="description" class="h4 mb-2 last_text">Description</label>
                                     </div>
                                     <textarea class="form-control"
                                               id="description" rows="4"
-                                              name="description"></textarea>
+                                              name="description" th:field="*{description}"></textarea>
+                                    <ul th:if="${#fields.errors('description')}">
+                                        <li th:each="error : ${#fields.errors('description')}" th:text="${error}"></li>
+                                    </ul>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('pricePerAdult')}? 'alert-danger'">
                                     <div class="label-holder text-white textCol d-flex justify-content-center">
                                         <label for="priceAdult" class="h4 mb-2 last_text">Price for Adults</label>
                                     </div>
-                                    <input class="form-control" type="number" id="priceAdult"
+                                    <input class="form-control" type="number" id="priceAdult" th:field="*{pricePerAdult}"
                                            name="pricePerAdult"/>
+                                    <ul th:if="${#fields.errors('pricePerAdult')}">
+                                        <li th:each="error : ${#fields.errors('pricePerAdult')}" th:text="${error}"></li>
+                                    </ul>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" th:classappend="${#fields.hasErrors('pricePerChildren')}? 'alert-danger'">
                                     <div class="label-holder text-white textCol d-flex justify-content-center">
                                         <label for="priceChildren" class="h4 mb-2 last_text">Price for Child</label>
                                     </div>
-                                    <input class="form-control" type="number" id="priceChildren"
+                                    <input class="form-control" type="number" id="priceChildren" th:field="*{pricePerChildren}"
                                            name="pricePerChildren"/>
-                                </div>
-                                <div class="form-group">
-                                    <div class="label-holder text-white textCol d-flex justify-content-center">
-                                        <label for="isAllowed" class="h4 mb-2 last_text">Allowed for animals</label>
-                                    </div>
-                                    <div class="input-group" id="isAllowed">
-                                        <input type="radio" value="0" th:field="*{offer.isAllowedForAnimals}"
-                                               name="isAllowedForAnimals">Yes</input>
-                                        <input type="radio" value="1" th:field="*{offer.isAllowedForAnimals}"
-                                               name="isAllowedForAnimals">No</input>
-                                    </div>
+                                    <ul th:if="${#fields.errors('pricePerChildren')}">
+                                        <li th:each="error : ${#fields.errors('pricePerChildren')}" th:text="${error}"></li>
+                                    </ul>
                                 </div>
                                 <div class="form-group">
                                     <div class="label-holder text-white textCol d-flex justify-content-center">
@@ -106,7 +114,7 @@
                                     </div>
                                     <div>
                                         <select name="tags" id="tags" class="multiple form-control" multiple = "multiple">
-                                            <option class="multiple_option" th:each="tag : ${T(project.imaginarium.data.models.Tag).values()}"
+                                            <option class="multiple_option" th:each="tag : ${T(project.imaginarium.data.models.offers.Tag).values()}"
                                                     th:value="${tag}" th:text="${tag}"></option>
                                         </select>
                                     </div>

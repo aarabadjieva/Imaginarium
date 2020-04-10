@@ -1,8 +1,8 @@
 package project.imaginarium.service.services.user;
 
-import project.imaginarium.data.models.Client;
-import project.imaginarium.data.models.Guide;
-import project.imaginarium.data.models.Partner;
+import project.imaginarium.data.models.users.Client;
+import project.imaginarium.data.models.users.Guide;
+import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
 import project.imaginarium.web.models.user.edit.ClientEditModel;

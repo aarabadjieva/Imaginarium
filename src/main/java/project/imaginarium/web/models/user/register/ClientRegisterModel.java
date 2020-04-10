@@ -2,7 +2,7 @@ package project.imaginarium.web.models.user.register;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.imaginarium.data.models.Role;
+import project.imaginarium.data.models.users.Role;
 
 @Getter
 @Setter

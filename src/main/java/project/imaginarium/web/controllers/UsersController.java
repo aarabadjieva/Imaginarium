@@ -2,16 +2,14 @@ package project.imaginarium.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
 import project.imaginarium.service.models.user.UserLoggedServiceModel;
 import project.imaginarium.service.models.user.UserServiceLoginModel;
 import project.imaginarium.service.services.user.UserService;
+import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.web.models.user.UserLoginModel;
 import project.imaginarium.web.models.user.register.ClientRegisterModel;
 import project.imaginarium.web.models.user.register.PartnerRegisterModel;
@@ -45,8 +43,8 @@ public class UsersController {
         ClientRegisterServiceModel serviceModel = mapper.map(model, ClientRegisterServiceModel.class);
         try {
             userService.saveClient(serviceModel);
+            session.setAttribute("user", serviceModel);
             session.setAttribute("username", serviceModel.getUsername());
-            session.setAttribute("role", serviceModel.getRole().toString().toLowerCase());
             return new ModelAndView("redirect:/");
         } catch (Exception e) {
             return new ModelAndView("users/register/client");
@@ -62,12 +60,11 @@ public class UsersController {
     @PostMapping("/register/partner")
     public ModelAndView createPartner(@ModelAttribute PartnerRegisterModel model, HttpSession session) {
         PartnerRegisterServiceModel serviceModel = mapper.map(model, PartnerRegisterServiceModel.class);
+        System.out.println();
         try {
             userService.savePartner(serviceModel);
+            session.setAttribute("user", serviceModel);
             session.setAttribute("username", serviceModel.getUsername());
-            session.setAttribute("role", serviceModel.getRole().toString().toLowerCase());
-            session.setAttribute("sector", serviceModel.getSector().toString().toLowerCase());
-            session.setAttribute("pic", serviceModel.getLogo());
             return new ModelAndView("redirect:/");
         } catch (Exception e) {
             return new ModelAndView("redirect:/users/register/partner");
@@ -75,19 +72,20 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public ModelAndView getLogin(@ModelAttribute UserLoginModel model, HttpSession session) {
+    public ModelAndView getLogin(@ModelAttribute UserLoginModel model, HttpSession session) throws Exception {
         UserServiceLoginModel serviceModel = mapper.map(model, UserServiceLoginModel.class);
-        try {
             UserLoggedServiceModel user = userService.login(serviceModel);
+            session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
-            session.setAttribute("role", user.getRole().toString().toLowerCase());
-            session.setAttribute("sector", user.getSector().toString().toLowerCase());
-            session.setAttribute("pic", user.getLogo());
-
             return new ModelAndView("redirect:/profile/" + user.getRole().toString().toLowerCase() + "/" + user.getUsername());
-        } catch (Exception e) {
-            return new ModelAndView("redirect:/");
-        }
+
     }
 
+    @ExceptionHandler(NoSuchUser.class)
+    public ModelAndView handleException(Throwable exception){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error-custom.html");
+        modelAndView.addObject("message", exception.getMessage());
+        return modelAndView;
+    }
 }

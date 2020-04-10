@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Offers</title>
+    <th:block th:include="~{_shared/head}"/>
+</head>
+<body>
+
+<div class="super_container">
+
+    <th:block th:include="~{_shared/header}"/>
+    <th:block th:include="~{_shared/menu}"/>
+    <!-- Home -->
+
+    <div class="about_home">
+        <div class="about_home_background parallax-window" data-parallax="scroll"
+             data-image-src="images/offers_background.jpg" data-speed="0.8"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="about_home_content">
+                        <div class="about_home_content_inner">
+                            <div class="about_home_title">Our Offers</div>
+                            <div class="about_home_breadcrumbs">
+                                <ul class="about_home_breadcrumbs_list">
+                                    <li class="about_home_breadcrumb"><a href="home.html">Home</a></li>
+                                    <li class="about_home_breadcrumb">Our offers</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offers -->
+
+    <div class="popular">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="section_title text-center">
+                        <h2>Our offers in 2019</h2>
+                        <div>take a look at these offers</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+
+                <th:block th:each="offer : ${offers}">
+                    <div class="col-lg-3 col-md-6 nopadding">
+                        <!-- Popular Item -->
+                        <div class="hovereffect2 popular_item">
+                            <img class="img-responsive" th:src="${offer.picture}">
+                            <div class="overlay popular_item_content">
+                                <h2 class="popular_item_title">[[${offer.provider.name}]]</h2>
+                                <a class="popular_item_price info"
+                                   th:href="@{/offers/info/{sector}/{name}(sector=${offer.sector.name}, name=${offer.name})}">[[${offer.name}]]</a>
+                                <div class="planet">[[${offer.planet}]]</div>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+
+            <div class="top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="section_title text-center">
+                                <h2>Our guides</h2>
+                                <div>choose your company</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row top_content">
+                        <th:block th:each="guide : ${guides}">
+                            <div class="col-lg-3 col-md-6 top_col">
+                                <div class="hovereffect top_item">
+                                    <div class="top_item_image"><img class="img-responsive" th:src="${guide.logo}">
+                                    </div>
+                                    <div class="overlay top_item_content">
+                                        <h2>[[${guide.planet}]]</h2>
+                                        <p>
+                                            <a class="top_item_text" th:href="@{/profile/guide/{name}(name=${guide.username})}">[[${guide.name}]]</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <th:block th:include="~{_shared/footer}"/>
+</div>
+<th:block th:include="~{_shared/scripts}"/>
+</body>
+</html>

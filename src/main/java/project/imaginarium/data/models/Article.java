@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Getter
@@ -16,9 +17,13 @@ public class Article extends BaseEntity{
     @Column(nullable = false, unique = true)
     private String title;
 
-    @Column(nullable = false, length = 13000)
+    @Column(nullable = false)
+    @Lob
     private String content;
 
     @Column(nullable = false)
     private String picture;
+
+    @Column(nullable = false)
+    private String date;
 }

@@ -1,5 +1,5 @@
 <header class="header">
-    <div th:if="${session.role == null}">
+    <div th:if="${session.user == null}">
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -71,7 +71,7 @@
     </div>
 
 
-    <div th:unless="${session.role ==null}">
+    <div th:unless="${session.user ==null}">
 
         <div class="container">
             <div class="row">
@@ -99,9 +99,9 @@
 
                             <!-- Search -->
                             <div class="search">
-                                <li class="main_nav_item" id="profile"><a th:href="@{/profile/{role}/{name}(role=${session.role}, name=${session.username})}"><img
+                                <li class="main_nav_item" id="profile"><a th:href="@{/profile/{role}/{name}(role=${session.user.role.name}, name=${session.user.username})}"><img
                                         class="profile_img rounded-circle rounded"
-                                        th:src="${(session.pic !=null && !#strings.isEmpty(session.pic)) ? session.pic : '/images/client_no_picture.webp'}"></a>
+                                        th:src="${(session.user.logo !=null && !#strings.isEmpty(session.user.logo)) ? session.user.logo : '/images/client_no_picture.webp'}"></a>
                                 </li>
                                 <div>
                                     <a class="logout_btn" th:href="@{/profile/logout}"><strong class="logout_btn">Logout</strong></a>

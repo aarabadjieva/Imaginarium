@@ -22,8 +22,7 @@ public class AppBeanConfig {
        return Arrays.stream(Locale.getISOCountries())
                 .map(c -> {
                     Locale locale = new Locale("en", c);
-                    String name = locale.getDisplayName().substring(locale.getDisplayName().indexOf('(') + 1, locale.getDisplayName().indexOf(')'));
-                    return name;
+                    return locale.getDisplayName().substring(locale.getDisplayName().indexOf('(') + 1, locale.getDisplayName().indexOf(')'));
                 })
                 .sorted()
                 .collect(Collectors.toList());

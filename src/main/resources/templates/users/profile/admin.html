@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Profile</title>
+    <title>Admin</title>
     <th:block th:include="~{_shared/head}"/>
 </head>
 <body>
@@ -10,18 +10,73 @@
 <div class="super_container">
     <th:block th:include="~{_shared/header}"/>
     <th:block th:include="~{_shared/menu}"/>
+    <div class="about_home">
 
-
-    <div class="last">
-        <div class="last_background parallax-window" data-parallax="scroll"
-             data-image-src="/images/client_profile_background.webp"
-             data-speed="0.8"></div>
         <!-- PAGE STUFF -->
+        <h1 class="table_name text-center text-dark">USERS:</h1>
+        <table class="table text-white table-hover">
+            <thead>
+            <tr>
+                <th class="col-md-auto text-center">#</th>
+                <th class="col-md-auto text-center">Username</th>
+                <th class="col-md-auto text-center">Email</th>
+                <th class="col-md-auto text-center">Role</th>
+                <th class="col-md-auto text-center">Origin</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="user, iter : ${users}">
+                <tr>
+                    <td class="text-center" th:text="${iter.index + 1}"></td>
+                    <td class="text-center" th:utext="${user.username}"></td>
+                    <td class="text-center" th:utext="${user.email}"></td>
+                    <td class="text-center" th:utext="${user.role}"></td>
+                    <td class="text-center">
+                        <div th:if="${user.role.name}=='admin'">
+                            <form th:action="@{/profile/delete/admin/{name}(name=${user.username})}" th:method="post">
+                            <button type="submit" class="btn btn-info">Delete Admin</button>
+                            </form>
+                        </div>
+                        <div th:if="${user.role.name}=='client'">
+                            <form th:action="@{/profile/create/admin/{name}(name=${user.username})}" th:method="post">
+                            <button type="submit" class="btn btn-info">Make Admin</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
 
+        <h1 class="table_name text-center text-white">Articles:</h1>
+        <table class="table text-white table-hover">
+            <thead>
+            <tr>
+                <th class="col-md-auto text-center">#</th>
+                <th class="col-md-auto text-center">Name</th>
+                <th class="col-md-auto text-center">Date</th>
+                <th class="col-md-auto text-center">URL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="article, iter : ${articles}">
+                <tr>
+                    <td class="text-center" th:text="${iter.index + 1}"></td>
+                    <td class="text-center" th:utext="${article.title}"></td>
+                    <td class="text-center" th:utext="${article.date}"></td>
+                    <td class="text-center">
+                        <a class="btn btn-info" th:href="@{/articles/{title}(title=${article.title})}">Content</a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <div class="button-holder d-flex justify-content-center">
+            <a class="btn btn-info" th:href="@{/articles/create}">Add Article</a>
         </div>
-
+        </div>
+</div>
         <th:block th:include="~{_shared/footer}"/>
-    </div>
     <th:block th:include="~{_shared/scripts}"/>
 </body>
 </html>

@@ -1,8 +1,8 @@
 package project.imaginarium.data.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import project.imaginarium.data.models.Role;
-import project.imaginarium.data.models.User;
+import project.imaginarium.data.models.users.Role;
+import project.imaginarium.data.models.users.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +14,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByUsernameAndPassword(String username, String password);
 
-    List<User> findAllByRole(Role role);
+    List<User> findAllByAuthoritiesContaining(Role role);
 
-    User findByUsername(String name);
+    Optional<User> findByUsername(String name);
 
 }

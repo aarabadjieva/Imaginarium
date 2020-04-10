@@ -1,9 +1,9 @@
 package project.imaginarium.service.services.user.impl;
 
 import org.springframework.stereotype.Service;
-import project.imaginarium.data.models.Client;
-import project.imaginarium.data.models.Guide;
-import project.imaginarium.data.models.Partner;
+import project.imaginarium.data.models.users.Client;
+import project.imaginarium.data.models.users.Guide;
+import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.data.repositories.UserRepository;
 import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;

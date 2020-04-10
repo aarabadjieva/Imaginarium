@@ -2,7 +2,7 @@ package project.imaginarium.web.models.user.view;
 
 import lombok.Getter;
 import lombok.Setter;
-import project.imaginarium.data.models.Offer;
+import project.imaginarium.data.models.offers.Offer;
 
 import java.util.List;
 

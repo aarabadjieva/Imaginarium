@@ -2,8 +2,10 @@ package project.imaginarium.service.models.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.users.Role;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -17,4 +19,9 @@ public class ClientRegisterServiceModel {
     private Set<Role> authorities;
     private String country;
     private String logo;
+    private Sector sector;
+
+    public ClientRegisterServiceModel() {
+        this.authorities = new HashSet<>();
+    }
 }

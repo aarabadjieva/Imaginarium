@@ -45,6 +45,12 @@ public class UsersController {
             userService.saveClient(serviceModel);
             session.setAttribute("user", serviceModel);
             session.setAttribute("username", serviceModel.getUsername());
+            if (serviceModel.getAuthorities().contains("ADMIN")){
+                session.setAttribute("role", "admin");
+            }else {
+
+                session.setAttribute("role", "client");
+            }
             return new ModelAndView("redirect:/");
         } catch (Exception e) {
             return new ModelAndView("users/register/client");
@@ -60,11 +66,16 @@ public class UsersController {
     @PostMapping("/register/partner")
     public ModelAndView createPartner(@ModelAttribute PartnerRegisterModel model, HttpSession session) {
         PartnerRegisterServiceModel serviceModel = mapper.map(model, PartnerRegisterServiceModel.class);
-        System.out.println();
         try {
             userService.savePartner(serviceModel);
             session.setAttribute("user", serviceModel);
             session.setAttribute("username", serviceModel.getUsername());
+            if (serviceModel.getAuthorities().contains("ADMIN")){
+                session.setAttribute("role", "admin");
+            }else {
+
+                session.setAttribute("role", "partner");
+            }
             return new ModelAndView("redirect:/");
         } catch (Exception e) {
             return new ModelAndView("redirect:/users/register/partner");
@@ -77,7 +88,19 @@ public class UsersController {
             UserLoggedServiceModel user = userService.login(serviceModel);
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
-            return new ModelAndView("redirect:/profile/" + user.getRole().toString().toLowerCase() + "/" + user.getUsername());
+            switch (user.getSector()){
+                case HOTELS:
+                case VEHICLES:
+                case TIME_TRAVEL:
+                    session.setAttribute("role", "partner");
+                    break;
+                case GUIDES:
+                    session.setAttribute("role", "guide");
+                    break;
+                default:
+                    session.setAttribute("role", "client");
+            }
+            return new ModelAndView("redirect:/profile/" + session.getAttribute("role") + "/" + user.getUsername());
 
     }
 

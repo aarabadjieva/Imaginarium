@@ -3,7 +3,6 @@ package project.imaginarium.data.models.users;
 import lombok.Getter;
 import lombok.Setter;
 import project.imaginarium.data.models.Planet;
-import project.imaginarium.data.models.Sector;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,7 +31,5 @@ public class Guide extends User {
     @Enumerated(EnumType.STRING)
     private Planet planet;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private Sector sector;
+
 }

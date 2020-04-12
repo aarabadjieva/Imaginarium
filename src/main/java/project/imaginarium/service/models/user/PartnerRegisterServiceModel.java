@@ -7,6 +7,7 @@ import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.users.Role;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -25,4 +26,8 @@ public class PartnerRegisterServiceModel {
     private Sector sector;
     private String website;
     private BigDecimal price;
+
+    public PartnerRegisterServiceModel() {
+        this.authorities = new HashSet<>();
+    }
 }

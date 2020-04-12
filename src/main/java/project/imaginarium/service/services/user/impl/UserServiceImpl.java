@@ -7,20 +7,20 @@ import project.imaginarium.data.models.users.*;
 import project.imaginarium.data.repositories.OfferRepository;
 import project.imaginarium.data.repositories.RoleRepository;
 import project.imaginarium.data.repositories.UserRepository;
+import project.imaginarium.exeptions.NoSuchOffer;
+import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.user.*;
 import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.HashingService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.service.services.user.UserValidationService;
-import project.imaginarium.exeptions.NoSuchOffer;
-import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.web.models.user.edit.ClientEditModel;
 import project.imaginarium.web.models.user.edit.GuideEditModel;
 import project.imaginarium.web.models.user.edit.PartnerEditModel;
 import project.imaginarium.web.models.user.view.GuideViewModel;
 import project.imaginarium.web.models.user.view.PartnerViewModel;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,10 +49,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveClient(ClientRegisterServiceModel serviceModel) throws Exception {
-        User user = mapper.map(serviceModel, User.class);
         if (userRepository.count()==0) {
-            roleService.seedRolesInDB();
-            user.setAuthorities(new HashSet<>(roleRepository.findAll()));
+            if (roleRepository.findAll().isEmpty()) {
+                roleService.seedRolesInDB();
+            }
+            Role role = roleRepository.findByAuthority("ADMIN");
+            serviceModel.setAuthorities(Collections.singleton(role));
+        }else {
+            Role role = roleRepository.findByAuthority("CLIENT");
+            serviceModel.setAuthorities(Collections.singleton(role));
         }
         serviceModel.setPassword(hashingService.hash(serviceModel.getPassword()));
         serviceModel.setConfirmPassword(hashingService.hash(serviceModel.getConfirmPassword()));
@@ -60,13 +65,17 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Invalid data");
         }
         Client client = mapper.map(serviceModel, Client.class);
+
         userRepository.saveAndFlush(client);
     }
 
     public void savePartner(PartnerRegisterServiceModel serviceModel) throws Exception {
-        if (userRepository.findAll().isEmpty()) {
-            roleService.seedRolesInDB();
-            serviceModel.setAuthorities(new HashSet<>(roleRepository.findAll()));
+        if (userRepository.count()==0) {
+            if (roleRepository.findAll().isEmpty()) {
+                roleService.seedRolesInDB();
+            }
+            Role role = roleRepository.findByAuthority("ADMIN");
+            serviceModel.setAuthorities(Collections.singleton(role));
         }
 
         serviceModel.setPassword(hashingService.hash(serviceModel.getPassword()));
@@ -76,16 +85,26 @@ public class UserServiceImpl implements UserService {
                 if (!userValidationService.isValidPartner(serviceModel)) {
                     throw new Exception("Invalid data");
                 }
+                if (serviceModel.getAuthorities().isEmpty()){
+                    Role role = roleRepository.findByAuthority("GUIDE");
+                    serviceModel.getAuthorities().add(role);
+                }
                 Guide guide = mapper.map(serviceModel, Guide.class);
+
                 userRepository.saveAndFlush(guide);
                 break;
             case "hotels":
             case "vehicles":
-            case "time_travel":
+            case "timeTravel":
                 if (!userValidationService.isValidPartner(serviceModel)) {
                     throw new Exception("Invalid data");
                 }
+                if (serviceModel.getAuthorities().isEmpty()){
+                    Role role = roleRepository.findByAuthority("PARTNER");
+                    serviceModel.getAuthorities().add(role);
+                }
                 Partner partner = mapper.map(serviceModel, Partner.class);
+
                 userRepository.saveAndFlush(partner);
                 break;
 

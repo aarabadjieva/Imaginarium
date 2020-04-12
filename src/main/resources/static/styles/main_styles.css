@@ -205,7 +205,7 @@ section {
     width: 100%;
     overflow: hidden;
 }
-.nopadding {
+.no_padding {
     padding: 0 !important;
 }
 .parallax-window {
@@ -1181,7 +1181,8 @@ section {
     display: block;
 }
 .popular_item img {
-    max-width: 100%;
+    width: 100%;
+    height:200px;
 }
 .popular_item_content {
     position: absolute;
@@ -2664,6 +2665,7 @@ section {
 .description_profile{
     text-align:center;
     margin: -25px 25px 25px;
+    word-wrap:break-word;
 }
 
 .profile_img .rounded-circle{
@@ -2692,29 +2694,34 @@ section {
     width:100%;
     text-align:center;
 }
-
+.planet{
+    color:white;
+}
 /*********************************
 27.Exception
 *********************************/
-
 .error{
-    font-weight:100;
-    margin-top:-10%;
+    font-weight:800;
+    margin-top:-6%;
     padding-bottom:4%;
+    text-align:center;
 }
 
 .exception{
-    font-weight:800;
+    text-align:center;
+    font-weight:80;
     font-family:-webkit-pictograph;
-    font-size:70px;
+    font-size:30px;
     margin-top:-4%;
+
 }
 
 .error_message{
     background-color:rgb(0,0,0,0.7);
-    border-radius:10px;
+    border-radius:1000px;
     color:beige;
-    padding:100px 10px 10px 10px;
+    padding-left:100px;
+    padding-right:100px;
 }
 
 /*********************************

@@ -5,6 +5,8 @@ import project.imaginarium.data.models.users.Role;
 import project.imaginarium.data.repositories.RoleRepository;
 import project.imaginarium.service.services.RoleService;
 
+import java.util.List;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -20,5 +22,10 @@ public class RoleServiceImpl implements RoleService {
         roleRepository.saveAndFlush(new Role("CLIENT"));
         roleRepository.saveAndFlush(new Role("GUIDE"));
         roleRepository.saveAndFlush(new Role("PARTNER"));
+    }
+
+    @Override
+    public List<Role> allRoles() {
+        return roleRepository.findAll();
     }
 }

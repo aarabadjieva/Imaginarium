@@ -3,10 +3,11 @@ package project.imaginarium.data.models.users;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Offer;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -30,9 +31,6 @@ public class Partner extends User {
     @Column
     private String website;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Sector sector;
 
     @OneToMany(mappedBy = "provider")
     private List<Offer> offers;

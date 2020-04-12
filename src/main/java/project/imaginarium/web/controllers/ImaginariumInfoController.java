@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.service.services.ArticlesService;
+import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.web.models.articles.ArticleViewModel;
 import project.imaginarium.web.models.user.view.GuideViewModel;
@@ -21,12 +22,14 @@ import java.util.stream.Collectors;
 public class ImaginariumInfoController {
 
     private final UserService userService;
+    private final RoleService roleService;
     private final ArticlesService articlesService;
     private final ModelMapper mapper;
 
 
-    public ImaginariumInfoController(UserService userService, ArticlesService articlesService, ModelMapper mapper) {
+    public ImaginariumInfoController(UserService userService, RoleService roleService, ArticlesService articlesService, ModelMapper mapper) {
         this.userService = userService;
+        this.roleService = roleService;
         this.articlesService = articlesService;
         this.mapper = mapper;
     }
@@ -38,6 +41,9 @@ public class ImaginariumInfoController {
 
     @GetMapping("about")
     public ModelAndView getAboutInfo(ModelAndView modelAndView) {
+        if (roleService.allRoles().isEmpty()){
+            roleService.seedRolesInDB();
+        }
         List<PartnerViewModel> allPartners = userService.partners();
         List<GuideViewModel> allGuides = userService.guides();
         modelAndView.setViewName("imaginarium/about.html");

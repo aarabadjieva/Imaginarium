@@ -52,7 +52,7 @@
                     <a class="btn about_button text-white position-relative" th:href="@{/profile/partner/{name}(name=${session.user.username})}">Back to profile</a>
                 </div>
                 <div th:unless="${session.user.username == offer.provider.username}">
-                    <div th:if="${session.user.role.name == 'client'}">
+                    <div th:if="${session.role == 'client'}">
                         <a class="btn btn-info text-white" th:href="@{/profile/{user}/save/{offer}(user=${session.user.username}, offer=${offer.name})}" th:method="post">Save</a>
                     </div>
                 </div>

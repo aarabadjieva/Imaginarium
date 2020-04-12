@@ -99,7 +99,7 @@
 
                             <!-- Search -->
                             <div class="search">
-                                <li class="main_nav_item" id="profile"><a th:href="@{/profile/{role}/{name}(role=${session.user.role.name}, name=${session.user.username})}"><img
+                                <li class="main_nav_item" id="profile"><a th:href="@{/profile/{role}/{name}(role=${session.role}, name=${session.user.username})}"><img
                                         class="profile_img rounded-circle rounded"
                                         th:src="${(session.user.logo !=null && !#strings.isEmpty(session.user.logo)) ? session.user.logo : '/images/client_no_picture.webp'}"></a>
                                 </li>

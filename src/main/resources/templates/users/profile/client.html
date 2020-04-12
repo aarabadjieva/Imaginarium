@@ -28,7 +28,7 @@
                 <div class="rela-block profile-card-stats">
                     <div class="justify-content-center"><strong>Country:</strong>[[${client.country}]]</div>
                 </div>
-                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{name}(name=${client.username})}">Edit</a>
+                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role = ${session.role}, name=${client.username})}">Edit</a>
             </div>
             <div class="rela-block content">
                 <th:block th:each="offer : ${client.offers}">

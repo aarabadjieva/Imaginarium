@@ -100,7 +100,7 @@ public class OffersController {
         }
         TimeTravelServiceModel timeTravelServiceModel = mapper.map(timeTravel, TimeTravelServiceModel.class);
         offersService.addTimeTravel(timeTravelServiceModel, partner);
-        modelAndView.setViewName("redirect:/offers/info/timetravel/" + timeTravel.getName());
+        modelAndView.setViewName("redirect:/offers/info/timeTravel/" + timeTravel.getName());
 
         return modelAndView;
     }
@@ -116,14 +116,14 @@ public class OffersController {
         }
         VehicleServiceModel vehicleServiceModel = mapper.map(vehicle, VehicleServiceModel.class);
         offersService.addVehicle(vehicleServiceModel, partner);
-        modelAndView.setViewName("redirect:/offers/info/vehicle/" + vehicle.getName());
+        modelAndView.setViewName("redirect:/offers/info/vehicles/" + vehicle.getName());
         return modelAndView;
     }
 
     @GetMapping("/info/{sector}/{name}")
     public ModelAndView infoOffer(ModelAndView modelAndView, @PathVariable String sector,
                                   @PathVariable String name) {
-        modelAndView.setViewName("/offers/info/" + sector.toLowerCase() + ".html");
+        modelAndView.setViewName("/offers/info/" + sector + ".html");
         switch (sector) {
             case "hotels":
                 AccommodationViewModel accommodation = mapper.map(offersService.findAccommodationByName(name), AccommodationViewModel.class);

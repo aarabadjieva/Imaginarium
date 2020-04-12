@@ -30,7 +30,7 @@
                 </div>
                     <div class="description_profile"><strong>Description:</strong></div>
                     <div class="description_profile">[[${partner.description}]]</div>
-                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role=${session.user.role.name}, name=${session.user.username})}">Edit</a>
+                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role=${session.role}, name=${session.user.username})}">Edit</a>
             </div>
             <div class="rela-block content justify-content-center">
                 <th:block th:each="offer : ${partner.offers}">

@@ -12,7 +12,9 @@ import project.imaginarium.web.models.user.edit.PartnerEditModel;
 public interface UserValidationService {
 
     boolean isValidUser(String password, String confirmPassword, String email, String username);
+
     boolean isValidClient(ClientRegisterServiceModel model);
+
     boolean isValidPartner(PartnerRegisterServiceModel model);
 
     boolean isValidEditClient(Client client, ClientEditModel model);

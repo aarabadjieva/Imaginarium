@@ -126,15 +126,15 @@ public class OffersController {
         modelAndView.setViewName("/offers/info/" + sector + ".html");
         switch (sector) {
             case "hotels":
-                AccommodationViewModel accommodation = mapper.map(offersService.findAccommodationByName(name), AccommodationViewModel.class);
+                AccommodationViewModel accommodation = mapper.map(offersService.findOfferByName(name), AccommodationViewModel.class);
                 modelAndView.addObject("offer", accommodation);
                 break;
             case "timeTravel":
-                TimeTravelViewModel timeTravel = mapper.map(offersService.findTimeTravelByName(name), TimeTravelViewModel.class);
+                TimeTravelViewModel timeTravel = mapper.map(offersService.findOfferByName(name), TimeTravelViewModel.class);
                 modelAndView.addObject("offer", timeTravel);
                 break;
             case "vehicles":
-                VehicleViewModel vehicle = mapper.map(offersService.findVehicleByName(name), VehicleViewModel.class);
+                VehicleViewModel vehicle = mapper.map(offersService.findOfferByName(name), VehicleViewModel.class);
                 modelAndView.addObject("offer", vehicle);
                 break;
         }
@@ -149,17 +149,17 @@ public class OffersController {
         switch (sector) {
             case "hotels":
                 modelAndView.setViewName("/offers/edit/hotels.html");
-                AccommodationViewModel accommodation = mapper.map(offersService.findAccommodationByName(name), AccommodationViewModel.class);
+                AccommodationViewModel accommodation = mapper.map(offersService.findOfferByName(name), AccommodationViewModel.class);
                 modelAndView.addObject("accommodation", accommodation);
                 break;
             case "timeTravel":
                 modelAndView.setViewName("/offers/edit/timetravel.html");
-                TimeTravelViewModel timeTravel = mapper.map(offersService.findTimeTravelByName(name), TimeTravelViewModel.class);
+                TimeTravelViewModel timeTravel = mapper.map(offersService.findOfferByName(name), TimeTravelViewModel.class);
                 modelAndView.addObject("timeTravel", timeTravel);
                 break;
             case "vehicles":
                 modelAndView.setViewName("/offers/edit/vehicles.html");
-                VehicleViewModel vehicle = mapper.map(offersService.findVehicleByName(name), VehicleViewModel.class);
+                VehicleViewModel vehicle = mapper.map(offersService.findOfferByName(name), VehicleViewModel.class);
                 modelAndView.addObject("vehicle", vehicle);
                 break;
         }

@@ -43,31 +43,30 @@ public class UserValidationServiceImpl implements UserValidationService {
                 isValidName(model.getName()) && isValidDescription(model.getDescription());
     }
 
-    private boolean isValidDescription(String description) {
+    public boolean isValidDescription(String description) {
         return !description.isEmpty() && !description.isBlank();
     }
 
-
-    private boolean isUsernameTaken(String username) {
+    public boolean isUsernameTaken(String username) {
         return userRepository.existsByUsername(username);
     }
 
-    private boolean isPasswordValid(String password, String confirmPassword) {
+    public boolean isPasswordValid(String password, String confirmPassword) {
         return password.equals(confirmPassword) && !password.equals("");
     }
 
-    private boolean isEmailValid(String email) {
+    public boolean isEmailValid(String email) {
         String emailRegex = "^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches() && !userRepository.existsByEmail(email);
     }
 
-    private boolean isValidCountry(String country) {
+    public boolean isValidCountry(String country) {
         return !country.isBlank() && !country.isEmpty();
     }
 
-    private boolean isValidName(String name) {
+    public boolean isValidName(String name) {
         return !name.isEmpty() && !name.isBlank();
     }
 

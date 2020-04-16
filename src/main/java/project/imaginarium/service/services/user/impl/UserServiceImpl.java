@@ -4,12 +4,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.imaginarium.data.models.offers.Offer;
 import project.imaginarium.data.models.users.*;
-import project.imaginarium.data.repositories.OfferRepository;
-import project.imaginarium.data.repositories.RoleRepository;
 import project.imaginarium.data.repositories.UserRepository;
 import project.imaginarium.exeptions.NoSuchOffer;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.user.*;
+import project.imaginarium.service.services.OffersService;
 import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.HashingService;
 import project.imaginarium.service.services.user.UserService;
@@ -30,18 +29,16 @@ public class UserServiceImpl implements UserService {
     private static final String USER_NOT_FOUND_MESSAGE = "User not found";
 
     private final UserRepository userRepository;
-    private final OfferRepository offerRepository;
-    private final RoleRepository roleRepository;
     private final RoleService roleService;
+    private final OffersService offersService;
     private final ModelMapper mapper;
     private final HashingService hashingService;
     private final UserValidationService userValidationService;
 
-    public UserServiceImpl(UserRepository userRepository, OfferRepository offerRepository, RoleRepository roleRepository, RoleService roleService, ModelMapper mapper, HashingService hashingService, UserValidationService userValidationService) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, OffersService offersService, ModelMapper mapper, HashingService hashingService, UserValidationService userValidationService) {
         this.userRepository = userRepository;
-        this.offerRepository = offerRepository;
-        this.roleRepository = roleRepository;
         this.roleService = roleService;
+        this.offersService = offersService;
         this.mapper = mapper;
         this.hashingService = hashingService;
         this.userValidationService = userValidationService;
@@ -50,13 +47,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveClient(ClientRegisterServiceModel serviceModel) throws Exception {
         if (userRepository.count()==0) {
-            if (roleRepository.findAll().isEmpty()) {
+            if (roleService.allRoles().isEmpty()) {
                 roleService.seedRolesInDB();
             }
-            Role role = roleRepository.findByAuthority("ADMIN");
+            Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
         }else {
-            Role role = roleRepository.findByAuthority("CLIENT");
+            Role role = roleService.findRoleByName("CLIENT");
             serviceModel.setAuthorities(Collections.singleton(role));
         }
         serviceModel.setPassword(hashingService.hash(serviceModel.getPassword()));
@@ -71,10 +68,10 @@ public class UserServiceImpl implements UserService {
 
     public void savePartner(PartnerRegisterServiceModel serviceModel) throws Exception {
         if (userRepository.count()==0) {
-            if (roleRepository.findAll().isEmpty()) {
+            if (roleService.allRoles().isEmpty()) {
                 roleService.seedRolesInDB();
             }
-            Role role = roleRepository.findByAuthority("ADMIN");
+            Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
         }
 
@@ -82,11 +79,11 @@ public class UserServiceImpl implements UserService {
         serviceModel.setConfirmPassword(hashingService.hash(serviceModel.getConfirmPassword()));
         switch (serviceModel.getSector().name) {
             case "guides":
-                if (!userValidationService.isValidPartner(serviceModel)) {
+                if (userValidationService.isValidPartner(serviceModel)) {
                     throw new Exception("Invalid data");
                 }
                 if (serviceModel.getAuthorities().isEmpty()){
-                    Role role = roleRepository.findByAuthority("GUIDE");
+                    Role role = roleService.findRoleByName("GUIDE");
                     serviceModel.getAuthorities().add(role);
                 }
                 Guide guide = mapper.map(serviceModel, Guide.class);
@@ -96,11 +93,11 @@ public class UserServiceImpl implements UserService {
             case "hotels":
             case "vehicles":
             case "timeTravel":
-                if (!userValidationService.isValidPartner(serviceModel)) {
+                if (userValidationService.isValidPartner(serviceModel)) {
                     throw new Exception("Invalid data");
                 }
                 if (serviceModel.getAuthorities().isEmpty()){
-                    Role role = roleRepository.findByAuthority("PARTNER");
+                    Role role = roleService.findRoleByName("PARTNER");
                     serviceModel.getAuthorities().add(role);
                 }
                 Partner partner = mapper.map(serviceModel, Partner.class);
@@ -118,15 +115,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ClientServiceModel findClientByUsername(String name) {
+    public Client findClientByUsername(String name) {
         User client = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
-        return mapper.map(client, ClientServiceModel.class);
+        return (Client) client;
     }
 
     @Override
-    public PartnerServiceModel findPartnerByUsername(String name) {
+    public Partner findPartnerByUsername(String name) {
         User partner = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
-        return mapper.map(partner, PartnerServiceModel.class);
+        return (Partner) partner;
     }
 
     @Override
@@ -137,14 +134,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<GuideViewModel> guides() {
-        return userRepository.findAllByAuthoritiesContaining(roleRepository.findByAuthority("GUIDE")).stream()
+        return userRepository.findAllByAuthoritiesContaining(roleService.findRoleByName("GUIDE")).stream()
                 .map(g -> mapper.map(g, GuideViewModel.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PartnerViewModel> partners() {
-        return userRepository.findAllByAuthoritiesContaining(roleRepository.findByAuthority("PARTNER")).stream()
+        return userRepository.findAllByAuthoritiesContaining(roleService.findRoleByName("PARTNER")).stream()
                 .map(p -> mapper.map(p, PartnerViewModel.class))
                 .collect(Collectors.toList());
     }
@@ -201,7 +198,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void clientAddOffer(String user, String offerName) {
         Client client = (Client) userRepository.findByUsername(user).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
-        Offer offer = offerRepository.findByName(offerName).orElseThrow(()-> new NoSuchOffer("Offer not found"));
+        Offer offer = offersService.findOfferByName(offerName);
+        if (offer == null) {
+            throw new NoSuchOffer("Offer not found");
+        }
         client.getOffers().add(offer);
         userRepository.saveAndFlush(client);
     }
@@ -216,14 +216,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeAdmin(String name) {
         User user = userRepository.findByUsername(name).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE));
-        user.getAuthorities().add(roleRepository.findByAuthority("ADMIN"));
+        user.getAuthorities().add(roleService.findRoleByName("ADMIN"));
         userRepository.saveAndFlush(user);
     }
 
     @Override
     public void deleteAdmin(String name) {
         User user = userRepository.findByUsername(name).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE));
-        user.getAuthorities().remove(roleRepository.findByAuthority("ADMIN"));
+        user.getAuthorities().remove(roleService.findRoleByName("ADMIN"));
         userRepository.saveAndFlush(user);
     }
 }

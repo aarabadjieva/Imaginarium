@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "offers")
 public class Offer extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(length = 5000)

@@ -1,5 +1,7 @@
 package project.imaginarium.service.services.user;
 
+import project.imaginarium.data.models.users.Client;
+import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.service.models.user.*;
 import project.imaginarium.web.models.user.edit.ClientEditModel;
 import project.imaginarium.web.models.user.edit.GuideEditModel;
@@ -16,9 +18,9 @@ public interface UserService {
 
     UserLoggedServiceModel login(UserServiceLoginModel serviceModel) throws Exception;
 
-    ClientServiceModel findClientByUsername(String name);
+    Client findClientByUsername(String name);
 
-    PartnerServiceModel findPartnerByUsername(String name);
+    Partner findPartnerByUsername(String name);
 
     GuideServiceModel findGuideByUsername(String name);
 

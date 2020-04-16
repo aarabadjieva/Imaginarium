@@ -1,5 +1,6 @@
 package project.imaginarium.data.models.users;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 @Entity
 @Table
 public class Role extends BaseEntity {

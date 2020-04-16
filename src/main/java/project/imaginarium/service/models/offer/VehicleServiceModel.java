@@ -8,7 +8,6 @@ import project.imaginarium.data.models.offers.Tag;
 import project.imaginarium.data.models.users.Partner;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -24,8 +23,4 @@ public class VehicleServiceModel {
     private BigDecimal pricePerDay;
     private Partner provider;
 
-
-    private VehicleServiceModel(){
-        this.tags = new ArrayList<>();
-    }
 }

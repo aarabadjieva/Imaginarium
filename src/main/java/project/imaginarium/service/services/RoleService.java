@@ -8,4 +8,6 @@ public interface RoleService {
 
     void seedRolesInDB();
     List<Role> allRoles();
+
+    Role findRoleByName(String name);
 }

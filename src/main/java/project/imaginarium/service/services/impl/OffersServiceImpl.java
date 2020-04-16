@@ -9,13 +9,13 @@ import project.imaginarium.data.models.offers.Vehicle;
 import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.data.repositories.OfferRepository;
 import project.imaginarium.data.repositories.UserRepository;
+import project.imaginarium.exeptions.NoSuchOffer;
+import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.offer.AccommodationServiceModel;
 import project.imaginarium.service.models.offer.OfferServiceModel;
 import project.imaginarium.service.models.offer.TimeTravelServiceModel;
 import project.imaginarium.service.models.offer.VehicleServiceModel;
 import project.imaginarium.service.services.OffersService;
-import project.imaginarium.exeptions.NoSuchOffer;
-import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.web.models.offer.add.AccommodationAdd;
 import project.imaginarium.web.models.offer.add.TimeTravelAdd;
 import project.imaginarium.web.models.offer.add.VehicleAdd;
@@ -23,11 +23,12 @@ import project.imaginarium.web.models.offer.add.VehicleAdd;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static project.imaginarium.Common.OFFER_NOT_FOUND_MESSAGE;
+import static project.imaginarium.Common.USER_NOT_FOUND_MESSAGE;
+
 @Service
 public class OffersServiceImpl implements OffersService {
 
-    private static final String USER_NOT_FOUND_MESSAGE = "User not found";
-    private static final String OFFER_NOT_FOUND_MESSAGE = "Offer not found";
 
     private final ModelMapper mapper;
     private final OfferRepository offerRepository;
@@ -64,24 +65,6 @@ public class OffersServiceImpl implements OffersService {
     public void removeOffer(String offerName) {
         Offer offer = offerRepository.findByName(offerName).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
         offerRepository.delete(offer);
-    }
-
-    @Override
-    public TimeTravelServiceModel findTimeTravelByName(String name) {
-        Offer offer = offerRepository.findByName(name).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
-        return mapper.map(offer, TimeTravelServiceModel.class);
-    }
-
-    @Override
-    public VehicleServiceModel findVehicleByName(String name) {
-        Offer offer = offerRepository.findByName(name).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
-        return mapper.map(offer, VehicleServiceModel.class);
-    }
-
-    @Override
-    public AccommodationServiceModel findAccommodationByName(String name) {
-        Offer offer = offerRepository.findByName(name).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
-        return mapper.map(offer, AccommodationServiceModel.class);
     }
 
     @Override
@@ -127,6 +110,11 @@ public class OffersServiceImpl implements OffersService {
         return offerRepository.findAll().stream()
                 .map(o->mapper.map(o, OfferServiceModel.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Offer findOfferByName(String offerName) {
+        return offerRepository.findByName(offerName).orElseThrow(() -> new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
     }
 
 }

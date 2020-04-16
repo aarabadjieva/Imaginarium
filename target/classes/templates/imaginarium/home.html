@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Imaginarium</title>
+    <th:block th:include="~{_shared/head}"/>
+</head>
+<body>
+
+<div class="super_container">
+    <th:block th:include="~{_shared/header}"/>
+    <th:block th:include="~{_shared/menu}"/>
+
+    <!-- Home -->
+
+    <div class="home">
+        <div class="home_background" style="background-image:url(/images/background-home.jpg)"></div>
+        <div class="home_content">
+            <div class="home_content_inner">
+                <div class="home_text_large">imagine</div>
+                <div class="home_text_small">Imagine new worlds</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video -->
+
+    <br>
+    <br>
+    <br>
+    <div class="video_section d-flex flex-column align-items-center justify-content-center">
+        <div class="video_background parallax-window" data-parallax="scroll"
+             data-image-src="images/video-background.jpg"
+             data-speed="0.8"></div>
+        <div class="video_content">
+            <div class="video_title">It's a wonderful time to be alive!</div>
+            <div class="video_subtitle">Find your inspiration!</div>
+            <div class="video_play">
+                <a class="video" href="https://www.youtube.com/watch?v=BPNTC7uZYrI">
+                    <svg version="1.1" id="Layer_1" class="play_button" xmlns="http://www.w3.org/2000/svg"
+                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="140px" height="140px"
+                         viewBox="0 0 140 140" enable-background="new 0 0 140 140" xml:space="preserve">
+							<g id="Layer_2">
+								<circle class="play_circle" fill="none" stroke="#FFFFFF" stroke-width="2"
+                                        stroke-miterlimit="10" cx="70.333" cy="69.58" r="68.542"/>
+                                <polygon class="play_triangle" fill="none" stroke="#FFFFFF" stroke-width="2"
+                                         stroke-miterlimit="10" points="61.583,56 61.583,84.417 84.75,70 	"/>
+							</g>
+						</svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Special -->
+
+<div class="special">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="section_title text-center">
+                    <h2>Special offers</h2>
+                    <div>take a look at these offers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="special_content">
+        <div class="special_slider_container">
+            <div class="owl-carousel owl-theme special_slider">
+
+                <!-- Special Offers Item -->
+                <div class="owl-item">
+                    <div class="special_item">
+                        <div class="special_item_background"><img src="/images/special_1.jpg"
+                                                                  alt="https://unsplash.com/@garciasaldana_"></div>
+                        <div class="special_item_content text-center">
+                            <div class="special_category">Visiting</div>
+                            <div class="special_title"><a th:href="@{/offers}">Indonesia</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Offers Item -->
+                <div class="owl-item">
+                    <div class="special_item d-flex flex-column align-items-center justify-content-center">
+                        <div class="special_item_background"><img src="/images/special_2.jpg"
+                                                                  alt="https://unsplash.com/@varshesh"></div>
+                        <div class="special_item_content text-center">
+                            <div class="special_category">Culture</div>
+                            <div class="special_title"><a th:href="@{/offers}">India</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Offers Item -->
+                <div class="owl-item">
+                    <div class="special_item d-flex flex-column align-items-center justify-content-center">
+                        <div class="special_item_background"><img src="/images/special_3.jpg"
+                                                                  alt="https://unsplash.com/@paulgilmore_"></div>
+                        <div class="special_item_content text-center">
+                            <div class="special_category">Sunbathing</div>
+                            <div class="special_title"><a th:href="@{/offers}">Thailand</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Offers Item -->
+                <div class="owl-item">
+                    <div class="special_item d-flex flex-column align-items-center justify-content-center">
+                        <div class="special_item_background"><img src="/images/special_4.jpg"
+                                                                  alt="https://unsplash.com/@hellolightbulb"></div>
+                        <div class="special_item_content text-center">
+                            <div class="special_category">Visiting</div>
+                            <div class="special_title"><a th:href="@{/offers}">Bali</a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Offers Item -->
+                <div class="owl-item">
+                    <div class="special_item d-flex flex-column align-items-center justify-content-center">
+                        <div class="special_item_background"><img src="/images/special_5.jpg"
+                                                                  alt="https://unsplash.com/@dnevozhai"></div>
+                        <div class="special_item_content text-center">
+                            <div class="special_category">Visiting</div>
+                            <div class="special_title"><a th:href="@{/offers}">France</a></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="special_slider_nav d-flex flex-column align-items-center justify-content-center">
+                <img src="/images/special_slider.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:include="~{_shared/footer}"/>
+
+</div>
+<th:block th:include="~{_shared/scripts}"/>
+</body>
+
+</html>

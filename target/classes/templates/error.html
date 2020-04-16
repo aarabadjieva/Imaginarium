@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Imaginarium</title>
+    <th:block th:include="~{_shared/head}"/>
+</head>
+<body>
+
+<div class="super_container">
+    <th:block th:include="~{_shared/header}"/>
+    <th:block th:include="~{_shared/menu}"/>
+
+
+    <div class="home">
+        <div class="home_background" style="background-image:url(/images/error-background.jpg)"></div>
+        <div class="home_content">
+            <div class="home_content_inner">
+                <div class="container">
+                    <div class="error_message text-center">
+                        <h1 class="error">There has been error <br>processing your request:</h1>
+                        <h1 class="exception">Page not found or you don't have the rights to access it. <br>Please login or register first.</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <th:block th:include="~{_shared/footer}"/>
+
+</div>
+<th:block th:include="~{_shared/scripts}"/>
+</body>
+
+</html>

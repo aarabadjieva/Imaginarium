@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blog</title>
+    <th:block th:include="~{_shared/head}"/>
+</head>
+<body>
+
+<div class="super_container">
+    <th:block th:include="~{_shared/header}"/>
+    <th:block th:include="~{_shared/menu}"/>
+
+    <!-- Home -->
+
+    <div class="about_home">
+        <div class="about_home_background parallax-window" data-parallax="scroll" data-image-src="/images/blog_background.jpg" data-speed="0.8"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="about_home_content">
+                        <div class="about_home_content_inner">
+                            <div class="about_home_title">Blog</div>
+                            <div class="about_home_breadcrumbs">
+                                <ul class="about_home_breadcrumbs_list">
+                                    <li class="about_home_breadcrumb"><a href="home.html">Home</a></li>
+                                    <li class="about_home_breadcrumb">Blog</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog -->
+
+    <div class="news">
+        <div class="container">
+            <div class="row">
+
+                <!-- Blog Posts -->
+                <div class="col-lg-9">
+                    <div class="news_posts">
+
+                        <!-- blog Post -->
+                        <th:block th:each="article : ${articles}">
+                            <div class="news_post">
+                                <div class="post_meta">
+                                    [[${article.title}]]
+                                </div>
+                                <div class="post_image">
+                                    <img th:src="${article.picture}">
+                                    <a th:href="@{/articles/{title}(title=${article.title})}"><div class="post_image_box text-center">+</div></a>
+                                </div>
+                                <div class="post_text">
+                                    <p>[[${article.content}]]</p>
+                                </div>
+                            </div>
+                        </th:block>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+<th:block th:include="~{_shared/footer}"/>
+
+</div>
+<th:block th:include="~{_shared/scripts}"/>
+</body>
+
+</html>

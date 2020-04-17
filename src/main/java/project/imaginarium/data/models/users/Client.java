@@ -6,6 +6,7 @@ import project.imaginarium.data.models.offers.Offer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,4 +24,7 @@ public class Client extends User {
             inverseJoinColumns = {@JoinColumn(name = "offer_id", referencedColumnName = "id")})
     private List<Offer> offers;
 
+    public Client() {
+        offers = new ArrayList<>();
+    }
 }

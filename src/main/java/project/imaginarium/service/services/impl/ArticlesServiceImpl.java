@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class ArticlesServiceImpl implements ArticlesService {
 
     private final ArticleRepository articleRepository;
-    private ModelMapper mapper;
+    private final ModelMapper mapper;
 
     public ArticlesServiceImpl(ArticleRepository articleRepository, ModelMapper modelMapper) {
         this.articleRepository = articleRepository;
@@ -43,4 +43,5 @@ public class ArticlesServiceImpl implements ArticlesService {
         Article article = articleRepository.findByTitle(title);
         articleRepository.delete(article);
     }
+
 }

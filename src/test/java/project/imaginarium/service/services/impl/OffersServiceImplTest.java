@@ -113,7 +113,7 @@ class OffersServiceImplTest extends ImaginariumApplicationTests {
 
     @Test
     void findOfferByNameShouldReturnOfferIfExists() {
-        Offer offer = new Vehicle();
+        Offer offer = new Offer();
         offer.setName("name");
         Mockito.when(offerRepository.findByName(offer.getName())).thenReturn(Optional.of(offer));
         Offer foundOffer = service.findOfferByName(offer.getName());

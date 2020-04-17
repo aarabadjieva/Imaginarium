@@ -77,11 +77,12 @@ public class UserServiceImpl implements UserService {
 
         serviceModel.setPassword(hashingService.hash(serviceModel.getPassword()));
         serviceModel.setConfirmPassword(hashingService.hash(serviceModel.getConfirmPassword()));
+        if (!userValidationService.isValidPartner(serviceModel)) {
+            throw new Exception("Invalid data");
+        }
         switch (serviceModel.getSector().name) {
             case "guides":
-                if (userValidationService.isValidPartner(serviceModel)) {
-                    throw new Exception("Invalid data");
-                }
+
                 if (serviceModel.getAuthorities().isEmpty()){
                     Role role = roleService.findRoleByName("GUIDE");
                     serviceModel.getAuthorities().add(role);
@@ -93,9 +94,6 @@ public class UserServiceImpl implements UserService {
             case "hotels":
             case "vehicles":
             case "timeTravel":
-                if (userValidationService.isValidPartner(serviceModel)) {
-                    throw new Exception("Invalid data");
-                }
                 if (serviceModel.getAuthorities().isEmpty()){
                     Role role = roleService.findRoleByName("PARTNER");
                     serviceModel.getAuthorities().add(role);
@@ -115,15 +113,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Client findClientByUsername(String name) {
+    public ClientServiceModel findClientByUsername(String name) {
         User client = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
-        return (Client) client;
+        return mapper.map(client, ClientServiceModel.class);
     }
 
     @Override
-    public Partner findPartnerByUsername(String name) {
+    public PartnerServiceModel findPartnerByUsername(String name) {
         User partner = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
-        return (Partner) partner;
+        return mapper.map(partner, PartnerServiceModel.class);
     }
 
     @Override
@@ -196,8 +194,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void clientAddOffer(String user, String offerName) {
-        Client client = (Client) userRepository.findByUsername(user).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+    public void clientAddOffer(String username, String offerName) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        Client client = mapper.map(user, Client.class);
         Offer offer = offersService.findOfferByName(offerName);
         if (offer == null) {
             throw new NoSuchOffer("Offer not found");

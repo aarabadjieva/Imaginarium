@@ -1,0 +1,23 @@
+.error{
+    font-weight:800;
+    margin-top:-6%;
+    padding-bottom:4%;
+    text-align:center;
+}
+
+.exception{
+    text-align:center;
+    font-weight:80;
+    font-family:-webkit-pictograph;
+    font-size:30px;
+    margin-top:-4%;
+
+}
+
+.error_message{
+    background-color:rgb(0,0,0,0.7);
+    border-radius:1000px;
+    color:beige;
+    padding-left:100px;
+    padding-right:100px;
+}

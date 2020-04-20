@@ -1,0 +1,145 @@
+.search {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 121px;
+    height: 100%;
+    background: #C5B358;
+    -webkit-transition: all 200ms ease;
+    -moz-transition: all 200ms ease;
+    -ms-transition: all 200ms ease;
+    -o-transition: all 200ms ease;
+    transition: all 200ms ease;
+}
+
+.login_input[type=text],
+.login_input[type=password] {
+    width: 80%;
+    margin: 2px;
+    margin-left:10%;
+    display: inline-block;
+    border: 2px solid #ccc;
+    box-sizing: border-box;
+}
+
+.cancelbtn {
+    padding: 14px 20px;
+    background-color: #AB0808!important;
+}
+
+.cancelbtn,
+.signupbtn {
+    width: 40%;
+    margin-top:20px;
+    margin-bottom:20px;
+    margin-left:10px;
+    margin-right:10px;
+    color:aliceblue;
+}
+
+.container {
+    padding: 10px;
+}
+
+.modal {
+    display: none;
+    position: relative;
+    z-index: 1;
+    left: 30%;
+    top: 0;
+    width: 40%;
+    height: 30%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding-top:40px;
+    padding-bottom:20px;
+}
+
+.modal-content {
+    padding-top:25px;
+    background-color: #fefefe;
+    margin: 0% auto 5% auto;
+    border: 1px solid #888;
+    width: 75%;
+}
+
+.modal_label{
+    color:black;
+    font-size:medium;
+    font-weight:bold;
+}
+.close {
+    position: absolute;
+    right: 20px;
+    top: 1px;
+    color: #000;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #AB0808;
+    cursor: pointer;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+@media screen and (max-width: 300px) {
+    .cancelbtn,
+    .signupbtn {
+        width: 45%;
+    }
+}
+
+#loginEvent:hover{
+    cursor:pointer;
+}
+
+
+.login_form_img{
+    width:60% !important;
+    height:auto !important;
+    margin-left:18px !important;
+}
+.header.scrolled .login_form_img
+{
+    width:30%!important;
+    margin-left:27% !important;
+    margin-top:6px!important;
+}
+
+.profile_img{
+    width:63px !important;
+    height:63px !important;
+    margin-top:-60px !important;
+    margin-left:8px;
+}
+
+.logout_btn{
+    position:absolute;
+    margin-top:-50%;
+    margin-left:28%;
+    color:whitesmoke;
+}
+
+.logout_btn :hover{
+    color:black;
+}
+
+.header.scrolled .profile_img
+{
+    width:54px!important;
+    height:54px!important;
+    margin-top:-34px!important;
+    margin-left:12px;
+}
+
+.header.scrolled .logout_btn
+{
+    display:none;
+}

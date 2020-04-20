@@ -123,7 +123,7 @@ public class OffersController {
     @GetMapping("/info/{sector}/{name}")
     public ModelAndView infoOffer(ModelAndView modelAndView, @PathVariable String sector,
                                   @PathVariable String name) {
-        modelAndView.setViewName("/offers/info/" + sector + ".html");
+        modelAndView.setViewName("/offers/info/" + sector.toLowerCase() + ".html");
         switch (sector) {
             case "hotels":
                 AccommodationViewModel accommodation = mapper.map(offersService.findOfferByName(name), AccommodationViewModel.class);

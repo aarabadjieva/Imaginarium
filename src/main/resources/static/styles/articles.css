@@ -1,0 +1,26 @@
+.article_content{
+    margin-left:10%;
+    margin-right:10%;
+    background:aliceblue;
+    border-radius:4px;
+    padding:30px 30px 30px 30px;
+    text-align:center;
+}
+
+#delete_article{
+    width:100%;
+    text-align:center;
+}
+
+.post_meta{
+    text-transform:capitalize;
+    font-size:40px;
+    font-weight:600;
+}
+
+.post_text, .p{
+    line-height:1.2em;
+    height:10.6em;
+    overflow:hidden;
+    text-align:center;
+}

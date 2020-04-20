@@ -1,0 +1,73 @@
+.who_are_you h2{
+    color:black;
+    font-weight:500;
+    font-family: inherit
+}
+#event{
+    background: url("/images/event_sector_background.jpg");
+    background-repeat: no-repeat;
+    background-size:112.5%;
+}
+
+#event .last_item{
+    margin-top:-21%;
+}
+
+#event .form-group, .form-control{
+    margin-top:-7px;
+}
+
+#vehicle{
+    background: url("/images/car_sector_background.jpg");
+    background-repeat: no-repeat;
+    background-size:112.5%;
+}
+
+#vehicle .last_item{
+    margin-top:-21%;
+}
+
+#vehicle .form-group, .form-control{
+    margin-top:-7px;
+}
+
+#guide{
+    background: url("/images/guide_sector_background.jpg");
+    background-repeat: no-repeat;
+    background-size:162.5%;
+    background-position:top;
+}
+
+#guide .last_item{
+    margin-top:-22%;
+}
+
+#guide .form-group, .form-control{
+    margin-top:-7px;
+}
+
+#hotel{
+    background: url("/images/accommodation_sector_background.jpg");
+    background-repeat: no-repeat;
+    background-size:112.5%;
+}
+
+#hotel .last_item{
+    margin-top:-22.5%;
+}
+#hotel .form-group, .form-control{
+    margin-top:-7px;
+}
+
+
+.join_button{
+    margin-left:42%
+}
+
+.button:focus{
+    outline-color:transparent;
+}
+
+.about_button, join_button, btn, button, btn-info:hover{
+    cursor:pointer;
+}

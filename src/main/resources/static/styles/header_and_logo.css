@@ -1,0 +1,85 @@
+/*********************************
+1. Header
+*********************************/
+
+.header {
+    display: block;
+    position: fixed;
+    top: 47px;
+    width: 100%;
+    z-index: 100;
+    -webkit-transition: all 400ms ease;
+    -moz-transition: all 400ms ease;
+    -ms-transition: all 400ms ease;
+    -o-transition: all 400ms ease;
+    transition: all 400ms ease;
+}
+.header.scrolled {
+    top: 15px;
+}
+.header_container {
+    width: 100%;
+    height: 90px;
+    background: #131a2f;
+    -webkit-transition: all 400ms ease;
+    -moz-transition: all 400ms ease;
+    -ms-transition: all 400ms ease;
+    -o-transition: all 400ms ease;
+    transition: all 400ms ease;
+}
+.header.scrolled .header_container {
+    height: 60px;
+}
+
+/*********************************
+2. Logo
+*********************************/
+
+.logo_container {
+    -webkit-transform: translateY(8px);
+    -moz-transform: translateY(8px);
+    -ms-transform: translateY(8px);
+    -o-transform: translateY(8px);
+    transform: translateY(8px);
+}
+.logo {
+    height: 100%;
+    padding-left: 91px;
+}
+.logo div {
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+.logo div:first-of-type {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 0.75;
+}
+.logo div:nth-child(2) {
+    font-size: 10px;
+    font-weight:bolder;
+    color: #C5B358;
+    letter-spacing: 0.13em;
+    margin-top: 2px;
+    padding-left: 2px;
+}
+.logo_image {
+    position: absolute;
+    top: -80px;
+    left: -80px;
+    width: 200px;
+    height: 41px;
+    -webkit-transition: all 400ms ease;
+    -moz-transition: all 400ms ease;
+    -ms-transition: all 400ms ease;
+    -o-transition: all 400ms ease;
+    transition: all 400ms ease;
+}
+.header.scrolled .logo_image {
+    width: 80px;
+    top: -23px;
+    left: 3px;
+}
+.logo_image img {
+    max-width: 100%;
+}

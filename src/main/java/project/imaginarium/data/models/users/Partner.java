@@ -25,8 +25,6 @@ public class Partner extends User {
     @Length(min = 3)
     private String description;
 
-    @Column
-    private String logo;
 
     @Column
     private String website;

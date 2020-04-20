@@ -8,6 +8,7 @@ import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
 import project.imaginarium.service.models.user.UserLoggedServiceModel;
 import project.imaginarium.service.models.user.UserServiceLoginModel;
+import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.web.models.user.UserLoginModel;
@@ -23,11 +24,13 @@ public class UsersController {
 
     private final ModelMapper mapper;
     private final UserService userService;
+    private final RoleService roleService;
     private final List<String> countries;
 
-    public UsersController(ModelMapper mapper, UserService userService, List<String> countries) {
+    public UsersController(ModelMapper mapper, UserService userService, RoleService roleService, List<String> countries) {
         this.mapper = mapper;
         this.userService = userService;
+        this.roleService = roleService;
         this.countries = countries;
     }
 
@@ -45,7 +48,7 @@ public class UsersController {
             userService.saveClient(serviceModel);
             session.setAttribute("user", serviceModel);
             session.setAttribute("username", serviceModel.getUsername());
-            if (serviceModel.getAuthorities().contains("ADMIN")){
+            if (serviceModel.getAuthorities().contains(roleService.findRoleByName("ADMIN"))){
                 session.setAttribute("role", "admin");
             }else {
 

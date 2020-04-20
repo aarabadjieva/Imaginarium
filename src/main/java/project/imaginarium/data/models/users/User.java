@@ -30,10 +30,13 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Sector sector;
 
+    @Column
+    private String logo;
+
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "roles_users",
-            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
+    @JoinTable(name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> authorities;
 
     public User() {

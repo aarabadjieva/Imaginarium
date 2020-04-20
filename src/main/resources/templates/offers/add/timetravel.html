@@ -23,7 +23,6 @@
                     <div class="last_item">
                         <div class="last_item_content edit">
                             <div class="last_subtitle">Add offer</div>
-                            <!--/*@thymesVar id="timeTravel" type="project.imaginarium.web.models.offer.add.TimeTravelAdd"*/-->
                             <form class="mx-auto w-15" th:method="post" th:object="${timeTravel}">
                                 <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'alert-danger'">
                                     <div class="label-holder textCol d-flex justify-content-center">
@@ -144,7 +143,6 @@
 </div>
 
 <th:block th:include="~{_shared/footer}"/>
-</div>
 <th:block th:include="~{_shared/scripts}"/>
 </body>
 </html>

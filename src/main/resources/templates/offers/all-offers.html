@@ -24,7 +24,7 @@
                             <div class="about_home_title">Our Offers</div>
                             <div class="about_home_breadcrumbs">
                                 <ul class="about_home_breadcrumbs_list">
-                                    <li class="about_home_breadcrumb"><a href="home.html">Home</a></li>
+                                    <li class="about_home_breadcrumb"><a href="/">Home</a></li>
                                     <li class="about_home_breadcrumb">Our offers</li>
                                 </ul>
                             </div>
@@ -53,7 +53,7 @@
                     <div class="col-lg-3 col-md-6 no_padding">
                         <!-- Popular Item -->
                         <div class="hovereffect2 popular_item">
-                            <img class="img-responsive" th:src="${offer.picture}">
+                            <img class="img-responsive" th:src="${offer.picture}" alt="">
                             <div class="overlay popular_item_content">
                                 <h2 class="popular_item_title">[[${offer.provider.name}]]</h2>
                                 <a class="popular_item_price info"
@@ -79,7 +79,7 @@
                         <th:block th:each="guide : ${guides}">
                             <div class="col-lg-3 col-md-6 top_col">
                                 <div class="hovereffect top_item">
-                                    <div class="top_item_image"><img class="img-responsive" th:src="${guide.logo}">
+                                    <div class="top_item_image"><img class="img-responsive" th:src="${guide.logo}" alt="">
                                     </div>
                                     <div class="overlay top_item_content">
                                         <h2>[[${guide.planet}]]</h2>

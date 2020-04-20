@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" xmlns:th="http://www.w3.org/1999/xhtml">
     <div th:if="${session.user == null}">
         <div class="container">
             <div class="row">
@@ -32,7 +32,7 @@
                             <li class="main_nav_item" id="login"><img id="loginEvent"
                                                                       onclick="document.getElementById('id01').style.display='block'"
                                                                       class="login_form_img rounded-circle"
-                                                                      src="/images/login_picture.png"></li>
+                                                                      src="/images/login_picture.png" alt=""></li>
                         </div>
 
                         <!-- Hamburger -->
@@ -61,9 +61,9 @@
                            placeholder="Enter your password"/>
                 </div>
                 <div class="button-holder d-flex justify-content-center">
-                    <button class="btn signupbtn" type="submit">Login</button>
+                    <button class="btn signup_btn" type="submit">Login</button>
                     <button type="button" onclick="document.getElementById('id01').style.display='none'"
-                            class="cancelbtn btn">Cancel
+                            class="cancel_btn btn">Cancel
                     </button>
                 </div>
             </form>
@@ -101,7 +101,7 @@
                             <div class="search">
                                 <li class="main_nav_item" id="profile"><a th:href="@{/profile/{role}/{name}(role=${session.role}, name=${session.user.username})}"><img
                                         class="profile_img rounded-circle rounded"
-                                        th:src="${(session.user.logo !=null && !#strings.isEmpty(session.user.logo)) ? session.user.logo : '/images/client_no_picture.webp'}"></a>
+                                        th:src="${(session.user.logo !=null && !#strings.isEmpty(session.user.logo)) ? session.user.logo : '/images/client_no_picture.webp'}" alt=""></a>
                                 </li>
                                 <div>
                                     <a class="logout_btn" th:href="@{/profile/logout}"><strong class="logout_btn">Logout</strong></a>
@@ -115,7 +115,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
 

@@ -20,7 +20,8 @@
 
         <div class="rela-block container">
             <div class="rela-block profile-card">
-                <img class="profile-pic" id="profile_pic" th:src="${offer.picture}">
+                <!--/*@thymesVar id="offer" type="project.imaginarium.web.models.offer.view.TimeTravelViewModel"*/-->
+                <img class="profile-pic" id="profile_pic" th:src="${offer.picture}" alt="">
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${offer.name}]]</strong></div>
                     <div class="rela-block user-desc" id="user_description"><strong>Planet:</strong> [[${offer.planet}]]
@@ -48,10 +49,10 @@
                               th:method="post">
                             <div>Are you sure you want to delete [[${offer.name}]]?</div>
                             <div class="button-holder d-flex justify-content-center">
-                                <button class="btn signupbtn" type="submit">Yes</button>
+                                <button class="btn signup_btn" type="submit">Yes</button>
                                 <button type="button"
                                         onclick="document.getElementById('delete_offer').style.display='none'"
-                                        class="cancelbtn btn">No
+                                        class="cancel_btn btn">No
                                 </button>
                             </div>
                         </form>

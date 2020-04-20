@@ -20,7 +20,8 @@
 
         <div class="rela-block container">
             <div class="rela-block profile-card">
-                <img class="profile-pic" id="profile_pic" th:src="${guide.logo}">
+                <!--/*@thymesVar id="guide" type="project.imaginarium.web.models.user.view.GuideViewModel"*/-->
+                <img class="profile-pic" id="profile_pic" th:src="${guide.logo}" alt="">
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${guide.name}]]</strong></div>
                     <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${guide.email}]]</div>

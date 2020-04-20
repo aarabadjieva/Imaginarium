@@ -25,9 +25,6 @@ public class Guide extends User {
     private String description;
 
     @Column
-    private String logo;
-
-    @Column
     @Enumerated(EnumType.STRING)
     private Planet planet;
 

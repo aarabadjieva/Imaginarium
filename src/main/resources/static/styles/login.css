@@ -22,13 +22,13 @@
     box-sizing: border-box;
 }
 
-.cancelbtn {
+.cancel_btn {
     padding: 14px 20px;
     background-color: #AB0808!important;
 }
 
-.cancelbtn,
-.signupbtn {
+.cancel_btn,
+.signup_btn {
     width: 40%;
     margin-top:20px;
     margin-bottom:20px;
@@ -90,8 +90,8 @@
 }
 
 @media screen and (max-width: 300px) {
-    .cancelbtn,
-    .signupbtn {
+    .cancel_btn,
+    .signup_btn {
         width: 45%;
     }
 }

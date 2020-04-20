@@ -54,8 +54,8 @@ public class OffersController {
         return new VehicleAdd();
     }
 
-    @GetMapping("/{partner}/add/{offer}")
-    public ModelAndView addAccommodation(ModelAndView modelAndView, @PathVariable String offer, @PathVariable String partner) {
+    @GetMapping("/partner/add/{offer}")
+    public ModelAndView addAccommodation(ModelAndView modelAndView, @PathVariable String offer) {
         switch (offer) {
             case "hotels":
                 modelAndView.setViewName("/offers/add/hotels.html");
@@ -123,17 +123,20 @@ public class OffersController {
     @GetMapping("/info/{sector}/{name}")
     public ModelAndView infoOffer(ModelAndView modelAndView, @PathVariable String sector,
                                   @PathVariable String name) {
-        modelAndView.setViewName("/offers/info/" + sector.toLowerCase() + ".html");
+
         switch (sector) {
             case "hotels":
+                modelAndView.setViewName("/offers/info/" + sector.toLowerCase() + ".html");
                 AccommodationViewModel accommodation = mapper.map(offersService.findOfferByName(name), AccommodationViewModel.class);
                 modelAndView.addObject("offer", accommodation);
                 break;
             case "timeTravel":
+                modelAndView.setViewName("/offers/info/" + sector.toLowerCase() + ".html");
                 TimeTravelViewModel timeTravel = mapper.map(offersService.findOfferByName(name), TimeTravelViewModel.class);
                 modelAndView.addObject("offer", timeTravel);
                 break;
             case "vehicles":
+                modelAndView.setViewName("/offers/info/" + sector.toLowerCase() + ".html");
                 VehicleViewModel vehicle = mapper.map(offersService.findOfferByName(name), VehicleViewModel.class);
                 modelAndView.addObject("offer", vehicle);
                 break;
@@ -142,7 +145,7 @@ public class OffersController {
     }
 
 
-    @GetMapping("/{partner}/edit/{sector}/{name}")
+    @GetMapping("/partner/edit/{sector}/{name}")
     public ModelAndView editOffer(ModelAndView modelAndView,
                                   @PathVariable String sector,
                                   @PathVariable String name) {
@@ -166,7 +169,7 @@ public class OffersController {
         return modelAndView;
     }
 
-    @PostMapping("/{partner}/edit/hotels/{name}")
+    @PostMapping("/partner/edit/hotels/{name}")
     public ModelAndView editHotel(ModelAndView modelAndView,
                                   @PathVariable String name,
                                   @Valid
@@ -183,7 +186,7 @@ public class OffersController {
         return modelAndView;
     }
 
-    @PostMapping("/{partner}/edit/timeTravel/{name}")
+    @PostMapping("/partner/edit/timeTravel/{name}")
     public ModelAndView editHotel(ModelAndView modelAndView,
                                   @PathVariable String name,
                                   @Valid
@@ -200,7 +203,7 @@ public class OffersController {
         return modelAndView;
     }
 
-    @PostMapping("/{partner}/edit/vehicles/{name}")
+    @PostMapping("/partner/edit/vehicles/{name}")
     public ModelAndView editHotel(ModelAndView modelAndView,
                                   @PathVariable String name,
                                   @Valid

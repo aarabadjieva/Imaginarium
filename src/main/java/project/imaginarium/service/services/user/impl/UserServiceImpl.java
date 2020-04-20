@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
             }
             Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
+            serviceModel.setLogo("/images/admin-image.gif");
         }else {
             Role role = roleService.findRoleByName("CLIENT");
             serviceModel.setAuthorities(Collections.singleton(role));
@@ -62,7 +63,6 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Invalid data");
         }
         Client client = mapper.map(serviceModel, Client.class);
-
         userRepository.saveAndFlush(client);
     }
 
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserLoggedServiceModel login(UserServiceLoginModel serviceModel) throws Exception {
+    public UserLoggedServiceModel login(UserServiceLoginModel serviceModel) {
         User user = userRepository.findByUsernameAndPassword(serviceModel.getUsername(), hashingService.hash(serviceModel.getPassword())).orElseThrow(() -> new NoSuchUser("Wrong username or password"));
         return mapper.map(user, UserLoggedServiceModel.class);
     }

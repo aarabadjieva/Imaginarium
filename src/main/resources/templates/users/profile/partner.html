@@ -20,7 +20,8 @@
 
         <div class="rela-block container">
             <div class="rela-block profile-card">
-                <img class="profile-pic" id="profile_pic" th:src="${partner.logo}">
+                <!--/*@thymesVar id="partner" type="project.imaginarium.web.models.user.view.PartnerViewModel"*/-->
+                <img class="profile-pic" id="profile_pic" th:src="${partner.logo}" alt="">
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${partner.name}]]</strong></div>
                     <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${partner.email}]]</div>
@@ -33,11 +34,11 @@
                 <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role=${session.role}, name=${session.user.username})}">Edit</a>
             </div>
             <div class="rela-block content justify-content-center">
+                <!--/*@thymesVar id="partner" type="project.imaginarium.web.models.user.view.PartnerViewModel"*/-->
                 <th:block th:each="offer : ${partner.offers}">
                     <div class="rela-inline image">
                         <div class="offer_name">[[${offer.name}]]</div>
-                        <img th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${session.user.sector.name}, name=${offer.name})} + '\'' " class="offer_pic" th:src="${offer.picture}">
-
+                        <img th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${session.user.sector.name}, name=${offer.name})} + '\'' " class="offer_pic" th:src="${offer.picture}" alt="">
                     </div>
                 </th:block>
             </div>

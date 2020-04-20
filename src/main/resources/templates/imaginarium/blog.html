@@ -23,7 +23,7 @@
                             <div class="about_home_title">Blog</div>
                             <div class="about_home_breadcrumbs">
                                 <ul class="about_home_breadcrumbs_list">
-                                    <li class="about_home_breadcrumb"><a href="home.html">Home</a></li>
+                                    <li class="about_home_breadcrumb"><a href="/">Home</a></li>
                                     <li class="about_home_breadcrumb">Blog</li>
                                 </ul>
                             </div>
@@ -51,7 +51,7 @@
                                     [[${article.title}]]
                                 </div>
                                 <div class="post_image">
-                                    <img th:src="${article.picture}">
+                                    <img th:src="${article.picture}" alt="">
                                     <a th:href="@{/articles/{title}(title=${article.title})}"><div class="post_image_box text-center">+</div></a>
                                 </div>
                                 <div class="post_text">

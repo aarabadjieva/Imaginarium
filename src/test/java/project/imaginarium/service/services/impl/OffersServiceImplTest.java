@@ -15,6 +15,7 @@ import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.data.repositories.OfferRepository;
 import project.imaginarium.data.repositories.UserRepository;
 import project.imaginarium.exeptions.NoSuchOffer;
+import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.offer.AccommodationServiceModel;
 import project.imaginarium.service.models.offer.OfferServiceModel;
 import project.imaginarium.service.models.offer.TimeTravelServiceModel;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static project.imaginarium.Common.OFFER_NOT_FOUND_MESSAGE;
+import static project.imaginarium.exeptions.ExceptionMessage.OFFER_NOT_FOUND_MESSAGE;
 
 
 class OffersServiceImplTest extends ImaginariumApplicationTests {
@@ -43,7 +44,7 @@ class OffersServiceImplTest extends ImaginariumApplicationTests {
 
 
     @Test
-    void shouldAddPartnerCorrectlyForAccommodationAndSaveEntity() {
+    void addAccommodation_shouldAddPartnerCorrectlyForAccommodationIfExistAndSaveEntity() {
         AccommodationServiceModel accommodation = new AccommodationServiceModel();
         Partner partner = new Partner();
         partner.setUsername("username");
@@ -57,7 +58,16 @@ class OffersServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldAddPartnerCorrectlyForTimeTravelAndSaveEntity() {
+    void addAccommodation_shouldThrowIfPartner_NOT_Exist() {
+        AccommodationServiceModel accommodation = new AccommodationServiceModel();
+        Partner partner = new Partner();
+        partner.setUsername("username");
+        Mockito.when(userRepository.findByUsername(partner.getUsername())).thenThrow(NoSuchUser.class);
+        assertThrows(NoSuchUser.class, () -> service.addAccommodation(accommodation, partner.getUsername()));
+    }
+
+    @Test
+    void addTimeTravel_shouldAddPartnerCorrectlyForTimeTravelAndSaveEntity() {
         TimeTravelServiceModel timeTravel = new TimeTravelServiceModel();
         Partner partner = new Partner();
         partner.setUsername("username");
@@ -71,7 +81,16 @@ class OffersServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldAddPartnerCorrectlyForVehicleAndSaveEntity() {
+    void addTimeTravel_shouldThrowIfPartner_NOT_Exist() {
+        TimeTravelServiceModel timeTravel = new TimeTravelServiceModel();
+        Partner partner = new Partner();
+        partner.setUsername("username");
+        Mockito.when(userRepository.findByUsername(partner.getUsername())).thenThrow(NoSuchUser.class);
+        assertThrows(NoSuchUser.class, () -> service.addTimeTravel(timeTravel, partner.getUsername()));
+    }
+
+    @Test
+    void addVehicle_shouldAddPartnerCorrectlyForVehicleAndSaveEntity() {
         VehicleServiceModel vehicle = new VehicleServiceModel();
         Partner partner = new Partner();
         partner.setUsername("username");
@@ -85,7 +104,16 @@ class OffersServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldRemoveOffer() {
+    void addVehicle_shouldThrowIfPartner_NOT_Exist() {
+        VehicleServiceModel vehicle = new VehicleServiceModel();
+        Partner partner = new Partner();
+        partner.setUsername("username");
+        Mockito.when(userRepository.findByUsername(partner.getUsername())).thenThrow(NoSuchUser.class);
+        assertThrows(NoSuchUser.class, () -> service.addVehicle(vehicle, partner.getUsername()));
+    }
+
+    @Test
+    void removeOffer_shouldDeleteOffer() {
         Offer offer = new Offer();
         offer.setName("Name");
         Mockito.when(offerRepository.findByName(offer.getName())).thenReturn(Optional.of(offer));
@@ -101,7 +129,7 @@ class OffersServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void findAllOffersShouldReturnListOfOffers() {
+    void findAllOffers_shouldReturnListOfAllOffers() {
         List<Offer> offers = getDummyOffers(3);
         Mockito.when(offerRepository.findAll()).thenReturn(offers);
         List<OfferServiceModel> models = service.findAllOffers();
@@ -112,7 +140,7 @@ class OffersServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void findOfferByNameShouldReturnOfferIfExists() {
+    void findOfferByName_shouldReturnOfferIfExists() {
         Offer offer = new Offer();
         offer.setName("name");
         Mockito.when(offerRepository.findByName(offer.getName())).thenReturn(Optional.of(offer));
@@ -121,7 +149,7 @@ class OffersServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void findOfferByNameShouldThrowIf_NO_SUCH_OFFER() throws NoSuchOffer {
+    void findOfferByName_shouldThrowIf_NO_SUCH_OFFER() throws NoSuchOffer {
         String name = "name";
         Mockito.when(offerRepository.findByName(name)).thenThrow(new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
         assertThrows(NoSuchOffer.class, ()->service.findOfferByName(name));

@@ -23,8 +23,8 @@ import project.imaginarium.web.models.offer.add.VehicleAdd;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static project.imaginarium.Common.OFFER_NOT_FOUND_MESSAGE;
-import static project.imaginarium.Common.USER_NOT_FOUND_MESSAGE;
+import static project.imaginarium.exeptions.ExceptionMessage.OFFER_NOT_FOUND_MESSAGE;
+import static project.imaginarium.exeptions.ExceptionMessage.USER_NOT_FOUND_MESSAGE;
 
 @Service
 public class OffersServiceImpl implements OffersService {

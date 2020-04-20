@@ -27,7 +27,7 @@ class ArticlesServiceImplTest extends ImaginariumApplicationTests {
     private ArticlesService service;
 
     @Test
-    void findAllArticles() {
+    void findAllArticles_shouldReturnListOfAllArticles() {
         List<Article> articles = getDummyArticles(3);
         Mockito.when(articleRepository.findAll()).thenReturn(articles);
         List<ArticleServiceModel> allArticles = service.findAllArticles();
@@ -38,7 +38,7 @@ class ArticlesServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldSaveArticle() {
+    void saveArticle_shouldSaveArticle() {
         ArticleServiceModel article = new ArticleServiceModel();
         service.saveArticle(article);
         ArgumentCaptor<Article> captor = ArgumentCaptor.forClass(Article.class);
@@ -49,7 +49,7 @@ class ArticlesServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldFindArticleByTitle() {
+    void findArticleByTitle_shouldReturnArticleIfExist() {
         Article article = new Article();
         article.setTitle("Title");
         Mockito.when(articleRepository.findByTitle(article.getTitle())).thenReturn(article);
@@ -58,7 +58,7 @@ class ArticlesServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldDeleteArticle() {
+    void deleteArticle_shouldDeleteArticle() {
         Article article = new Article();
         article.setTitle("Title");
         Mockito.when(articleRepository.findByTitle(article.getTitle())).thenReturn(article);

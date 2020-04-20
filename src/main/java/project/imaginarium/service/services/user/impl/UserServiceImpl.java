@@ -23,10 +23,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static project.imaginarium.exeptions.ExceptionMessage.USER_NOT_FOUND_MESSAGE;
+
 @Service
 public class UserServiceImpl implements UserService {
-
-    private static final String USER_NOT_FOUND_MESSAGE = "User not found";
 
     private final UserRepository userRepository;
     private final RoleService roleService;

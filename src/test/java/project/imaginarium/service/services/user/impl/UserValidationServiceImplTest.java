@@ -25,7 +25,7 @@ class UserValidationServiceImplTest extends ImaginariumApplicationTests {
     @Autowired
     private UserValidationService service;
 
-    private ModelMapper mapper = new ModelMapper();
+    private ModelMapper mapper;
 
     private User user;
 
@@ -39,40 +39,40 @@ class UserValidationServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void returnTrueWhenUserIsValid() {
+    void isValidUser_shouldReturnTrueWhenUserIsValid() {
         boolean isValidUser = service.isValidUser(user.getPassword(), user.getPassword(), user.getEmail(), user.getUsername());
         assertTrue(isValidUser);
     }
 
     @Test
-    void returnFalseWithWrongPassword(){
+    void isValidUser_shouldReturnFalseWithWrongPassword(){
         boolean isValidUser = service.isValidUser(user.getPassword(), "Password", user.getEmail(), user.getUsername());
         assertFalse(isValidUser);
     }
 
     @Test
-    void returnFalseWithWrongEmail(){
+    void isValidUser_shouldReturnFalseWithWrongEmail(){
         user.setEmail("peshomakarona.com");
         boolean isValidUser = service.isValidUser(user.getPassword(), user.getPassword(), user.getEmail(), user.getUsername());
         assertFalse(isValidUser);
     }
 
     @Test
-    void returnFalseWithUsernameTaken(){
+    void isValidUser_shouldReturnFalseWithUsernameTaken(){
         Mockito.when(userRepository.existsByUsername(user.getUsername())).thenReturn(true);
         boolean isValidUser = service.isValidUser(user.getPassword(), user.getPassword(), user.getEmail(), user.getUsername());
         assertFalse(isValidUser);
     }
 
     @Test
-    void returnFalseWithEmailTaken(){
+    void isValidUser_shouldReturnFalseWithEmailTaken(){
         Mockito.when(userRepository.existsByEmail(user.getEmail())).thenReturn(true);
         boolean isValidUser = service.isValidUser(user.getPassword(), user.getPassword(), user.getEmail(), user.getUsername());
         assertFalse(isValidUser);
     }
 
     @Test
-    void returnTrueWhenClientCountryIsValid() {
+    void isValidClient_shouldReturnTrueWhenClientCountryIsValid() {
         ClientRegisterServiceModel client = mapper.map(user, ClientRegisterServiceModel.class);
         client.setConfirmPassword(user.getPassword());
         client.setCountry("Country");
@@ -81,7 +81,7 @@ class UserValidationServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void returnFalseWhenClientCountryIs_NOT_Valid() {
+    void isValidClient_shouldReturnFalseWhenClientCountryIs_NOT_Valid() {
         ClientRegisterServiceModel client = mapper.map(user, ClientRegisterServiceModel.class);
         client.setConfirmPassword(user.getPassword());
         client.setCountry("");
@@ -90,7 +90,7 @@ class UserValidationServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void returnTrueWhenPartnerNameAndDescriptionIsValid() {
+    void isValidPartner_shouldReturnTrueWhenPartnerNameAndDescriptionIsValid() {
         PartnerRegisterServiceModel partner = mapper.map(user, PartnerRegisterServiceModel.class);
         partner.setConfirmPassword(user.getPassword());
         partner.setName("someName");
@@ -100,7 +100,7 @@ class UserValidationServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void returnFalseWhenPartnerNameIs_NOT_Valid() {
+    void isValidPartner_shouldReturnFalseWhenPartnerNameIs_NOT_Valid() {
         PartnerRegisterServiceModel partner = mapper.map(user, PartnerRegisterServiceModel.class);
         partner.setConfirmPassword(user.getPassword());
         partner.setName("");
@@ -110,7 +110,7 @@ class UserValidationServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void returnFalseWhenPartnerDescriptionIs_NOT_Valid() {
+    void isValidPartner_shouldReturnFalseWhenPartnerDescriptionIs_NOT_Valid() {
         PartnerRegisterServiceModel partner = mapper.map(user, PartnerRegisterServiceModel.class);
         partner.setConfirmPassword(user.getPassword());
         partner.setName("someName");

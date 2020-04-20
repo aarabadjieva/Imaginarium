@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static project.imaginarium.Common.USER_NOT_FOUND_MESSAGE;
+import static project.imaginarium.exeptions.ExceptionMessage.USER_NOT_FOUND_MESSAGE;
 
 class UserServiceImplTest extends ImaginariumApplicationTests {
 
@@ -69,7 +69,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void saveClientAsAdminIfFirstUserAndValid() throws Exception {
+    void saveClient_shouldSaveClientAsAdminIfFirstUserAndValid() throws Exception {
         ClientRegisterServiceModel registerServiceModel = mapper.map(user, ClientRegisterServiceModel.class);
         Role role = new Role("ADMIN");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
@@ -86,7 +86,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void saveClientAsClientIf_NOT_FirstUserAndValid() throws Exception {
+    void saveClient_shouldSaveClientAsClientIf_NOT_FirstUserAndValid() throws Exception {
         ClientRegisterServiceModel registerServiceModel = mapper.map(user, ClientRegisterServiceModel.class);
         Role role = new Role("CLIENT");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
@@ -103,7 +103,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldThrowExceptionIfClient_NOT_Valid() throws Exception {
+    void saveClient_shouldThrowExceptionIfClient_NOT_Valid() throws Exception {
         ClientRegisterServiceModel registerServiceModel = mapper.map(user, ClientRegisterServiceModel.class);
         Role role = new Role("ADMIN");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
@@ -114,7 +114,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldSavePartnerIfValid() throws Exception {
+    void savePartner_shouldSavePartnerIfValid() throws Exception {
         PartnerRegisterServiceModel registerServiceModel = mapper.map(user, PartnerRegisterServiceModel.class);
         registerServiceModel.setSector(Sector.HOTELS);
         Role role = new Role("ADMIN");
@@ -132,7 +132,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void shouldThrowExceptionIfPartnerIs_NOT_Valid() throws Exception {
+    void savePartner_shouldThrowExceptionIfPartnerIs_NOT_Valid() throws Exception {
         PartnerRegisterServiceModel registerServiceModel = mapper.map(user, PartnerRegisterServiceModel.class);
         registerServiceModel.setSector(Sector.HOTELS);
         Role role = new Role("PARTNER");
@@ -144,7 +144,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void loginShouldReturnUserIfCredentialsAreCorrect() throws Exception {
+    void login_shouldReturnUserIfUsernameAndPasswordCorrect() throws Exception {
         UserServiceLoginModel loginUser = mapper.map(user, UserServiceLoginModel.class);
         Mockito.when(userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()))
                 .thenReturn(Optional.ofNullable(user));
@@ -154,7 +154,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void loginShouldThrowIfCredentialsAre_NOT_Correct() throws Exception {
+    void login_shouldThrowIfUsernameAndPassword_NOT_Correct() throws Exception {
         UserServiceLoginModel loginUser = mapper.map(user, UserServiceLoginModel.class);
         Mockito.when(userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()))
                 .thenThrow(new NoSuchUser(USER_NOT_FOUND_MESSAGE));
@@ -163,46 +163,46 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void findClientByUsernameShouldReturnClientIfExist() {
+    void findClientByUsername_shouldReturnClientIfExist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
         ClientServiceModel client = service.findClientByUsername(user.getUsername());
         assertEquals(client.getUsername(), user.getUsername());
     }
 
     @Test
-    void findClientByUsernameShouldThrowIfClient_NOT_Exist() {
+    void findClientByUsername_shouldThrowIfClient_NOT_Exist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenThrow(NoSuchUser.class);
         assertThrows(NoSuchUser.class, () -> service.findClientByUsername(user.getUsername()));
     }
 
     @Test
-    void findPartnerByUsernameShouldReturnPartnerIfExist() {
+    void findPartnerByUsername_shouldReturnPartnerIfExist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
         PartnerServiceModel partner = service.findPartnerByUsername(user.getUsername());
         assertEquals(partner.getUsername(), user.getUsername());
     }
 
     @Test
-    void findPartnerByUsernameShouldThrowIfPartner_NOT_Exist() {
+    void findPartnerByUsername_shouldThrowIfPartner_NOT_Exist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenThrow(NoSuchUser.class);
         assertThrows(NoSuchUser.class, () -> service.findPartnerByUsername(user.getUsername()));
     }
 
     @Test
-    void findGuideByUsernameShouldReturnGuideIfExists() {
+    void findGuideByUsername_shouldReturnGuideIfExists() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
         GuideServiceModel guide = service.findGuideByUsername(user.getUsername());
         assertEquals(guide.getUsername(), user.getUsername());
     }
 
     @Test
-    void findGuideByUsernameShouldThrowIfGuide_NOT_Exist() {
+    void findGuideByUsername_shouldThrowIfGuide_NOT_Exist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenThrow(NoSuchUser.class);
         assertThrows(NoSuchUser.class, () -> service.findGuideByUsername(user.getUsername()));
     }
 
     @Test
-    void guidesShouldReturnAllGuides() {
+    void guides_shouldReturnAllGuides() {
         List<User> guides = getDummyUsers(3);
         Role role = new Role("GUIDE");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
@@ -215,7 +215,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void partnersShouldReturnAllPartners() {
+    void partners_shouldReturnAllPartners() {
         List<User> partners = getDummyUsers(3);
         Role role = new Role("PARTNER");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
@@ -229,7 +229,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
 
 
     @Test
-    void clientAddOfferShouldAddOfferToClientWhenBothExist() {
+    void clientAddOffer_shouldAddOfferToClientWhenBothExist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
         Offer offer = new Offer();
         offer.setName("Offer");
@@ -242,7 +242,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void clientAddOfferShouldThrowWhenClient_NOT_Exist() {
+    void clientAddOffer_shouldThrowWhenClient_NOT_Exist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenThrow(NoSuchUser.class);
         Offer offer = new Offer();
         offer.setName("Offer");
@@ -250,7 +250,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void clientAddOfferShouldThrowWhenOffer_NOT_Exist() {
+    void clientAddOffer_shouldThrowWhenOffer_NOT_Exist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
         Offer offer = new Offer();
         offer.setName("Offer");
@@ -259,7 +259,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void findAllUsersShouldReturnAllUsers() {
+    void findAllUsers_shouldReturnAllUsers() {
         List<User> users = getDummyUsers(3);
         Mockito.when(userRepository.findAll()).thenReturn(users);
         List<UserServiceModel> models = service.findAllUsers();
@@ -270,7 +270,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void makeAdmin() {
+    void makeAdmin_shouldAddRoleADMIN_ToUserAuthorities() {
         Role role = new Role("ADMIN");
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
@@ -282,7 +282,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
     }
 
     @Test
-    void deleteAdmin() {
+    void deleteAdmin_shouldRemoveRoleADMIN_FromUserAuthorities() {
         Role role = new Role("ADMIN");
         user.getAuthorities().add(role);
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));

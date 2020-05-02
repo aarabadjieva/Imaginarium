@@ -8,9 +8,9 @@ import project.imaginarium.data.repositories.UserRepository;
 import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
 import project.imaginarium.service.services.user.UserValidationService;
-import project.imaginarium.web.models.user.edit.ClientEditModel;
-import project.imaginarium.web.models.user.edit.GuideEditModel;
-import project.imaginarium.web.models.user.edit.PartnerEditModel;
+import project.imaginarium.web.view.models.user.edit.ClientEditModel;
+import project.imaginarium.web.view.models.user.edit.GuideEditModel;
+import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

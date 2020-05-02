@@ -28,11 +28,11 @@
                 <div class="rela-block profile-card-stats">
                     <div class="justify-content-center"><strong>Country:</strong>[[${client.country}]]</div>
                 </div>
-                <!--/*@thymesVar id="client" type="project.imaginarium.web.models.user.view.ClientViewModel"*/-->
+                <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
                 <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role = ${session.role}, name=${client.username})}">Edit</a>
             </div>
             <div class="rela-block content">
-                <!--/*@thymesVar id="client" type="project.imaginarium.web.models.user.view.ClientViewModel"*/-->
+                <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
                 <th:block th:each="offer : ${client.offers}">
                     <div class="rela-inline image">
                         <div class="offer_name">[[${offer.name}]]</div>

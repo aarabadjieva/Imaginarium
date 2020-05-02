@@ -1,11 +1,11 @@
 package project.imaginarium.service.services.user;
 
 import project.imaginarium.service.models.user.*;
-import project.imaginarium.web.models.user.edit.ClientEditModel;
-import project.imaginarium.web.models.user.edit.GuideEditModel;
-import project.imaginarium.web.models.user.edit.PartnerEditModel;
-import project.imaginarium.web.models.user.view.GuideViewModel;
-import project.imaginarium.web.models.user.view.PartnerViewModel;
+import project.imaginarium.web.view.models.user.edit.ClientEditModel;
+import project.imaginarium.web.view.models.user.edit.GuideEditModel;
+import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
+import project.imaginarium.web.api.models.user.response.GuideResponseModel;
+import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
 
 import java.util.List;
 
@@ -22,9 +22,9 @@ public interface UserService {
 
     GuideServiceModel findGuideByUsername(String name);
 
-    List<GuideViewModel> guides();
+    List<GuideResponseModel> guides();
 
-    List<PartnerViewModel> partners();
+    List<PartnerResponseModel> partners();
 
     void updateClient(ClientEditModel model) throws Exception;
 

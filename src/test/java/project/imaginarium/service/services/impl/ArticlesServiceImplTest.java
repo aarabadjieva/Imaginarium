@@ -27,13 +27,15 @@ class ArticlesServiceImplTest extends ImaginariumApplicationTests {
     private ArticlesService service;
 
     @Test
-    void findAllArticles_shouldReturnListOfAllArticles() {
+    void findAllArticles_shouldReturnListOfAllArticlesOrderedByDate() {
         List<Article> articles = getDummyArticles(3);
+        articles.get(1).setDate("2021-05-24");
+        articles.get(2).setDate("2019-05-24");
         Mockito.when(articleRepository.findAll()).thenReturn(articles);
         List<ArticleServiceModel> allArticles = service.findAllArticles();
         assertEquals(articles.size(), allArticles.size());
-        assertEquals(articles.get(0).getTitle(), allArticles.get(0).getTitle());
-        assertEquals(articles.get(1).getTitle(), allArticles.get(1).getTitle());
+        assertEquals(articles.get(1).getTitle(), allArticles.get(0).getTitle());
+        assertEquals(articles.get(0).getTitle(), allArticles.get(1).getTitle());
         assertEquals(articles.get(2).getTitle(), allArticles.get(2).getTitle());
     }
 
@@ -73,7 +75,7 @@ class ArticlesServiceImplTest extends ImaginariumApplicationTests {
                     Article article = new Article();
                     article.setId(String.valueOf(id));
                     article.setTitle("Article " + id);
-                    article.setDate("someDate");
+                    article.setDate("2020-05-02");
                     article.setPicture("pic");
                     article.setContent("someContent");
                     return article;

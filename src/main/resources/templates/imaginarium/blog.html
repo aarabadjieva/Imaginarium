@@ -42,23 +42,7 @@
 
                 <!-- Blog Posts -->
                 <div class="col-lg-9">
-                    <div class="news_posts">
-
-                        <!-- blog Post -->
-                        <th:block th:each="article : ${articles}">
-                            <div class="news_post">
-                                <div class="post_meta">
-                                    [[${article.title}]]
-                                </div>
-                                <div class="post_image">
-                                    <img th:src="${article.picture}" alt="">
-                                    <a th:href="@{/articles/{title}(title=${article.title})}"><div class="post_image_box text-center">+</div></a>
-                                </div>
-                                <div class="post_text">
-                                    <p>[[${article.content}]]</p>
-                                </div>
-                            </div>
-                        </th:block>
+                    <div class="news_posts" id="blog_article">
 
                     </div>
                 </div>
@@ -73,6 +57,7 @@
 
 </div>
 <th:block th:include="~{_shared/scripts}"/>
+<script src="/js/blog.js"></script>
 </body>
 
 </html>

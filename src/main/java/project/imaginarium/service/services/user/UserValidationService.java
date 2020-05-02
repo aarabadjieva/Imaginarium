@@ -5,9 +5,9 @@ import project.imaginarium.data.models.users.Guide;
 import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
-import project.imaginarium.web.models.user.edit.ClientEditModel;
-import project.imaginarium.web.models.user.edit.GuideEditModel;
-import project.imaginarium.web.models.user.edit.PartnerEditModel;
+import project.imaginarium.web.view.models.user.edit.ClientEditModel;
+import project.imaginarium.web.view.models.user.edit.GuideEditModel;
+import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
 
 public interface UserValidationService {
 

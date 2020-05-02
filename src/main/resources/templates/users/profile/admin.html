@@ -29,7 +29,7 @@
             <th:block th:each="user, iter : ${users}">
                 <tr>
                     <td class="text-center" th:text="${iter.index + 1}"></td>
-                    <!--/*@thymesVar id="user" type="project.imaginarium.web.models.user.UserMainView"*/-->
+                    <!--/*@thymesVar id="user" type="project.imaginarium.web.view.models.user.UserMainView"*/-->
                     <td class="text-center" th:utext="${user.username}"></td>
                     <td class="text-center" th:utext="${user.email}"></td>
                     <td class="text-center" th:utext="${session.role}"></td>
@@ -64,7 +64,7 @@
             <th:block th:each="article, iter : ${articles}">
                 <tr>
                     <td class="text-center" th:text="${iter.index + 1}"></td>
-                    <!--/*@thymesVar id="article" type="project.imaginarium.web.models.articles.ArticleViewModel"*/-->
+                    <!--/*@thymesVar id="article" type="project.imaginarium.web.api.models.article.ArticleResponseModel"*/-->
                     <td class="text-center" th:utext="${article.title}"></td>
                     <td class="text-center" th:utext="${article.date}"></td>
                     <td class="text-center">

@@ -13,11 +13,11 @@ import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.HashingService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.service.services.user.UserValidationService;
-import project.imaginarium.web.models.user.edit.ClientEditModel;
-import project.imaginarium.web.models.user.edit.GuideEditModel;
-import project.imaginarium.web.models.user.edit.PartnerEditModel;
-import project.imaginarium.web.models.user.view.GuideViewModel;
-import project.imaginarium.web.models.user.view.PartnerViewModel;
+import project.imaginarium.web.view.models.user.edit.ClientEditModel;
+import project.imaginarium.web.view.models.user.edit.GuideEditModel;
+import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
+import project.imaginarium.web.api.models.user.response.GuideResponseModel;
+import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -131,16 +131,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<GuideViewModel> guides() {
+    public List<GuideResponseModel> guides() {
         return userRepository.findAllByAuthoritiesContaining(roleService.findRoleByName("GUIDE")).stream()
-                .map(g -> mapper.map(g, GuideViewModel.class))
+                .map(g -> mapper.map(g, GuideResponseModel.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<PartnerViewModel> partners() {
+    public List<PartnerResponseModel> partners() {
         return userRepository.findAllByAuthoritiesContaining(roleService.findRoleByName("PARTNER")).stream()
-                .map(p -> mapper.map(p, PartnerViewModel.class))
+                .map(p -> mapper.map(p, PartnerResponseModel.class))
                 .collect(Collectors.toList());
     }
 

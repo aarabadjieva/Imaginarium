@@ -23,8 +23,8 @@ import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.HashingService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.service.services.user.UserValidationService;
-import project.imaginarium.web.models.user.view.GuideViewModel;
-import project.imaginarium.web.models.user.view.PartnerViewModel;
+import project.imaginarium.web.api.models.user.response.GuideResponseModel;
+import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -207,7 +207,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
         Role role = new Role("GUIDE");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.findAllByAuthoritiesContaining(role)).thenReturn(guides);
-        List<GuideViewModel> models = service.guides();
+        List<GuideResponseModel> models = service.guides();
         assertEquals(guides.size(), models.size());
         assertEquals(guides.get(0).getUsername(), models.get(0).getUsername());
         assertEquals(guides.get(1).getUsername(), models.get(1).getUsername());
@@ -220,7 +220,7 @@ class UserServiceImplTest extends ImaginariumApplicationTests {
         Role role = new Role("PARTNER");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.findAllByAuthoritiesContaining(role)).thenReturn(partners);
-        List<PartnerViewModel> models = service.partners();
+        List<PartnerResponseModel> models = service.partners();
         assertEquals(partners.size(), models.size());
         assertEquals(partners.get(0).getUsername(), models.get(0).getUsername());
         assertEquals(partners.get(1).getUsername(), models.get(1).getUsername());

@@ -16,9 +16,9 @@ import project.imaginarium.service.models.offer.OfferServiceModel;
 import project.imaginarium.service.models.offer.TimeTravelServiceModel;
 import project.imaginarium.service.models.offer.VehicleServiceModel;
 import project.imaginarium.service.services.OffersService;
-import project.imaginarium.web.models.offer.add.AccommodationAdd;
-import project.imaginarium.web.models.offer.add.TimeTravelAdd;
-import project.imaginarium.web.models.offer.add.VehicleAdd;
+import project.imaginarium.web.view.models.offer.add.AccommodationAdd;
+import project.imaginarium.web.view.models.offer.add.TimeTravelAdd;
+import project.imaginarium.web.view.models.offer.add.VehicleAdd;
 
 import java.util.List;
 import java.util.stream.Collectors;

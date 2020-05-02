@@ -198,21 +198,7 @@
 		<p class="grey-text w-responsive mx-auto mb-5">Become one of the best!</p>
 
 		<!-- Grid row -->
-		<div class="row justify-content-center">
-
-			<th:block th:each="partner : ${partners}">
-				<div class="col-lg-3 col-md-6 mb-lg-0 mb-5">
-					<div class="avatar mx-auto">
-						<img th:src="${(partner.logo !=null && !#strings.isEmpty(partner.logo)) ? partner.logo : '/images/partner_no_pic.jpg'}"   class="rounded-circle z-depth-1"
-							 alt="Sample avatar">
-
-					</div>
-					<h5 class="font-weight-bold mt-4 mb-3"><h3 class="font-weight-bold">[[${partner.name}]]</h3></h5>
-					<p class="blue-text">Official page: <a th:href="${partner.website}"><strong>[[${partner.website}]]</strong></a></p>
-					<p class="grey-text">[[${partner.description}]]</p>
-				</div>
-			</th:block>
-
+		<div class="row justify-content-center" id="about_all_partners">
 
 		</div>
 	</section>
@@ -223,21 +209,7 @@
 		<h2 class="h1-responsive font-weight-bold my-5">Our Guides:</h2>
 
 		<!-- Grid row -->
-		<div class="row justify-content-center">
-
-			<th:block th:each="guide : ${guides}">
-				<div class="col-lg-3 col-md-6 mb-lg-0 mb-5">
-					<div class="avatar mx-auto">
-						<img th:src="${(guide.logo !=null && !#strings.isEmpty(guide.logo)) ? guide.logo : '/images/partner_no_pic.jpg'}"   class="rounded-circle z-depth-1"
-							 alt="Sample avatar">
-
-					</div>
-					<h5 class="font-weight-bold mt-4 mb-3"><h3 class="font-weight-bold">[[${guide.name}]]</h3></h5>
-					<p class="blue-text"><strong>Planet: </strong>[[${guide.planet.name}]]</p>
-					<p class="grey-text">[[${guide.description}]]</p>
-				</div>
-			</th:block>
-
+		<div class="row justify-content-center" id="about_all_guides">
 
 		</div>
 	</section>
@@ -302,5 +274,6 @@
 	<th:block th:include="~{_shared/footer}"/>
 </div>
 <th:block th:include="~{_shared/scripts}"/>
+<script src="/js/about.js"></script>
 </body>
 </html>

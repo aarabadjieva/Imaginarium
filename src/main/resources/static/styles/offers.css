@@ -79,7 +79,9 @@
 }
 
 .hovereffect img {
-    height:200px;
+    width: 100%;
+    height: 200px;
+    border-radius: 100px;
     display: block;
     position: relative;
     -webkit-transition: all 0.35s;

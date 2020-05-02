@@ -7,6 +7,7 @@ import project.imaginarium.data.repositories.ArticleRepository;
 import project.imaginarium.service.models.ArticleServiceModel;
 import project.imaginarium.service.services.ArticlesService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ public class ArticlesServiceImpl implements ArticlesService {
     public List<ArticleServiceModel> findAllArticles() {
         return articleRepository.findAll().stream()
                 .map(a-> mapper.map(a, ArticleServiceModel.class))
+                .sorted(Comparator.comparing(ArticleServiceModel::getDate).reversed())
                 .collect(Collectors.toList());
     }
 

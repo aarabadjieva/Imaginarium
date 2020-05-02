@@ -23,7 +23,7 @@
                     <div class="last_item">
                         <div class="last_item_content edit">
                             <div class="last_subtitle">Add offer</div>
-                            <!--/*@thymesVar id="vehicle" type="project.imaginarium.web.models.offer.add.VehicleAdd"*/-->
+                            <!--/*@thymesVar id="vehicle" type="project.imaginarium.web.view.models.offer.add.VehicleAdd"*/-->
                             <form class="mx-auto w-15" th:method="post" th:object="${vehicle}">
                                 <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'alert-danger'">
                                     <div class="label-holder textCol d-flex justify-content-center">

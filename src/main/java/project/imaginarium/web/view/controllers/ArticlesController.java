@@ -1,5 +1,6 @@
 package project.imaginarium.web.view.controllers;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +13,17 @@ import project.imaginarium.web.api.models.article.ArticleResponseModel;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/articles")
 public class ArticlesController {
 
     private final ArticlesService articlesService;
     private final ModelMapper mapper;
 
-    public ArticlesController(ArticlesService articlesService, ModelMapper mapper) {
-        this.articlesService = articlesService;
-        this.mapper = mapper;
-    }
 
     @GetMapping("/create")
-    public ModelAndView createArticle(ModelAndView modelAndView){
-        modelAndView.setViewName("articles/create.html");
-        return modelAndView;
+    public String createArticle(){
+        return "articles/create.html";
     }
 
     @PostMapping("/create")

@@ -227,7 +227,7 @@ public class OffersController {
     }
 
     @GetMapping("")
-    public ModelAndView getAllOffers(ModelAndView modelAndView){
+    public ModelAndView getAllOffersAndAllGuides(ModelAndView modelAndView){
         List<OfferShortViewModel> allOffers = offersService.findAllOffers()
                 .stream()
                 .map(o->mapper.map(o, OfferShortViewModel.class))

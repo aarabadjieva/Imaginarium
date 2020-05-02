@@ -1,5 +1,6 @@
 package project.imaginarium.service.services.impl;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.imaginarium.data.models.offers.Accommodation;
@@ -15,11 +16,13 @@ import project.imaginarium.service.models.offer.AccommodationServiceModel;
 import project.imaginarium.service.models.offer.OfferServiceModel;
 import project.imaginarium.service.models.offer.TimeTravelServiceModel;
 import project.imaginarium.service.models.offer.VehicleServiceModel;
+import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.OffersService;
 import project.imaginarium.web.view.models.offer.add.AccommodationAdd;
 import project.imaginarium.web.view.models.offer.add.TimeTravelAdd;
 import project.imaginarium.web.view.models.offer.add.VehicleAdd;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,18 +30,15 @@ import static project.imaginarium.exeptions.ExceptionMessage.OFFER_NOT_FOUND_MES
 import static project.imaginarium.exeptions.ExceptionMessage.USER_NOT_FOUND_MESSAGE;
 
 @Service
+@AllArgsConstructor
 public class OffersServiceImpl implements OffersService {
 
 
     private final ModelMapper mapper;
     private final OfferRepository offerRepository;
     private final UserRepository userRepository;
+    private final CloudinaryService cloudinaryService;
 
-    public OffersServiceImpl(ModelMapper mapper, OfferRepository offerRepository, UserRepository userRepository) {
-        this.mapper = mapper;
-        this.offerRepository = offerRepository;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public void addAccommodation(AccommodationServiceModel model, String username) {
@@ -68,20 +68,20 @@ public class OffersServiceImpl implements OffersService {
     }
 
     @Override
-    public void updateAccommodation(AccommodationAdd model) {
+    public void updateAccommodation(AccommodationAdd model) throws IOException {
         Accommodation accommodation = (Accommodation) offerRepository.findByName(model.getName()).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
         accommodation.setDescription(model.getDescription());
         accommodation.setDays(model.getDays());
         accommodation.setPricePerAdult(model.getPricePerAdult());
         accommodation.setPricePerChildren(model.getPricePerChildren());
         accommodation.setPlanet(model.getPlanet());
-        accommodation.setPicture(model.getPicture());
+        accommodation.setPicture(cloudinaryService.upload(model.getPicture()));
         accommodation.setTags(model.getTags());
         offerRepository.saveAndFlush(accommodation);
     }
 
     @Override
-    public void updateTimeTravel(TimeTravelAdd model) {
+    public void updateTimeTravel(TimeTravelAdd model) throws IOException {
         TimeTravel timeTravel = (TimeTravel) offerRepository.findByName(model.getName()).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
         timeTravel.setAgeRestrictionMin(model.getAgeRestrictionMin());
         timeTravel.setPricePerAdult(model.getPricePerAdult());
@@ -89,17 +89,17 @@ public class OffersServiceImpl implements OffersService {
         timeTravel.setYear(model.getYear());
         timeTravel.setDescription(model.getDescription());
         timeTravel.setPlanet(model.getPlanet());
-        timeTravel.setPicture(model.getPicture());
+        timeTravel.setPicture(cloudinaryService.upload(model.getPicture()));
         timeTravel.setTags(model.getTags());
         offerRepository.saveAndFlush(timeTravel);
     }
 
     @Override
-    public void updateVehicle(VehicleAdd model) {
+    public void updateVehicle(VehicleAdd model) throws IOException {
         Vehicle vehicle = (Vehicle) offerRepository.findByName(model.getName()).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
         vehicle.setPricePerDay(model.getPricePerDay());
         vehicle.setDescription(model.getDescription());
-        vehicle.setPicture(model.getPicture());
+        vehicle.setPicture(cloudinaryService.upload(model.getPicture()));
         vehicle.setPlanet(model.getPlanet());
         vehicle.setTags(model.getTags());
         offerRepository.saveAndFlush(vehicle);

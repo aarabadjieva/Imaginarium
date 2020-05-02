@@ -1,5 +1,6 @@
 package project.imaginarium.web.view.controllers;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.service.models.offer.AccommodationServiceModel;
 import project.imaginarium.service.models.offer.TimeTravelServiceModel;
 import project.imaginarium.service.models.offer.VehicleServiceModel;
+import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.OffersService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.exeptions.NoSuchOffer;
@@ -22,22 +24,19 @@ import project.imaginarium.web.view.models.offer.view.VehicleViewModel;
 import project.imaginarium.web.api.models.user.response.GuideResponseModel;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/offers")
 public class OffersController {
 
     private final ModelMapper mapper;
     private final OffersService offersService;
     private final UserService userService;
-
-    public OffersController(ModelMapper mapper, OffersService offersService, UserService userService) {
-        this.mapper = mapper;
-        this.offersService = offersService;
-        this.userService = userService;
-    }
+    private final CloudinaryService cloudinaryService;
 
     @ModelAttribute("accommodation")
     public AccommodationAdd accommodationAdd() {
@@ -78,12 +77,13 @@ public class OffersController {
     public ModelAndView addHotel(ModelAndView modelAndView, @PathVariable String partner,
                                  @Valid
                                  @ModelAttribute("accommodation") AccommodationAdd accommodation,
-                                 BindingResult accommodationResult) {
+                                 BindingResult accommodationResult) throws IOException {
         if (accommodationResult.hasErrors()) {
             modelAndView.setViewName("/offers/add/hotels.html");
             return modelAndView;
         }
         AccommodationServiceModel accommodationServiceModel = mapper.map(accommodation, AccommodationServiceModel.class);
+        accommodationServiceModel.setPicture(cloudinaryService.upload(accommodation.getPicture()));
         offersService.addAccommodation(accommodationServiceModel, partner);
         modelAndView.setViewName("redirect:/offers/info/hotels/" + accommodation.getName());
         return modelAndView;
@@ -93,12 +93,13 @@ public class OffersController {
     public ModelAndView addTimeTravel(ModelAndView modelAndView, @PathVariable String partner,
                                       @Valid
                                       @ModelAttribute("timeTravel") TimeTravelAdd timeTravel,
-                                      BindingResult timeTravelResult) {
+                                      BindingResult timeTravelResult) throws IOException {
         if (timeTravelResult.hasErrors()) {
             modelAndView.setViewName("/offers/add/timetravel.html");
             return modelAndView;
         }
         TimeTravelServiceModel timeTravelServiceModel = mapper.map(timeTravel, TimeTravelServiceModel.class);
+        timeTravelServiceModel.setPicture(cloudinaryService.upload(timeTravel.getPicture()));
         offersService.addTimeTravel(timeTravelServiceModel, partner);
         modelAndView.setViewName("redirect:/offers/info/timeTravel/" + timeTravel.getName());
 
@@ -109,12 +110,13 @@ public class OffersController {
     public ModelAndView addVehicle(ModelAndView modelAndView, @PathVariable String partner,
                                    @Valid
                                    @ModelAttribute("vehicle") VehicleAdd vehicle,
-                                   BindingResult vehicleResult) {
+                                   BindingResult vehicleResult) throws IOException {
         if (vehicleResult.hasErrors()) {
             modelAndView.setViewName("/offers/add/vehicles.html");
             return modelAndView;
         }
         VehicleServiceModel vehicleServiceModel = mapper.map(vehicle, VehicleServiceModel.class);
+        vehicleServiceModel.setPicture(cloudinaryService.upload(vehicle.getPicture()));
         offersService.addVehicle(vehicleServiceModel, partner);
         modelAndView.setViewName("redirect:/offers/info/vehicles/" + vehicle.getName());
         return modelAndView;
@@ -145,8 +147,9 @@ public class OffersController {
     }
 
 
-    @GetMapping("/partner/edit/{sector}/{name}")
+    @GetMapping("/{partner}/edit/{sector}/{name}")
     public ModelAndView editOffer(ModelAndView modelAndView,
+                                  @PathVariable String partner,
                                   @PathVariable String sector,
                                   @PathVariable String name) {
         switch (sector) {
@@ -169,12 +172,13 @@ public class OffersController {
         return modelAndView;
     }
 
-    @PostMapping("/partner/edit/hotels/{name}")
+    @PostMapping("/{partner}/edit/hotels/{name}")
     public ModelAndView editHotel(ModelAndView modelAndView,
                                   @PathVariable String name,
+                                  @PathVariable String partner,
                                   @Valid
                                   @ModelAttribute("accommodation") AccommodationAdd accommodation,
-                                  BindingResult accommodationResult) {
+                                  BindingResult accommodationResult) throws IOException {
         accommodation.setName(name);
         if (accommodationResult.hasErrors()) {
             modelAndView.setViewName("/offers/edit/hotels.html");
@@ -186,12 +190,13 @@ public class OffersController {
         return modelAndView;
     }
 
-    @PostMapping("/partner/edit/timeTravel/{name}")
+    @PostMapping("/{partner}/edit/timeTravel/{name}")
     public ModelAndView editHotel(ModelAndView modelAndView,
                                   @PathVariable String name,
+                                  @PathVariable String partner,
                                   @Valid
                                   @ModelAttribute("timeTravel") TimeTravelAdd timeTravel,
-                                  BindingResult timeTravelResult) {
+                                  BindingResult timeTravelResult) throws IOException {
         timeTravel.setName(name);
         if (timeTravelResult.hasErrors()) {
             modelAndView.setViewName("/offers/edit/timetravel.html");
@@ -203,12 +208,13 @@ public class OffersController {
         return modelAndView;
     }
 
-    @PostMapping("/partner/edit/vehicles/{name}")
+    @PostMapping("/{partner}/edit/vehicles/{name}")
     public ModelAndView editHotel(ModelAndView modelAndView,
+                                  @PathVariable String partner,
                                   @PathVariable String name,
                                   @Valid
                                   @ModelAttribute("vehicle") VehicleAdd vehicle,
-                                  BindingResult vehicleResult) {
+                                  BindingResult vehicleResult) throws IOException {
         vehicle.setName(name);
         if (vehicleResult.hasErrors()) {
             modelAndView.setViewName("/offers/edit/vehicles.html");

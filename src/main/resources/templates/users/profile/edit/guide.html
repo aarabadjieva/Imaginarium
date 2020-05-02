@@ -23,7 +23,7 @@
                 <div class="col-lg-6 last_col">
                     <div class="last_item">
                         <div class="last_item_content edit">
-                            <form class="mx-auto w-15" action="" method="post">
+                            <form class="mx-auto w-15" action="" method="post" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <div class="form-group no_change">
                                         Username: [[${guide.username}]]
@@ -102,7 +102,7 @@
                                         <label for="logo"
                                                class="h4 mb-2 last_text">Logo/Picture</label>
                                     </div>
-                                    <input class="form-control" type="url"
+                                    <input class="form-control" type="file"
                                            id="logo" name="logo" th:value="${guide.logo}">
                                 </div>
 

@@ -24,7 +24,7 @@
                         <div class="last_item_content edit">
                             <div class="last_subtitle">Edit your offer</div>
                             <!--/*@thymesVar id="vehicle" type="project.imaginarium.web.view.models.offer.add.VehicleAdd"*/-->
-                            <form class="mx-auto w-15" th:method="post" th:object="${vehicle}">
+                            <form class="mx-auto w-15" th:method="post" th:object="${vehicle}" enctype="multipart/form-data">
                                 <div class="form-group ">
                                     <div class="form-group no_change">
                                         Name:<strong> [[${vehicle.name}]]</strong>
@@ -66,7 +66,7 @@
                                             <label for="picture"
                                                    class="h4 mb-2 last_text">Picture</label>
                                         </div>
-                                        <input class="form-control" type="url" th:value="${timeTravel.picture}"
+                                        <input class="form-control" type="file" th:value="${timeTravel.picture}"
                                                id="picture" name="picture" th:placeholder="${accommodation.picture}">
                                     </div>
                                     <div class="form-group">

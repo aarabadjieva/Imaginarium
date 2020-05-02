@@ -3,6 +3,7 @@ package project.imaginarium.web.view.models.offer.add;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 import project.imaginarium.data.models.Planet;
 import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Tag;
@@ -31,7 +32,7 @@ public class AccommodationAdd {
     @NotNull(message = "Please choose a Planet")
     private Planet planet;
 
-    private String picture;
+    private MultipartFile picture;
 
     private List<Tag> tags;
 

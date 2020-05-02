@@ -8,6 +8,7 @@ import project.imaginarium.data.repositories.UserRepository;
 import project.imaginarium.exeptions.NoSuchOffer;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.user.*;
+import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.OffersService;
 import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.HashingService;
@@ -34,14 +35,16 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper mapper;
     private final HashingService hashingService;
     private final UserValidationService userValidationService;
+    private final CloudinaryService cloudinaryService;
 
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService, OffersService offersService, ModelMapper mapper, HashingService hashingService, UserValidationService userValidationService) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, OffersService offersService, ModelMapper mapper, HashingService hashingService, UserValidationService userValidationService, CloudinaryService cloudinaryService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.offersService = offersService;
         this.mapper = mapper;
         this.hashingService = hashingService;
         this.userValidationService = userValidationService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
@@ -170,7 +173,7 @@ public class UserServiceImpl implements UserService {
         }
         partner.setName(model.getName());
         partner.setDescription(model.getDescription());
-        partner.setLogo(model.getLogo());
+        partner.setLogo(cloudinaryService.upload(model.getLogo()));
         partner.setWebsite(model.getWebsite());
         userRepository.saveAndFlush(partner);
     }
@@ -188,7 +191,7 @@ public class UserServiceImpl implements UserService {
         guide.setName(model.getName());
         guide.setDescription(model.getDescription());
         guide.setPlanet(model.getPlanet());
-        guide.setLogo(model.getLogo());
+        guide.setLogo(cloudinaryService.upload(model.getLogo()));
         guide.setPrice(model.getPrice());
         userRepository.saveAndFlush(guide);
     }

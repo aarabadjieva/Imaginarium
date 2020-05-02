@@ -1,5 +1,6 @@
 package project.imaginarium.web.view.controllers;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
 import project.imaginarium.service.models.user.UserLoggedServiceModel;
 import project.imaginarium.service.models.user.UserServiceLoginModel;
+import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.web.view.models.user.UserLoginModel;
@@ -16,9 +18,11 @@ import project.imaginarium.web.view.models.user.register.ClientRegisterModel;
 import project.imaginarium.web.view.models.user.register.PartnerRegisterModel;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/users")
 public class UsersController {
 
@@ -26,13 +30,7 @@ public class UsersController {
     private final UserService userService;
     private final RoleService roleService;
     private final List<String> countries;
-
-    public UsersController(ModelMapper mapper, UserService userService, RoleService roleService, List<String> countries) {
-        this.mapper = mapper;
-        this.userService = userService;
-        this.roleService = roleService;
-        this.countries = countries;
-    }
+    private final CloudinaryService cloudinaryService;
 
     @GetMapping("/register/user")
     public ModelAndView getClientRegister(ModelAndView modelAndView) {
@@ -67,8 +65,9 @@ public class UsersController {
     }
 
     @PostMapping("/register/partner")
-    public ModelAndView createPartner(@ModelAttribute PartnerRegisterModel model, HttpSession session) {
+    public ModelAndView createPartner(@ModelAttribute PartnerRegisterModel model, HttpSession session) throws IOException {
         PartnerRegisterServiceModel serviceModel = mapper.map(model, PartnerRegisterServiceModel.class);
+        serviceModel.setLogo(cloudinaryService.upload(model.getLogo()));
         try {
             userService.savePartner(serviceModel);
             session.setAttribute("user", serviceModel);

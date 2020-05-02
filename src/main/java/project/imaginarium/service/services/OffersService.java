@@ -9,6 +9,7 @@ import project.imaginarium.web.view.models.offer.add.AccommodationAdd;
 import project.imaginarium.web.view.models.offer.add.TimeTravelAdd;
 import project.imaginarium.web.view.models.offer.add.VehicleAdd;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface OffersService {
@@ -20,11 +21,11 @@ public interface OffersService {
 
     void removeOffer(String offerName);
 
-    void updateAccommodation(AccommodationAdd accommodation);
+    void updateAccommodation(AccommodationAdd accommodation) throws IOException;
 
-    void updateTimeTravel(TimeTravelAdd timeTravel);
+    void updateTimeTravel(TimeTravelAdd timeTravel) throws IOException;
 
-    void updateVehicle(VehicleAdd vehicle);
+    void updateVehicle(VehicleAdd vehicle) throws IOException;
 
     List<OfferServiceModel> findAllOffers();
 

@@ -2,6 +2,7 @@ package project.imaginarium.web.view.models.user.register;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 import project.imaginarium.data.models.Planet;
 import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.users.Role;
@@ -20,7 +21,7 @@ public class PartnerRegisterModel {
     private Set<Role> role;
     private String name;
     private String description;
-    private String logo;
+    private MultipartFile logo;
     private Planet planet;
     private Sector sector;
     private String website;

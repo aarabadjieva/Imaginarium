@@ -23,7 +23,7 @@
                     <div class="last_item">
                         <div class="last_item_content">
                             <div class="last_subtitle">Create article</div>
-                            <form id="create_article" class="mx-auto w-15" th:action="@{/articles/create}" method="post">
+                            <form id="create_article" class="mx-auto w-15" method="post">
                                 <div class="form-group row">
                                     <div class="label-holder textCol d-flex justify-content-center">
                                         <label for="title" class="h4 mb-2 last_text">Title</label>
@@ -61,6 +61,5 @@
 </div>
 
 <th:block th:include="~{_shared/footer}"/>
-<script src="/js/article.js"></script>
 </body>
 </html>

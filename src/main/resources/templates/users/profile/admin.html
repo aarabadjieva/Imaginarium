@@ -36,12 +36,12 @@
                     <td class="text-center">
                         <div th:if="${session.role}=='admin'">
                             <form th:action="@{/profile/delete/admin/{name}(name=${user.username})}" th:method="post">
-                            <button type="submit" class="btn btn-info">Delete Admin</button>
+                                <button type="submit" class="btn btn-info">Delete Admin</button>
                             </form>
                         </div>
                         <div th:if="${session.role}=='client'">
                             <form th:action="@{/profile/create/admin/{name}(name=${user.username})}" th:method="post">
-                            <button type="submit" class="btn btn-info">Make Admin</button>
+                                <button type="submit" class="btn btn-info">Make Admin</button>
                             </form>
                         </div>
                     </td>
@@ -73,16 +73,18 @@
                             <div id="delete_article" class="modal">
             <span onclick="document.getElementById('delete_article').style.display='none'" class="close"
                   title="Close Modal">×</span>
-                                <form class="modal-content animated" th:action="@{/articles/delete/{title} (title= ${article.title})}" th:method="post">
-                                    <div class="text-dark">Are you sure you want to delete [[${article.title}]]?</div>
-                                    <div class="button-holder d-flex justify-content-center">
-                                        <button class="btn signup_btn" type="submit">Yes</button>
-                                        <button type="button" onclick="document.getElementById('delete_article').style.display='none'"
-                                                class="cancel_btn btn">No
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                            <form class="modal-content animated"
+                                  th:action="@{/articles/delete/{title}(title= ${article.title})}" th:method="post">
+                                <div class="text-dark">Are you sure you want to delete [[${article.title}]]?</div>
+                                <div class="button-holder d-flex justify-content-center">
+                                    <button class="btn signup_btn" type="submit">Yes</button>
+                                    <button type="button"
+                                            onclick="document.getElementById('delete_article').style.display='none'"
+                                            class="cancel_btn btn">No
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             </th:block>
@@ -91,9 +93,9 @@
         <div class="button-holder d-flex justify-content-center">
             <a class="btn btn-info" th:href="@{/articles/create}">Add Article</a>
         </div>
-        </div>
+    </div>
 </div>
-        <th:block th:include="~{_shared/footer}"/>
-    <th:block th:include="~{_shared/scripts}"/>
+<th:block th:include="~{_shared/footer}"/>
+<th:block th:include="~{_shared/scripts}"/>
 </body>
 </html>

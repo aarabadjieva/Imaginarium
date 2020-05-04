@@ -1,8 +1,8 @@
 package project.imaginarium.web.view.models.user.view;
 
+import project.imaginarium.data.models.offers.Offer;
 import lombok.Getter;
 import lombok.Setter;
-import project.imaginarium.data.models.offers.Offer;
 
 import java.util.List;
 

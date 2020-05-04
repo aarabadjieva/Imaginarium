@@ -1,5 +1,8 @@
 package project.imaginarium.web.view.controllers;
 
+import project.imaginarium.service.models.user.UserLoggedServiceModel;
+import project.imaginarium.service.services.CloudinaryService;
+import project.imaginarium.service.services.RoleService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -8,11 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
-import project.imaginarium.service.models.user.UserLoggedServiceModel;
 import project.imaginarium.service.models.user.UserServiceLoginModel;
-import com.project.imaginarium.services.CloudinaryService;
-import com.project.imaginarium.services.RoleService;
-import com.project.imaginarium.services.user.UserService;
+import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.web.view.models.user.UserLoginModel;
 import project.imaginarium.web.view.models.user.register.ClientRegisterModel;
 import project.imaginarium.web.view.models.user.register.PartnerRegisterModel;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import project.imaginarium.service.models.ArticleServiceModel;
-import com.project.imaginarium.services.ArticlesService;
+import project.imaginarium.service.services.ArticlesService;
 import project.imaginarium.web.api.models.article.ArticleRequestCreateModel;
 
 import javax.servlet.http.HttpServletResponse;

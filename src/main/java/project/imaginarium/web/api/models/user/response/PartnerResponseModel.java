@@ -1,10 +1,10 @@
 package project.imaginarium.web.api.models.user.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
 import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Offer;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 

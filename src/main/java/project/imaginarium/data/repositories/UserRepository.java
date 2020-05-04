@@ -1,7 +1,7 @@
 package project.imaginarium.data.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import project.imaginarium.data.models.users.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
 import project.imaginarium.data.models.users.User;
 
 import java.util.List;

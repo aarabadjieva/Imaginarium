@@ -1,8 +1,8 @@
 package project.imaginarium.data.models.users;
 
+import project.imaginarium.data.models.offers.Offer;
 import lombok.Getter;
 import lombok.Setter;
-import project.imaginarium.data.models.offers.Offer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

@@ -1,11 +1,11 @@
 package project.imaginarium.data.models.offers;
 
+import project.imaginarium.data.models.users.Partner;
 import lombok.Getter;
 import lombok.Setter;
 import project.imaginarium.data.models.BaseEntity;
 import project.imaginarium.data.models.Planet;
 import project.imaginarium.data.models.Sector;
-import project.imaginarium.data.models.users.Partner;
 
 import javax.persistence.*;
 import java.util.List;

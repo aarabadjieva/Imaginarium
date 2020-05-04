@@ -1,17 +1,17 @@
 package project.imaginarium.web.api.controllers;
 
+import project.imaginarium.service.services.ArticlesService;
+import project.imaginarium.service.services.RoleService;
+import project.imaginarium.service.services.user.UserService;
+import project.imaginarium.web.api.models.article.ArticleResponseModel;
+import project.imaginarium.web.api.models.user.response.GuideResponseModel;
+import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.project.imaginarium.services.ArticlesService;
-import com.project.imaginarium.services.RoleService;
-import com.project.imaginarium.services.user.UserService;
-import project.imaginarium.web.api.models.article.ArticleResponseModel;
-import project.imaginarium.web.api.models.user.response.GuideResponseModel;
-import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
 
 import java.util.LinkedHashMap;
 import java.util.List;

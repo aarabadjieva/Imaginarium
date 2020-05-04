@@ -1,9 +1,9 @@
 package project.imaginarium.service.models.user;
 
+import project.imaginarium.data.models.users.Role;
 import lombok.Getter;
 import lombok.Setter;
 import project.imaginarium.data.models.Sector;
-import project.imaginarium.data.models.users.Role;
 
 import java.util.Set;
 

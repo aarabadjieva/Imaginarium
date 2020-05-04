@@ -1,8 +1,8 @@
 package project.imaginarium.service.models.user;
 
+import project.imaginarium.data.models.Planet;
 import lombok.Getter;
 import lombok.Setter;
-import project.imaginarium.data.models.Planet;
 
 import java.math.BigDecimal;
 

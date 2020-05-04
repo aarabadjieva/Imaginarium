@@ -10,24 +10,29 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/")
 public class ImaginariumInfoController {
 
+    public final static String IMAGINARIUM_HOME_VIEW_NAME = "imaginarium/home.html";
+    public final static String IMAGINARIUM_ABOUT_VIEW_NAME = "imaginarium/about.html";
+    public final static String IMAGINARIUM_CONTACTS_VIEW_NAME = "imaginarium/contacts.html";
+    public final static String IMAGINARIUM_BLOG_VIEW_NAME = "imaginarium/blog.html";
+
     @GetMapping("/")
     public String getHome(){
-        return "imaginarium/home.html";
+        return IMAGINARIUM_HOME_VIEW_NAME;
     }
 
     @GetMapping("about")
     public String getAboutInfo() {
-        return "imaginarium/about.html";
+        return IMAGINARIUM_ABOUT_VIEW_NAME;
     }
 
     @GetMapping("contacts")
     public String getContacts(){
-        return "imaginarium/contacts.html";
+        return IMAGINARIUM_CONTACTS_VIEW_NAME;
     }
 
     @GetMapping("blog")
     public String getBlog(){
-        return "imaginarium/blog.html";
+        return IMAGINARIUM_BLOG_VIEW_NAME;
     }
 
     @ExceptionHandler(Throwable.class)

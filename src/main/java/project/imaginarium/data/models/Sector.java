@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum Sector {
-    HOTELS("hotels"),
-    VEHICLES("vehicles"),
-    TIME_TRAVEL("timeTravel"),
-    GUIDES("guides"),
-    CLIENTS("clients");
+    HOTEL("hotel"),
+    VEHICLE("vehicle"),
+    EVENT("event"),
+    GUIDE("guide"),
+    CLIENT("client");
 
     public final String name;
 

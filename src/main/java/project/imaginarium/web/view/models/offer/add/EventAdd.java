@@ -16,7 +16,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TimeTravelAdd {
+public class EventAdd {
 
     @NotEmpty(message = "Name cannot be empty")
     private String name;

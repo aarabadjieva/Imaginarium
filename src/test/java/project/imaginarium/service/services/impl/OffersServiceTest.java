@@ -1,6 +1,7 @@
 package project.imaginarium.service.services.impl;
 
 import project.imaginarium.base.ImaginariumApplicationBaseTests;
+import project.imaginarium.data.models.offers.Event;
 import project.imaginarium.service.services.OffersService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -10,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import project.imaginarium.data.models.Planet;
 import project.imaginarium.data.models.offers.Accommodation;
 import project.imaginarium.data.models.offers.Offer;
-import project.imaginarium.data.models.offers.TimeTravel;
 import project.imaginarium.data.models.offers.Vehicle;
 import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.data.repositories.OfferRepository;
@@ -19,7 +19,7 @@ import project.imaginarium.exeptions.NoSuchOffer;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.offer.AccommodationServiceModel;
 import project.imaginarium.service.models.offer.OfferServiceModel;
-import project.imaginarium.service.models.offer.TimeTravelServiceModel;
+import project.imaginarium.service.models.offer.EventServiceModel;
 import project.imaginarium.service.models.offer.VehicleServiceModel;
 
 import java.util.List;
@@ -67,26 +67,26 @@ class OffersServiceTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void addTimeTravel_shouldAddPartnerCorrectlyForTimeTravelAndSaveEntity() {
-        TimeTravelServiceModel timeTravel = new TimeTravelServiceModel();
+    void addEvent_shouldAddPartnerCorrectlyForEventAndSaveEntity() {
+        EventServiceModel timeTravel = new EventServiceModel();
         Partner partner = new Partner();
         partner.setUsername("username");
         Mockito.when(userRepository.findByUsername(partner.getUsername())).thenReturn(Optional.of(partner));
-        service.addTimeTravel(timeTravel, partner.getUsername());
-        ArgumentCaptor<TimeTravel> captor = ArgumentCaptor.forClass(TimeTravel.class);
+        service.addEvent(timeTravel, partner.getUsername());
+        ArgumentCaptor<Event> captor = ArgumentCaptor.forClass(Event.class);
         Mockito.verify(offerRepository).saveAndFlush(captor.capture());
-        TimeTravel entity = captor.getValue();
+        Event entity = captor.getValue();
         assertNotNull(entity);
         assertEquals(entity.getProvider(),partner);
     }
 
     @Test
-    void addTimeTravel_shouldThrowIfPartner_NOT_Exist() {
-        TimeTravelServiceModel timeTravel = new TimeTravelServiceModel();
+    void addEvent_shouldThrowIfPartner_NOT_Exist() {
+        EventServiceModel event = new EventServiceModel();
         Partner partner = new Partner();
         partner.setUsername("username");
         Mockito.when(userRepository.findByUsername(partner.getUsername())).thenThrow(NoSuchUser.class);
-        assertThrows(NoSuchUser.class, () -> service.addTimeTravel(timeTravel, partner.getUsername()));
+        assertThrows(NoSuchUser.class, () -> service.addEvent(event, partner.getUsername()));
     }
 
     @Test

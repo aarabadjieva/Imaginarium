@@ -1,19 +1,18 @@
-package project.imaginarium.service.models.offer;
+package project.imaginarium.web.view.models.offer.view;
 
+import project.imaginarium.data.models.Planet;
 import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Tag;
 import project.imaginarium.data.models.users.Partner;
 import lombok.Getter;
 import lombok.Setter;
-import project.imaginarium.data.models.Planet;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-public class TimeTravelServiceModel {
+public class EventViewModel {
 
     private String name;
     private String description;
@@ -26,10 +25,4 @@ public class TimeTravelServiceModel {
     private int year;
     private int ageRestrictionMin;
     private Partner provider;
-
-
-
-    public TimeTravelServiceModel() {
-        this.tags = new ArrayList<>();
-    }
 }

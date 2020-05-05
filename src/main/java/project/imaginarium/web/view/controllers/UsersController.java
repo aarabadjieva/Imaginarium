@@ -91,12 +91,12 @@ public class UsersController {
             session.setAttribute("user", user);
             session.setAttribute("username", user.getUsername());
             switch (user.getSector()){
-                case HOTELS:
-                case VEHICLES:
-                case TIME_TRAVEL:
+                case HOTEL:
+                case VEHICLE:
+                case EVENT:
                     session.setAttribute("role", "partner");
                     break;
-                case GUIDES:
+                case GUIDE:
                     session.setAttribute("role", "guide");
                     break;
                 default:

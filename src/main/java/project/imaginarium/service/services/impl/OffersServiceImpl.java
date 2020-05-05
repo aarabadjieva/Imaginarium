@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.imaginarium.data.models.offers.Accommodation;
+import project.imaginarium.data.models.offers.Event;
 import project.imaginarium.data.models.offers.Offer;
-import project.imaginarium.data.models.offers.TimeTravel;
 import project.imaginarium.data.models.offers.Vehicle;
 import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.data.repositories.OfferRepository;
@@ -13,13 +13,13 @@ import project.imaginarium.data.repositories.UserRepository;
 import project.imaginarium.exeptions.NoSuchOffer;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.offer.AccommodationServiceModel;
+import project.imaginarium.service.models.offer.EventServiceModel;
 import project.imaginarium.service.models.offer.OfferServiceModel;
-import project.imaginarium.service.models.offer.TimeTravelServiceModel;
 import project.imaginarium.service.models.offer.VehicleServiceModel;
 import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.OffersService;
 import project.imaginarium.web.view.models.offer.add.AccommodationAdd;
-import project.imaginarium.web.view.models.offer.add.TimeTravelAdd;
+import project.imaginarium.web.view.models.offer.add.EventAdd;
 import project.imaginarium.web.view.models.offer.add.VehicleAdd;
 
 import java.io.IOException;
@@ -48,10 +48,10 @@ public class OffersServiceImpl implements OffersService {
     }
 
     @Override
-    public void addTimeTravel(TimeTravelServiceModel model, String username) {
-        TimeTravel timeTravel = mapper.map(model, TimeTravel.class);
-        timeTravel.setProvider((Partner) userRepository.findByUsername(username).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE)));
-        offerRepository.saveAndFlush(timeTravel);
+    public void addEvent(EventServiceModel model, String username) {
+        Event event = mapper.map(model, Event.class);
+        event.setProvider((Partner) userRepository.findByUsername(username).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE)));
+        offerRepository.saveAndFlush(event);
     }
 
     @Override
@@ -81,17 +81,17 @@ public class OffersServiceImpl implements OffersService {
     }
 
     @Override
-    public void updateTimeTravel(TimeTravelAdd model) throws IOException {
-        TimeTravel timeTravel = (TimeTravel) offerRepository.findByName(model.getName()).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
-        timeTravel.setAgeRestrictionMin(model.getAgeRestrictionMin());
-        timeTravel.setPricePerAdult(model.getPricePerAdult());
-        timeTravel.setPricePerChildren(model.getPricePerChildren());
-        timeTravel.setYear(model.getYear());
-        timeTravel.setDescription(model.getDescription());
-        timeTravel.setPlanet(model.getPlanet());
-        timeTravel.setPicture(cloudinaryService.upload(model.getPicture()));
-        timeTravel.setTags(model.getTags());
-        offerRepository.saveAndFlush(timeTravel);
+    public void updateEvent(EventAdd model) throws IOException {
+        Event event = (Event) offerRepository.findByName(model.getName()).orElseThrow(()->new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
+        event.setAgeRestrictionMin(model.getAgeRestrictionMin());
+        event.setPricePerAdult(model.getPricePerAdult());
+        event.setPricePerChildren(model.getPricePerChildren());
+        event.setYear(model.getYear());
+        event.setDescription(model.getDescription());
+        event.setPlanet(model.getPlanet());
+        event.setPicture(cloudinaryService.upload(model.getPicture()));
+        event.setTags(model.getTags());
+        offerRepository.saveAndFlush(event);
     }
 
     @Override

@@ -6,7 +6,7 @@ import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.web.api.models.user.response.GuideResponseModel;
 import project.imaginarium.web.view.models.offer.add.AccommodationAdd;
-import project.imaginarium.web.view.models.offer.add.TimeTravelAdd;
+import project.imaginarium.web.view.models.offer.add.EventAdd;
 import project.imaginarium.web.view.models.offer.add.VehicleAdd;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,13 +15,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.service.models.offer.AccommodationServiceModel;
-import project.imaginarium.service.models.offer.TimeTravelServiceModel;
+import project.imaginarium.service.models.offer.EventServiceModel;
 import project.imaginarium.service.models.offer.VehicleServiceModel;
 import project.imaginarium.service.services.OffersService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.web.view.models.offer.view.AccommodationViewModel;
 import project.imaginarium.web.view.models.offer.view.OfferShortViewModel;
-import project.imaginarium.web.view.models.offer.view.TimeTravelViewModel;
+import project.imaginarium.web.view.models.offer.view.EventViewModel;
 import project.imaginarium.web.view.models.offer.view.VehicleViewModel;
 
 import javax.validation.Valid;
@@ -34,15 +34,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/offers")
 public class OffersController {
 
-    public final static String OFFERS_ADD_HOTELS_VIEW_NAME = "/offers/add/hotels.html";
-    public final static String OFFERS_ADD_TIME_TRAVEL_VIEW_NAME = "/offers/add/timetravel.html";
-    public final static String OFFERS_ADD_VEHICLES_VIEW_NAME = "/offers/add/vehicles.html";
-    public final static String OFFERS_INFO_HOTELS_VIEW_NAME = "/offers/info/hotels.html";
-    public final static String OFFERS_INFO_TIME_TRAVEL_VIEW_NAME = "/offers/info/timetravel.html";
-    public final static String OFFERS_INFO_VEHICLES_VIEW_NAME = "/offers/info/vehicles.html";
-    public final static String OFFERS_EDIT_HOTELS_VIEW_NAME = "/offers/edit/hotels.html";
-    public final static String OFFERS_EDIT_TIME_TRAVEL_VIEW_NAME = "/offers/edit/timetravel.html";
-    public final static String OFFERS_EDIT_VEHICLES_VIEW_NAME = "/offers/edit/vehicles.html";
+    public final static String OFFERS_ADD_HOTELS_VIEW_NAME = "/offers/add/hotel.html";
+    public final static String OFFERS_ADD_EVENT_VIEW_NAME = "/offers/add/event.html";
+    public final static String OFFERS_ADD_VEHICLES_VIEW_NAME = "/offers/add/vehicle.html";
+    public final static String OFFERS_INFO_HOTELS_VIEW_NAME = "/offers/info/hotel.html";
+    public final static String OFFERS_INFO_EVENT_VIEW_NAME = "/offers/info/event.html";
+    public final static String OFFERS_INFO_VEHICLES_VIEW_NAME = "/offers/info/vehicle.html";
+    public final static String OFFERS_EDIT_HOTELS_VIEW_NAME = "/offers/edit/hotel.html";
+    public final static String OFFERS_EDIT_EVENT_VIEW_NAME = "/offers/edit/event.html";
+    public final static String OFFERS_EDIT_VEHICLES_VIEW_NAME = "/offers/edit/vehicle.html";
     public final static String ALL_OFFERS_VIEW_NAME = "/offers/all-offers.html";
 
     private final ModelMapper mapper;
@@ -55,9 +55,9 @@ public class OffersController {
         return new AccommodationAdd();
     }
 
-    @ModelAttribute("timeTravel")
-    public TimeTravelAdd timeTravelAdd() {
-        return new TimeTravelAdd();
+    @ModelAttribute("event")
+    public EventAdd eventAdd() {
+        return new EventAdd();
     }
 
     @ModelAttribute("vehicle")
@@ -68,16 +68,16 @@ public class OffersController {
     @GetMapping("/{partner}/add/{offer}")
     public ModelAndView addOffer(ModelAndView modelAndView, @PathVariable String offer, @PathVariable String partner) {
         switch (offer) {
-            case "hotels":
+            case "hotel":
                 modelAndView.setViewName(OFFERS_ADD_HOTELS_VIEW_NAME);
                 modelAndView.addObject(accommodationAdd());
                 break;
-            case "timeTravel":
+            case "event":
                 modelAndView.clear();
-                modelAndView.setViewName(OFFERS_ADD_TIME_TRAVEL_VIEW_NAME);
-                modelAndView.addObject(timeTravelAdd());
+                modelAndView.setViewName(OFFERS_ADD_EVENT_VIEW_NAME);
+                modelAndView.addObject(eventAdd());
                 break;
-            case "vehicles":
+            case "vehicle":
                 modelAndView.setViewName(OFFERS_ADD_VEHICLES_VIEW_NAME);
                 modelAndView.addObject(vehicleAdd());
                 break;
@@ -86,7 +86,7 @@ public class OffersController {
     }
 
 
-    @PostMapping("/{partner}/add/hotels")
+    @PostMapping("/{partner}/add/hotel")
     public ModelAndView addHotel(ModelAndView modelAndView, @PathVariable String partner,
                                  @Valid
                                  @ModelAttribute("accommodation") AccommodationAdd accommodation,
@@ -98,28 +98,28 @@ public class OffersController {
         AccommodationServiceModel accommodationServiceModel = mapper.map(accommodation, AccommodationServiceModel.class);
         accommodationServiceModel.setPicture(cloudinaryService.upload(accommodation.getPicture()));
         offersService.addAccommodation(accommodationServiceModel, partner);
-        modelAndView.setViewName("redirect:/offers/info/hotels/" + accommodation.getName());
+        modelAndView.setViewName("redirect:/offers/info/hotel/" + accommodation.getName());
         return modelAndView;
     }
 
-    @PostMapping("/{partner}/add/timeTravel")
-    public ModelAndView addTimeTravel(ModelAndView modelAndView, @PathVariable String partner,
-                                      @Valid
-                                      @ModelAttribute("timeTravel") TimeTravelAdd timeTravel,
-                                      BindingResult timeTravelResult) throws IOException {
-        if (timeTravelResult.hasErrors()) {
-            modelAndView.setViewName(OFFERS_ADD_TIME_TRAVEL_VIEW_NAME);
+    @PostMapping("/{partner}/add/event")
+    public ModelAndView addEvent(ModelAndView modelAndView, @PathVariable String partner,
+                                 @Valid
+                                      @ModelAttribute("event") EventAdd event,
+                                 BindingResult eventResult) throws IOException {
+        if (eventResult.hasErrors()) {
+            modelAndView.setViewName(OFFERS_ADD_EVENT_VIEW_NAME);
             return modelAndView;
         }
-        TimeTravelServiceModel timeTravelServiceModel = mapper.map(timeTravel, TimeTravelServiceModel.class);
-        timeTravelServiceModel.setPicture(cloudinaryService.upload(timeTravel.getPicture()));
-        offersService.addTimeTravel(timeTravelServiceModel, partner);
-        modelAndView.setViewName("redirect:/offers/info/timeTravel/" + timeTravel.getName());
+        EventServiceModel eventServiceModel = mapper.map(event, EventServiceModel.class);
+        eventServiceModel.setPicture(cloudinaryService.upload(event.getPicture()));
+        offersService.addEvent(eventServiceModel, partner);
+        modelAndView.setViewName("redirect:/offers/info/event/" + event.getName());
 
         return modelAndView;
     }
 
-    @PostMapping("/{partner}/add/vehicles")
+    @PostMapping("/{partner}/add/vehicle")
     public ModelAndView addVehicle(ModelAndView modelAndView, @PathVariable String partner,
                                    @Valid
                                    @ModelAttribute("vehicle") VehicleAdd vehicle,
@@ -131,7 +131,7 @@ public class OffersController {
         VehicleServiceModel vehicleServiceModel = mapper.map(vehicle, VehicleServiceModel.class);
         vehicleServiceModel.setPicture(cloudinaryService.upload(vehicle.getPicture()));
         offersService.addVehicle(vehicleServiceModel, partner);
-        modelAndView.setViewName("redirect:/offers/info/vehicles/" + vehicle.getName());
+        modelAndView.setViewName("redirect:/offers/info/vehicle/" + vehicle.getName());
         return modelAndView;
     }
 
@@ -140,17 +140,17 @@ public class OffersController {
                                   @PathVariable String name) {
 
         switch (sector) {
-            case "hotels":
+            case "hotel":
                 modelAndView.setViewName(OFFERS_INFO_HOTELS_VIEW_NAME);
                 AccommodationViewModel accommodation = mapper.map(offersService.findOfferByName(name), AccommodationViewModel.class);
                 modelAndView.addObject("offer", accommodation);
                 break;
-            case "timeTravel":
-                modelAndView.setViewName(OFFERS_INFO_TIME_TRAVEL_VIEW_NAME);
-                TimeTravelViewModel timeTravel = mapper.map(offersService.findOfferByName(name), TimeTravelViewModel.class);
-                modelAndView.addObject("offer", timeTravel);
+            case "event":
+                modelAndView.setViewName(OFFERS_INFO_EVENT_VIEW_NAME);
+                EventViewModel event = mapper.map(offersService.findOfferByName(name), EventViewModel.class);
+                modelAndView.addObject("offer", event);
                 break;
-            case "vehicles":
+            case "vehicle":
                 modelAndView.setViewName(OFFERS_INFO_VEHICLES_VIEW_NAME);
                 VehicleViewModel vehicle = mapper.map(offersService.findOfferByName(name), VehicleViewModel.class);
                 modelAndView.addObject("offer", vehicle);
@@ -166,17 +166,17 @@ public class OffersController {
                                   @PathVariable String sector,
                                   @PathVariable String name) {
         switch (sector) {
-            case "hotels":
+            case "hotel":
                 modelAndView.setViewName(OFFERS_EDIT_HOTELS_VIEW_NAME);
                 AccommodationViewModel accommodation = mapper.map(offersService.findOfferByName(name), AccommodationViewModel.class);
                 modelAndView.addObject("accommodation", accommodation);
                 break;
-            case "timeTravel":
-                modelAndView.setViewName(OFFERS_EDIT_TIME_TRAVEL_VIEW_NAME);
-                TimeTravelViewModel timeTravel = mapper.map(offersService.findOfferByName(name), TimeTravelViewModel.class);
-                modelAndView.addObject("timeTravel", timeTravel);
+            case "event":
+                modelAndView.setViewName(OFFERS_EDIT_EVENT_VIEW_NAME);
+                EventViewModel timeTravel = mapper.map(offersService.findOfferByName(name), EventViewModel.class);
+                modelAndView.addObject("event", timeTravel);
                 break;
-            case "vehicles":
+            case "vehicle":
                 modelAndView.setViewName(OFFERS_EDIT_VEHICLES_VIEW_NAME);
                 VehicleViewModel vehicle = mapper.map(offersService.findOfferByName(name), VehicleViewModel.class);
                 modelAndView.addObject("vehicle", vehicle);
@@ -185,7 +185,7 @@ public class OffersController {
         return modelAndView;
     }
 
-    @PostMapping("/{partner}/edit/hotels/{name}")
+    @PostMapping("/{partner}/edit/hotel/{name}")
     public ModelAndView editHotel(ModelAndView modelAndView,
                                   @PathVariable String name,
                                   @PathVariable String partner,
@@ -198,30 +198,30 @@ public class OffersController {
             return modelAndView;
         }
         offersService.updateAccommodation(accommodation);
-        modelAndView.setViewName("redirect:/offers/info/hotels/" + name);
+        modelAndView.setViewName("redirect:/offers/info/hotel/" + name);
         modelAndView.addObject(accommodation);
         return modelAndView;
     }
 
-    @PostMapping("/{partner}/edit/timeTravel/{name}")
-    public ModelAndView editTimeTravel(ModelAndView modelAndView,
-                                       @PathVariable String name,
-                                       @PathVariable String partner,
-                                       @Valid
-                                  @ModelAttribute("timeTravel") TimeTravelAdd timeTravel,
-                                       BindingResult timeTravelResult) throws IOException {
-        timeTravel.setName(name);
-        if (timeTravelResult.hasErrors()) {
-            modelAndView.setViewName(OFFERS_EDIT_TIME_TRAVEL_VIEW_NAME);
+    @PostMapping("/{partner}/edit/event/{name}")
+    public ModelAndView editEvent(ModelAndView modelAndView,
+                                  @PathVariable String name,
+                                  @PathVariable String partner,
+                                  @Valid
+                                  @ModelAttribute("event") EventAdd event,
+                                  BindingResult eventResult) throws IOException {
+        event.setName(name);
+        if (eventResult.hasErrors()) {
+            modelAndView.setViewName(OFFERS_EDIT_EVENT_VIEW_NAME);
             return modelAndView;
         }
-        offersService.updateTimeTravel(timeTravel);
-        modelAndView.setViewName("redirect:/offers/info/timeTravel/" + name);
-        modelAndView.addObject(timeTravel);
+        offersService.updateEvent(event);
+        modelAndView.setViewName("redirect:/offers/info/event/" + name);
+        modelAndView.addObject(event);
         return modelAndView;
     }
 
-    @PostMapping("/{partner}/edit/vehicles/{name}")
+    @PostMapping("/{partner}/edit/vehicle/{name}")
     public ModelAndView editVehicle(ModelAndView modelAndView,
                                     @PathVariable String partner,
                                     @PathVariable String name,
@@ -234,7 +234,7 @@ public class OffersController {
             return modelAndView;
         }
         offersService.updateVehicle(vehicle);
-        modelAndView.setViewName("redirect:/offers/info/vehicles/" + name);
+        modelAndView.setViewName("redirect:/offers/info/vehicle/" + name);
         modelAndView.addObject(vehicle);
         return modelAndView;
     }

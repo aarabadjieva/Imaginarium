@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Invalid data");
         }
         switch (serviceModel.getSector().name) {
-            case "guides":
+            case "guide":
 
                 if (serviceModel.getAuthorities().isEmpty()){
                     Role role = roleService.findRoleByName("GUIDE");
@@ -94,9 +94,9 @@ public class UserServiceImpl implements UserService {
 
                 userRepository.saveAndFlush(guide);
                 break;
-            case "hotels":
-            case "vehicles":
-            case "timeTravel":
+            case "hotel":
+            case "vehicle":
+            case "event":
                 if (serviceModel.getAuthorities().isEmpty()){
                     Role role = roleService.findRoleByName("PARTNER");
                     serviceModel.getAuthorities().add(role);

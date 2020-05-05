@@ -54,7 +54,7 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     @Test
     void addOffer_shouldReturnAddHotelsWhenOfferIsHotelWith200() throws Exception {
         String partner = "someone";
-        String offer = "hotels";
+        String offer = "hotel";
         mockMvc.perform(get("/offers/" + partner + "/add/" + offer))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("accommodation"))
@@ -62,19 +62,19 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void addOffer_shouldReturnAddTimeTravelWhenOfferIsTimeTravelWith200() throws Exception {
+    void addOffer_shouldReturnAddEventWhenOfferIsEventWith200() throws Exception {
         String partner = "someone";
-        String offer = "timeTravel";
+        String offer = "event";
         mockMvc.perform(get("/offers/" + partner + "/add/" + offer))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("timeTravel"))
-                .andExpect(view().name(OFFERS_ADD_TIME_TRAVEL_VIEW_NAME));
+                .andExpect(model().attributeExists("event"))
+                .andExpect(view().name(OFFERS_ADD_EVENT_VIEW_NAME));
     }
 
     @Test
     void addOffer_shouldReturnAddVehiclesWhenOfferIsVehicleWith200() throws Exception {
         String partner = "someone";
-        String offer = "vehicles";
+        String offer = "vehicle";
         mockMvc.perform(get("/offers/" + partner + "/add/" + offer))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("vehicle"))
@@ -86,7 +86,7 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
         Partner partner = new Partner();
         partner.setUsername("name");
         Mockito.when(mockUserRepo.findByUsername(partner.getUsername())).thenReturn(of(partner));
-        mockMvc.perform(post("/offers/" + partner.getUsername() + "/add/hotels")
+        mockMvc.perform(post("/offers/" + partner.getUsername() + "/add/hotel")
                 .param("name", "name")
                 .param("description", "description")
                 .param("days", "3")
@@ -94,13 +94,13 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
                 .param("pricePerAdult", "333")
                 .param("pricePerChildren", "333"))
                 .andExpect(status().isFound())
-                .andExpect(view().name("redirect:/offers/info/hotels/name")); //{name} is accommodation name
+                .andExpect(view().name("redirect:/offers/info/hotel/name")); //{name} is accommodation name
     }
 
     @Test
     void addHotel_shouldReturnAddHotelViewWhenOffer_HAS_Errors() throws Exception {
         String partner = "name";
-        mockMvc.perform(post("/offers/" + partner + "/add/hotels")
+        mockMvc.perform(post("/offers/" + partner + "/add/hotel")
                 .param("name", "")) //name has errors
                 .andExpect(view().name(OFFERS_ADD_HOTELS_VIEW_NAME))
                 .andExpect(model().attributeHasErrors("accommodation"));
@@ -110,7 +110,7 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     void addHotel_shouldThrowWhenPartner_DO_NOT_ExistsWith404() throws Exception {
         String partner = "name";
         Mockito.when(mockUserRepo.findByUsername(partner)).thenThrow(NoSuchUser.class);
-        mockMvc.perform(post("/offers/" + partner + "/add/hotels")
+        mockMvc.perform(post("/offers/" + partner + "/add/hotel")
                 .param("name", "name")
                 .param("description", "description")
                 .param("days", "3")
@@ -123,11 +123,11 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void addTimeTravel_shouldRedirectToOfferInfoPageWhenOfferHas_NO_ErrorsAndPartnerExistsWith302() throws Exception {
+    void addEvent_shouldRedirectToOfferInfoPageWhenOfferHas_NO_ErrorsAndPartnerExistsWith302() throws Exception {
         Partner partner = new Partner();
         partner.setUsername("name");
         Mockito.when(mockUserRepo.findByUsername(partner.getUsername())).thenReturn(of(partner));
-        mockMvc.perform(post("/offers/" + partner.getUsername() + "/add/timeTravel")
+        mockMvc.perform(post("/offers/" + partner.getUsername() + "/add/event")
                 .param("name", "name")
                 .param("description", "description")
                 .param("planet", String.valueOf(Planet.Bartledan))
@@ -136,23 +136,23 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
                 .param("year", "333")
                 .param("ageRestrictionMin", "333"))
                 .andExpect(status().isFound())
-                .andExpect(view().name("redirect:/offers/info/timeTravel/name")); //{name} is timeTravel name
+                .andExpect(view().name("redirect:/offers/info/event/name")); //{name} is timeTravel name
     }
 
     @Test
-    void addTimeTravel_shouldReturnAddTimeTravelViewWhenOffer_HAS_Errors() throws Exception {
+    void addEvent_shouldReturnAddEventViewWhenOffer_HAS_Errors() throws Exception {
         String partner = "name";
-        mockMvc.perform(post("/offers/" + partner + "/add/timeTravel")
+        mockMvc.perform(post("/offers/" + partner + "/add/event")
                 .param("name", "")) //name has errors
-                .andExpect(view().name(OFFERS_ADD_TIME_TRAVEL_VIEW_NAME))
-                .andExpect(model().attributeHasErrors("timeTravel"));
+                .andExpect(view().name(OFFERS_ADD_EVENT_VIEW_NAME))
+                .andExpect(model().attributeHasErrors("event"));
     }
 
     @Test
-    void addTimeTravel_shouldThrowWhenPartner_DO_NOT_ExistsWith404() throws Exception {
+    void addEvent_shouldThrowWhenPartner_DO_NOT_ExistsWith404() throws Exception {
         String partner = "name";
         Mockito.when(mockUserRepo.findByUsername(partner)).thenThrow(NoSuchUser.class);
-        mockMvc.perform(post("/offers/" + partner + "/add/timeTravel")
+        mockMvc.perform(post("/offers/" + partner + "/add/event")
                 .param("name", "name")
                 .param("description", "description")
                 .param("planet", String.valueOf(Planet.Bartledan))
@@ -170,19 +170,19 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
         Partner partner = new Partner();
         partner.setUsername("name");
         Mockito.when(mockUserRepo.findByUsername(partner.getUsername())).thenReturn(of(partner));
-        mockMvc.perform(post("/offers/" + partner.getUsername() + "/add/vehicles")
+        mockMvc.perform(post("/offers/" + partner.getUsername() + "/add/vehicle")
                 .param("name", "name")
                 .param("description", "description")
                 .param("planet", String.valueOf(Planet.Bartledan))
                 .param("pricePerDay", "333"))
                 .andExpect(status().isFound())
-                .andExpect(view().name("redirect:/offers/info/vehicles/name")); //{name} is vehicle name
+                .andExpect(view().name("redirect:/offers/info/vehicle/name")); //{name} is vehicle name
     }
 
     @Test
     void addVehicle_shouldReturnAddVehicleViewWhenOffer_HAS_Errors() throws Exception {
         String partner = "name";
-        mockMvc.perform(post("/offers/" + partner + "/add/vehicles")
+        mockMvc.perform(post("/offers/" + partner + "/add/vehicle")
                 .param("name", "")) //name has errors
                 .andExpect(view().name(OffersController.OFFERS_ADD_VEHICLES_VIEW_NAME))
                 .andExpect(model().attributeHasErrors("vehicle"));
@@ -192,7 +192,7 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     void addVehicle_shouldThrowWhenPartner_DO_NOT_ExistsWith404() throws Exception {
         String partner = "name";
         Mockito.when(mockUserRepo.findByUsername(partner)).thenThrow(NoSuchUser.class);
-        mockMvc.perform(post("/offers/" + partner + "/add/vehicles")
+        mockMvc.perform(post("/offers/" + partner + "/add/vehicle")
                 .param("name", "name")
                 .param("description", "description")
                 .param("planet", String.valueOf(Planet.Bartledan))
@@ -203,13 +203,13 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void infoOffer_shouldReturnHotelOfferInfoWhenSectorIsHotelsAndOfferExists() throws Exception {
+    void infoOffer_shouldReturnHotelOfferInfoWhenSectorIsHotelsAndOfferExistsWith200() throws Exception {
         MockHttpSession session = new MockHttpSession();
         Partner provider = new Partner();
         provider.setUsername("someone");
         Offer offer = new Offer();
         offer.setName("name");
-        offer.setSector(Sector.HOTELS);
+        offer.setSector(Sector.HOTEL);
         offer.setProvider(provider);
         session.setAttribute("user", provider);
         Mockito.when(mockOfferRepo.findByName(offer.getName())).thenReturn(of(offer));
@@ -221,13 +221,13 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void infoOffer_shouldReturnTimeTravelOfferInfoWhenSectorIsHotelsAndOfferExists() throws Exception {
+    void infoOffer_shouldReturnEventOfferInfoWhenSectorIsHotelsAndOfferExistsWith200() throws Exception {
         MockHttpSession session = new MockHttpSession();
         Partner provider = new Partner();
         provider.setUsername("someone");
         Offer offer = new Offer();
         offer.setName("name");
-        offer.setSector(Sector.TIME_TRAVEL);
+        offer.setSector(Sector.EVENT);
         offer.setProvider(provider);
         session.setAttribute("user", provider);
         Mockito.when(mockOfferRepo.findByName(offer.getName())).thenReturn(of(offer));
@@ -235,17 +235,17 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
                 .session(session))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("offer"))
-                .andExpect(view().name(OFFERS_INFO_TIME_TRAVEL_VIEW_NAME));
+                .andExpect(view().name(OFFERS_INFO_EVENT_VIEW_NAME));
     }
 
     @Test
-    void infoOffer_shouldReturnVehiclesOfferInfoWhenSectorIsHotelsAndOfferExists() throws Exception {
+    void infoOffer_shouldReturnVehiclesOfferInfoWhenSectorIsHotelsAndOfferExistsWith200() throws Exception {
         MockHttpSession session = new MockHttpSession();
         Partner provider = new Partner();
         provider.setUsername("someone");
         Offer offer = new Offer();
         offer.setName("name");
-        offer.setSector(Sector.VEHICLES);
+        offer.setSector(Sector.VEHICLE);
         offer.setProvider(provider);
         session.setAttribute("user", provider);
         Mockito.when(mockOfferRepo.findByName(offer.getName())).thenReturn(of(offer));
@@ -257,10 +257,10 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void infoOffer_shouldThrowIfOffer_DO_NOT_Exists() throws Exception {
+    void infoOffer_shouldThrowIfOffer_DO_NOT_ExistsWith404() throws Exception {
         Offer offer = new Offer();
         offer.setName("name");
-        offer.setSector(Sector.HOTELS);
+        offer.setSector(Sector.HOTEL);
         Mockito.when(mockOfferRepo.findByName(offer.getName())).thenThrow(NoSuchOffer.class);
         mockMvc.perform(get("/offers/info/"+offer.getSector().getName().toLowerCase()+"/"+offer.getName()))
                 .andExpect(status().isNotFound())
@@ -268,7 +268,7 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void deleteOffer_shouldRedirectToProviderProfileIfOfferExists() throws Exception {
+    void deleteOffer_shouldRedirectToProviderProfileIfOfferExistsWith302() throws Exception {
         Partner partner = new Partner();
         partner.setUsername("someone");
         Offer offer = new Offer();
@@ -281,7 +281,7 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void deleteOffer_shouldThrowIfOffer_DO_NOT_Exists() throws Exception {
+    void deleteOffer_shouldThrowIfOffer_DO_NOT_ExistsWith404() throws Exception {
         Partner partner = new Partner();
         partner.setUsername("someone");
         Offer offer = new Offer();
@@ -294,7 +294,7 @@ class OffersControllerTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void getAllOffersAndAllGuides_shouldReturnAllOffersView() throws Exception {
+    void getAllOffersAndAllGuides_shouldReturnAllOffersViewWith200() throws Exception {
         List<Offer> allOffers = new ArrayList<>();
         List<User> allGuides = new ArrayList<>();
         Role role = new Role("GUIDE");

@@ -114,7 +114,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
     @Test
     void savePartner_shouldSavePartnerIfValid() throws Exception {
         PartnerRegisterServiceModel registerServiceModel = mapper.map(user, PartnerRegisterServiceModel.class);
-        registerServiceModel.setSector(Sector.HOTELS);
+        registerServiceModel.setSector(Sector.HOTEL);
         Role role = new Role("ADMIN");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.count()).thenReturn(0L);
@@ -132,7 +132,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
     @Test
     void savePartner_shouldThrowExceptionIfPartnerIs_NOT_Valid() throws Exception {
         PartnerRegisterServiceModel registerServiceModel = mapper.map(user, PartnerRegisterServiceModel.class);
-        registerServiceModel.setSector(Sector.HOTELS);
+        registerServiceModel.setSector(Sector.HOTEL);
         Role role = new Role("PARTNER");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.count()).thenReturn(4L);
@@ -301,7 +301,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
                     user.setUsername("User " + id);
                     user.setPassword("pass");
                     user.setEmail("mail@mail.bg");
-                    user.setSector(Sector.CLIENTS);
+                    user.setSector(Sector.CLIENT);
                     user.setAuthorities(Collections.singleton(new Role("ROLE")));
                     return user;
                 })

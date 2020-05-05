@@ -23,11 +23,11 @@
                     <div class="last_item">
                         <div class="last_item_content edit">
                             <div class="last_subtitle">Edit your offer</div>
-                            <!--/*@thymesVar id="timeTravel" type="project.imaginarium.web.view.models.offer.add.TimeTravelAdd"*/-->
-                            <form class="mx-auto w-15" th:method="post" th:object="${timeTravel}" enctype="multipart/form-data">
+                            <!--/*@thymesVar id="event" type="project.imaginarium.web.view.models.offer.add.EventAdd"*/-->
+                            <form class="mx-auto w-15" th:method="post" th:object="${event}" enctype="multipart/form-data">
                                 <div class="form-group ">
                                     <div class="form-group no_change">
-                                        Name:<strong> [[${timeTravel.name}]]</strong>
+                                        Name:<strong> [[${event.name}]]</strong>
                                     </div>
                                     <div class="form-group row" th:classappend="${#fields.hasErrors('description')}? 'alert-danger'">
                                         <div class="label-holder text-white textCol d-flex justify-content-center">
@@ -36,7 +36,7 @@
                                         </div>
                                         <textarea class="form-control" th:field="*{description}"
                                                   id="description" rows="4"
-                                                  name="description">[[${timeTravel.description}]]</textarea>
+                                                  name="description">[[${event.description}]]</textarea>
                                         <ul th:if="${#fields.errors('description')}">
                                             <li th:each="error : ${#fields.errors('description')}" th:text="${error}"></li>
                                         </ul>
@@ -46,7 +46,7 @@
                                             <label for="year" class="h4 mb-2 last_text">Year</label>
                                         </div>
                                         <input type="number" class="form-control" id="year" name="year"
-                                               th:field="*{year}" th:value="${timeTravel.year}"/>
+                                               th:field="*{year}" th:value="${event.year}"/>
                                         <ul th:if="${#fields.errors('year')}">
                                             <li th:each="error : ${#fields.errors('year')}" th:text="${error}"></li>
                                         </ul>
@@ -56,7 +56,7 @@
                                             <label for="planet" class="h4 mb-2 last_text">Planet</label>
                                         </div>
                                         <select class="form-control" id="planet" name="planet" type="text">
-                                            <option th:value="${timeTravel.planet}">[[${timeTravel.planet}]]</option>
+                                            <option th:value="${event.planet}">[[${event.planet}]]</option>
                                             <option th:each="planet : ${T(project.imaginarium.data.models.Planet).values()}"
                                                     th:value="${planet}" th:text="${planet}"></option>
                                         </select>
@@ -67,7 +67,7 @@
                                             <label for="pricePerAdult" class="h4 mb-2 last_text">Price Per Adult</label>
                                         </div>
                                         <input type="number" class="form-control" id="pricePerAdult" name="pricePerAdult"
-                                               th:field="*{pricePerAdult}" th:value="${timeTravel.pricePerAdult}"/>
+                                               th:field="*{pricePerAdult}" th:value="${event.pricePerAdult}"/>
                                         <ul th:if="${#fields.errors('pricePerAdult')}">
                                             <li th:each="error : ${#fields.errors('pricePerAdult')}" th:text="${error}"></li>
                                         </ul>
@@ -78,7 +78,7 @@
                                         </div>
                                         <input class="form-control" type="number" id="pricePerChildren"
                                                th:field="*{pricePerChildren}"
-                                               name="pricePerChildren" th:value="${timeTravel.pricePerChildren}"/>
+                                               name="pricePerChildren" th:value="${event.pricePerChildren}"/>
                                         <ul th:if="${#fields.errors('pricePerChildren')}">
                                             <li th:each="error : ${#fields.errors('pricePerChildren')}" th:text="${error}"></li>
                                         </ul>
@@ -89,7 +89,7 @@
                                         </div>
                                         <input class="form-control" type="number" id="ageRestrictionMin"
                                                th:field="*{ageRestrictionMin}"
-                                               name="ageRestrictionMin" th:value="${timeTravel.ageRestrictionMin}"/>
+                                               name="ageRestrictionMin" th:value="${event.ageRestrictionMin}"/>
                                         <ul th:if="${#fields.errors('ageRestrictionMin')}">
                                             <li th:each="error : ${#fields.errors('ageRestrictionMin')}" th:text="${error}"></li>
                                         </ul>
@@ -99,8 +99,8 @@
                                             <label for="picture"
                                                    class="h4 mb-2 last_text">Picture</label>
                                         </div>
-                                        <input class="form-control" type="file" th:value="${timeTravel.picture}"
-                                               id="picture" name="picture" th:placeholder="${timeTravel.picture}">
+                                        <input class="form-control" type="file" th:value="${event.picture}"
+                                               id="picture" name="picture" th:placeholder="${event.picture}">
                                     </div>
                                     <div class="form-group">
                                         <div class="label-holder text-white textCol d-flex justify-content-center">

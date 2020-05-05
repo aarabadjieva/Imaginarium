@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-public class TimeTravel extends Offer {
+public class Event extends Offer {
 
     @Column
     private int year;

@@ -1,6 +1,8 @@
 package project.imaginarium.web.view.controllers;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -8,13 +10,13 @@ import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.services.ArticlesService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.web.api.models.article.ArticleResponseModel;
+import project.imaginarium.web.api.models.user.response.GuideResponseModel;
+import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
 import project.imaginarium.web.view.models.user.UserMainView;
 import project.imaginarium.web.view.models.user.edit.ClientEditModel;
 import project.imaginarium.web.view.models.user.edit.GuideEditModel;
 import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
 import project.imaginarium.web.view.models.user.view.ClientViewModel;
-import project.imaginarium.web.api.models.user.response.GuideResponseModel;
-import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -22,51 +24,58 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/profile")
+@AllArgsConstructor
 public class ProfileController {
+
+    public final static String CLIENT_PROFILE_VIEW_NAME = "/users/profile/client.html";
+    public final static String PARTNER_PROFILE_VIEW_NAME = "/users/profile/partner.html";
+    public final static String GUIDE_PROFILE_VIEW_NAME = "/users/profile/guide.html";
+    public final static String ADMIN_PROFILE_VIEW_NAME = "/users/profile/admin.html";
+    public final static String CLIENT_EDIT_PROFILE_VIEW_NAME = "/users/profile/edit/client.html";
+    public final static String PARTNER_EDIT_PROFILE_VIEW_NAME = "/users/profile/edit/partner.html";
+    public final static String GUIDE_EDIT_PROFILE_VIEW_NAME = "/users/profile/edit/guide.html";
 
     private final ModelMapper mapper;
     private final UserService userService;
     private final ArticlesService articlesService;
     private final List<String> countries;
 
-    public ProfileController(ModelMapper mapper, UserService userService, ArticlesService articlesService, List<String> countries) {
-        this.mapper = mapper;
-        this.userService = userService;
-        this.articlesService = articlesService;
-        this.countries = countries;
-    }
-
     @GetMapping("/{role}/{name}")
     public ModelAndView getUserProfile(ModelAndView modelAndView, @PathVariable String role, @PathVariable String name) {
-        modelAndView.setViewName("users/profile/" + role + ".html");
         switch (role) {
             case "client":
                 ClientViewModel client = mapper.map(userService.findClientByUsername(name), ClientViewModel.class);
                 modelAndView.addObject("client", client);
+                modelAndView.setViewName(CLIENT_PROFILE_VIEW_NAME);
                 break;
             case "partner":
                 PartnerResponseModel partner = mapper.map(userService.findPartnerByUsername(name), PartnerResponseModel.class);
                 modelAndView.addObject("partner", partner);
+                modelAndView.setViewName(PARTNER_PROFILE_VIEW_NAME);
                 break;
             case "guide":
                 GuideResponseModel guide = mapper.map(userService.findGuideByUsername(name), GuideResponseModel.class);
                 modelAndView.addObject("guide", guide);
+                modelAndView.setViewName(GUIDE_PROFILE_VIEW_NAME);
                 break;
             case "admin":
+                UserMainView admin = mapper.map(userService.findClientByUsername(name), UserMainView.class);
                 List<UserMainView> allUsers = userService.findAllUsers().stream()
                         .map(u->mapper.map(u, UserMainView.class))
                         .collect(Collectors.toList());
                 List<ArticleResponseModel> allArticles = articlesService.findAllArticles().stream()
                         .map(a->mapper.map(a, ArticleResponseModel.class))
                         .collect(Collectors.toList());
+                modelAndView.addObject("admin", admin);
                 modelAndView.addObject("users", allUsers);
                 modelAndView.addObject("articles", allArticles);
+                modelAndView.setViewName(ADMIN_PROFILE_VIEW_NAME);
                 break;
         }
         return modelAndView;
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ModelAndView logout(HttpSession session) {
         session.invalidate();
         return new ModelAndView("redirect:/");
@@ -76,22 +85,20 @@ public class ProfileController {
     public ModelAndView editProfile(@PathVariable String name, @PathVariable String role, ModelAndView modelAndView) {
         switch (role) {
             case "client":
-                modelAndView.setViewName("/users/profile/edit/client.html");
+                modelAndView.setViewName(CLIENT_EDIT_PROFILE_VIEW_NAME);
                 ClientViewModel client = mapper.map(userService.findClientByUsername(name), ClientViewModel.class);
                 modelAndView.addObject("client", client);
                 modelAndView.addObject("countries", countries);
                 break;
             case "partner":
-                modelAndView.setViewName("/users/profile/edit/partner.html");
+                modelAndView.setViewName(PARTNER_EDIT_PROFILE_VIEW_NAME);
                 PartnerResponseModel partner = mapper.map(userService.findPartnerByUsername(name), PartnerResponseModel.class);
                 modelAndView.addObject("partner", partner);
                 break;
             case "guide":
-                modelAndView.setViewName("/users/profile/edit/guide.html");
+                modelAndView.setViewName(GUIDE_EDIT_PROFILE_VIEW_NAME);
                 GuideResponseModel guide = mapper.map(userService.findGuideByUsername(name), GuideResponseModel.class);
                 modelAndView.addObject("guide", guide);
-                break;
-            case "admin":
                 break;
         }
         return modelAndView;
@@ -109,9 +116,9 @@ public class ProfileController {
                 try {
                     userService.updateClient(client);
                     modelAndView.setViewName("redirect:/profile/client/" + name);
-                    modelAndView.addObject(client);
-                } catch (Exception e) {
-                    modelAndView.setViewName("redirect:/profile/edit/" + name);
+                    modelAndView.addObject("client",client);
+                }catch (Exception e) {
+                    modelAndView.setViewName("redirect:/profile/edit/client/" + name);
                 }
                 break;
             case "partner":
@@ -119,9 +126,9 @@ public class ProfileController {
                 try {
                     userService.updatePartner(partner);
                     modelAndView.setViewName("redirect:/profile/partner/" + name);
-                    modelAndView.addObject(partner);
+                    modelAndView.addObject("partner", partner);
                 } catch (Exception e) {
-                    modelAndView.setViewName("redirect:/profile/edit/" + name);
+                    modelAndView.setViewName("redirect:/profile/edit/partner/" + name);
                 }
                 break;
             case "guide":
@@ -129,34 +136,31 @@ public class ProfileController {
                 try {
                     userService.updateGuide(guide);
                     modelAndView.setViewName("redirect:/profile/guide/" + name);
-                    modelAndView.addObject(guide);
+                    modelAndView.addObject("guide", guide);
                 } catch (Exception e) {
-                    modelAndView.setViewName("redirect:/profile/edit/" + name);
+                    modelAndView.setViewName("redirect:/profile/edit/guide/" + name);
                 }
         }
         return modelAndView;
     }
 
     @GetMapping("/{user}/save/{offer}")
-    public ModelAndView saveOffer(ModelAndView modelAndView, @PathVariable String user,
+    public String saveOffer(@PathVariable String user,
                                   @PathVariable String offer){
         userService.clientAddOffer(user, offer);
-        modelAndView.setViewName("redirect:/profile/client/"+user);
-        return modelAndView;
+        return "redirect:/profile/client/"+user;
     }
 
     @PostMapping("/create/admin/{name}")
-    public ModelAndView createAdmin(ModelAndView modelAndView, @PathVariable String name, HttpSession session){
+    public String createAdmin(@PathVariable String name, HttpSession session){
         userService.makeAdmin(name);
-        modelAndView.setViewName("redirect:/profile/admin/"+session.getAttribute("username"));
-        return modelAndView;
+        return "redirect:/profile/admin/"+session.getAttribute("username");
     }
 
     @PostMapping("/delete/admin/{name}")
-    public ModelAndView deleteAdmin(ModelAndView modelAndView, @PathVariable String name, HttpSession session){
+    public String deleteAdmin(@PathVariable String name, HttpSession session){
         userService.deleteAdmin(name);
-        modelAndView.setViewName("redirect:/profile/admin/"+session.getAttribute("username"));
-        return modelAndView;
+        return "redirect:/profile/admin/"+session.getAttribute("username");
     }
 
     @ExceptionHandler(NoSuchUser.class)
@@ -164,6 +168,7 @@ public class ProfileController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error-custom.html");
         modelAndView.addObject("message", exception.getMessage());
+        modelAndView.setStatus(HttpStatus.NOT_FOUND);
         return modelAndView;
     }
 }

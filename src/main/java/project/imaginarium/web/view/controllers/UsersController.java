@@ -1,5 +1,6 @@
 package project.imaginarium.web.view.controllers;
 
+import org.springframework.http.HttpStatus;
 import project.imaginarium.service.models.user.UserLoggedServiceModel;
 import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.RoleService;
@@ -26,6 +27,9 @@ import java.util.List;
 @RequestMapping("/users")
 public class UsersController {
 
+    public final static String USERS_REGISTER_CLIENT_VIEW_NAME = "/users/register/client.html";
+    public final static String USERS_REGISTER_PARTNER_VIEW_NAME = "/users/register/partner.html";
+
     private final ModelMapper mapper;
     private final UserService userService;
     private final RoleService roleService;
@@ -35,7 +39,7 @@ public class UsersController {
     @GetMapping("/register/user")
     public ModelAndView getClientRegister(ModelAndView modelAndView) {
         modelAndView.addObject("countries", countries);
-        modelAndView.setViewName("users/register/client.html");
+        modelAndView.setViewName(USERS_REGISTER_CLIENT_VIEW_NAME);
         return modelAndView;
     }
 
@@ -49,19 +53,17 @@ public class UsersController {
             if (serviceModel.getAuthorities().contains(roleService.findRoleByName("ADMIN"))){
                 session.setAttribute("role", "admin");
             }else {
-
                 session.setAttribute("role", "client");
             }
             return new ModelAndView("redirect:/");
         } catch (Exception e) {
-            return new ModelAndView("users/register/client");
+            return new ModelAndView(USERS_REGISTER_CLIENT_VIEW_NAME);
         }
     }
 
     @GetMapping("/register/partner")
-    public ModelAndView getPartnerRegister(ModelAndView modelAndView) {
-        modelAndView.setViewName("users/register/partner.html");
-        return modelAndView;
+    public String getPartnerRegister() {
+        return USERS_REGISTER_PARTNER_VIEW_NAME;
     }
 
     @PostMapping("/register/partner")
@@ -80,12 +82,12 @@ public class UsersController {
             }
             return new ModelAndView("redirect:/");
         } catch (Exception e) {
-            return new ModelAndView("redirect:/users/register/partner.html");
+            return new ModelAndView(USERS_REGISTER_PARTNER_VIEW_NAME);
         }
     }
 
     @PostMapping("/login")
-    public ModelAndView getLogin(@ModelAttribute UserLoginModel model, HttpSession session) throws Exception {
+    public String getLogin(@ModelAttribute UserLoginModel model, HttpSession session) throws Exception {
         UserServiceLoginModel serviceModel = mapper.map(model, UserServiceLoginModel.class);
             UserLoggedServiceModel user = userService.login(serviceModel);
             session.setAttribute("user", user);
@@ -105,7 +107,7 @@ public class UsersController {
             if (user.getAuthorities().contains(roleService.findRoleByName("ADMIN"))){
                 session.setAttribute("role", "admin");
             }
-            return new ModelAndView("redirect:/profile/" + session.getAttribute("role") + "/" + user.getUsername());
+            return "redirect:/profile/" + session.getAttribute("role") + "/" + user.getUsername();
 
     }
 
@@ -114,6 +116,7 @@ public class UsersController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error-custom.html");
         modelAndView.addObject("message", exception.getMessage());
+        modelAndView.setStatus(HttpStatus.NOT_FOUND);
         return modelAndView;
     }
 }

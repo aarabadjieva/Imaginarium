@@ -86,12 +86,13 @@
     display: block;
     position: absolute;
     right: 18px;
-    bottom: 18px;
+    bottom: -40px;
     width: 41px;
     height: 41px;
     line-height: 41px;
     font-size: 30px;
     font-weight: 400;
+    text-align:center;
     color: #FFFFFF;
     background: #C5B358;
     -webkit-transition: all 200ms ease;

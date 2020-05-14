@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import project.imaginarium.data.models.Article;
 import project.imaginarium.service.models.ArticleServiceModel;
 import project.imaginarium.service.services.ArticlesService;
+import project.imaginarium.web.api.models.article.ArticleResponseModel;
 
 import java.util.Comparator;
 import java.util.List;
@@ -42,6 +43,16 @@ public class ArticlesServiceImpl implements ArticlesService {
     public void deleteArticle(String title) {
         Article article = articleRepository.findByTitle(title);
         articleRepository.delete(article);
+    }
+
+    @Override
+    public void editArticle(ArticleResponseModel model) {
+        Article article = articleRepository.findByTitle(model.getTitle());
+        article.setTitle(model.getTitle());
+        article.setContent(model.getContent());
+        article.setPicture(model.getPicture());
+        article.setDate(model.getDate());
+        articleRepository.saveAndFlush(article);
     }
 
 }

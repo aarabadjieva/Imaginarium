@@ -24,3 +24,8 @@
     overflow:hidden;
     text-align:center;
 }
+
+.article_img{
+    width:900px;
+    height:550px;
+}

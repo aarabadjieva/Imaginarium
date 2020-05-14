@@ -1,6 +1,7 @@
 package project.imaginarium.service.services;
 
 import project.imaginarium.service.models.ArticleServiceModel;
+import project.imaginarium.web.api.models.article.ArticleResponseModel;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface ArticlesService {
     ArticleServiceModel findByTitle(String title);
 
     void deleteArticle(String title);
+
+    void editArticle(ArticleResponseModel model);
 }

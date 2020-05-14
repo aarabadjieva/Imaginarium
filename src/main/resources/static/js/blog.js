@@ -9,12 +9,17 @@ const articleToString = (article) => `
 ${article.title}
 </div>
 <div class="post_image">
-<img src="${article.picture}" alt="">
-<a href="/articles/${article.title}"><div class="post_image_box text-center">+</div></a>
+<img class="article_img" src="${article.picture}" alt="">
 </div>
 <div class="post_text">
-<p>${article.content}</p>
+<p>${article.content.substring(0, 604)}</p>
 </div>
+<div class="collapse" id="collapse">
+<div class="card card-body">
+<p>${article.content.substring(604)}</p>
+</div>
+</div>
+<div class="post_image_box" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapse">+</div>
 </div>
 `
 

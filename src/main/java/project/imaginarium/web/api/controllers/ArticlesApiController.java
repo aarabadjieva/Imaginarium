@@ -22,7 +22,7 @@ public class ArticlesApiController {
 
 
     @PostMapping("/articles/create")
-    public void allArticles(ArticleRequestCreateModel model, HttpServletResponse response) throws IOException {
+    public void createArticle(ArticleRequestCreateModel model, HttpServletResponse response) throws IOException {
         ArticleServiceModel serviceModel = mapper.map(model, ArticleServiceModel.class);
         try {
             articlesService.saveArticle(serviceModel);

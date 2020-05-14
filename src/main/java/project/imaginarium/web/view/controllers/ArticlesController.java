@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.service.services.ArticlesService;
 import project.imaginarium.web.api.models.article.ArticleResponseModel;
@@ -18,7 +15,7 @@ import project.imaginarium.web.api.models.article.ArticleResponseModel;
 public class ArticlesController {
 
     public final static String ARTICLES_CREATE_VIEW_NAME = "articles/create.html";
-    public final static String ARTICLES_CONTENT_VIEW_NAME = "articles/content.html";
+    public final static String ARTICLES_EDIT_VIEW_NAME = "articles/edit.html";
 
     private final ArticlesService articlesService;
     private final ModelMapper mapper;
@@ -29,18 +26,22 @@ public class ArticlesController {
         return ARTICLES_CREATE_VIEW_NAME;
     }
 
-
-    @GetMapping("/{name}")
-    public ModelAndView articleContent(ModelAndView modelAndView, @PathVariable String name){
-       ArticleResponseModel article = mapper.map(articlesService.findByTitle(name), ArticleResponseModel.class);
-       modelAndView.addObject("article", article);
-       modelAndView.setViewName(ARTICLES_CONTENT_VIEW_NAME);
-       return modelAndView;
-    }
-
     @GetMapping("/edit/{title}")
     public ModelAndView getEditArticle(@PathVariable String title) {
-        //TODO: edit article
+        ArticleResponseModel article = mapper.map(articlesService.findByTitle(title), ArticleResponseModel.class);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("article", article);
+        modelAndView.setViewName(ARTICLES_EDIT_VIEW_NAME);
+        return modelAndView;
+    }
+
+    @PostMapping("/edit/{title}")
+    public ModelAndView getEditArticle(@PathVariable String title, @ModelAttribute ArticleResponseModel model) {
+        try{
+            articlesService.editArticle(model);
+        }catch (Exception ignored){
+
+        }
         return new ModelAndView("redirect:/articles/" + title);
     }
 

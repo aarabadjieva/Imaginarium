@@ -53,8 +53,11 @@ class UsersControllerTest extends ImaginariumApplicationBaseTests {
 
     @Test
     void createClient_shouldRedirectToHomePageAndSetSessionAttributesAndStatus302IfModel_HAS_NO_EmptyFields() throws Exception {
+
         Mockito.when(mockUserRepo.count()).thenReturn(5L);
         Mockito.when(mockHashingService.hash("pass")).thenReturn("pass");
+        Mockito.when(mockRoleRepo.findByAuthority("CLIENT")).thenReturn(Optional.of(new Role("CLIENT")));
+        Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
         mockMvc.perform(post("/users/register/user")
                 .param("username", "username")
                 .param("email", "mail@mail.com")
@@ -90,6 +93,8 @@ class UsersControllerTest extends ImaginariumApplicationBaseTests {
     void createPartner_shouldRedirectToHomePageAndSetSessionAttributeUsernameAndStatus302IfModel_HAS_NO_EmptyFields() throws Exception {
         Mockito.when(mockUserRepo.count()).thenReturn(5L);
         Mockito.when(mockHashingService.hash("pass")).thenReturn("pass");
+        Mockito.when(mockRoleRepo.findByAuthority("PARTNER")).thenReturn(Optional.of(new Role("PARTNER")));
+        Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
         mockMvc.perform(post("/users/register/partner")
                 .param("username", "username")
                 .param("email", "mail@mail.com")
@@ -121,6 +126,7 @@ class UsersControllerTest extends ImaginariumApplicationBaseTests {
         Mockito.when(mockUserRepo.findByUsernameAndPassword(client.getUsername(), client.getPassword()))
                 .thenReturn(Optional.of(client));
         Mockito.when(mockHashingService.hash(client.getPassword())).thenReturn(client.getPassword());
+        Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
         mockMvc.perform(post("/users/login")
         .param("username", client.getUsername())
         .param("password", client.getPassword()))
@@ -139,6 +145,7 @@ class UsersControllerTest extends ImaginariumApplicationBaseTests {
         Mockito.when(mockUserRepo.findByUsernameAndPassword(partner.getUsername(), partner.getPassword()))
                 .thenReturn(Optional.of(partner));
         Mockito.when(mockHashingService.hash(partner.getPassword())).thenReturn(partner.getPassword());
+        Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
         mockMvc.perform(post("/users/login")
                 .param("username", partner.getUsername())
                 .param("password", partner.getPassword()))
@@ -157,6 +164,7 @@ class UsersControllerTest extends ImaginariumApplicationBaseTests {
         Mockito.when(mockUserRepo.findByUsernameAndPassword(guide.getUsername(), guide.getPassword()))
                 .thenReturn(Optional.of(guide));
         Mockito.when(mockHashingService.hash(guide.getPassword())).thenReturn(guide.getPassword());
+        Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
         mockMvc.perform(post("/users/login")
                 .param("username", guide.getUsername())
                 .param("password", guide.getPassword()))

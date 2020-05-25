@@ -1,5 +1,6 @@
 package project.imaginarium.service.services.user;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import project.imaginarium.service.models.user.*;
 import project.imaginarium.web.api.models.user.response.GuideResponseModel;
 import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
@@ -9,7 +10,7 @@ import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     void saveClient(ClientRegisterServiceModel serviceModel) throws Exception;
 
     void savePartner(PartnerRegisterServiceModel serviceModel) throws Exception;

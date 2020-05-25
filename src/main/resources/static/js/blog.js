@@ -15,7 +15,7 @@ ${article.title}
 <p>${article.content.substring(0, 604)}</p>
 </div>
 <div class="collapse" id="collapse">
-<div class="card card-body">
+<div class="card card-body text-center">
 <p>${article.content.substring(604)}</p>
 </div>
 </div>

@@ -3,6 +3,7 @@ package project.imaginarium.config;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,5 +27,10 @@ public class AppBeanConfig {
                 })
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    @Bean
+    public BCryptPasswordEncoder encoder(){
+        return new BCryptPasswordEncoder();
     }
 }

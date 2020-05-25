@@ -34,13 +34,13 @@
                 <div class="description_profile"><strong>Description:</strong></div>
                 <div class="description_profile">[[${offer.description}]]</div>
 
-                <div th:if="${session.user.username == offer.provider.username}">
-                <a class="btn btn-info text-white mb-3 d-inline-block" id="offer_edit_btn" th:href="@{/offers/{partner}/edit/{sector}/{name}(partner=${session.user.username}, sector=${offer.sector.name}, name=${offer.name})}">Edit</a>
+                <div th:if="${#authentication.getPrincipal().getUsername() == offer.provider.username}">
+                <a class="btn btn-info text-white mb-3 d-inline-block" id="offer_edit_btn" th:href="@{/offers/{partner}/edit/{sector}/{name}(partner=${#authentication.getPrincipal().getUsername()}, sector=${offer.sector.name}, name=${offer.name})}">Edit</a>
                 <a class="btn btn-info text-white mb-3 d-inline-block" id="offer_delete_btn" onclick="document.getElementById('delete_offer').style.display='block'">Delete</a>
                 <div id="delete_offer" class="modal">
             <span onclick="document.getElementById('delete_offer').style.display='none'" class="close"
                   title="Close Modal">×</span>
-                    <form class="modal-content animated" th:action="@{/offers/{partner}/delete/{offerName} (partner= ${session.user.username}, offerName=${offer.name})}" th:method="post">
+                    <form class="modal-content animated" th:action="@{/offers/{partner}/delete/{offerName} (partner= ${#authentication.getPrincipal().getUsername()}, offerName=${offer.name})}" th:method="post">
                         <div>Are you sure you want to delete [[${offer.name}]]?</div>
                         <div class="button-holder d-flex justify-content-center">
                             <button class="btn signup_btn" type="submit">Yes</button>
@@ -50,11 +50,11 @@
                         </div>
                     </form>
                 </div>
-                    <a class="btn about_button text-white position-relative" th:href="@{/profile/partner/{name}(name=${session.user.username})}">Back to profile</a>
+                    <a class="btn about_button text-white position-relative" th:href="@{/profile/partner/{name}(name=${#authentication.getPrincipal().getUsername()})}">Back to profile</a>
                 </div>
-                <div th:unless="${session.user.username == offer.provider.username}">
-                    <div th:if="${session.role == 'client'}">
-                        <a class="btn btn-info text-white" th:href="@{/profile/{user}/save/{offer}(user=${session.user.username}, offer=${offer.name})}" th:method="post">Save</a>
+                <div th:unless="${#authentication.getPrincipal().getUsername() == offer.provider.username}">
+                    <div th:if="${#authentication.getPrincipal().getSector().getName() == 'client'}">
+                        <a class="btn btn-info text-white" th:href="@{/profile/{user}/save/{offer}(user=${#authentication.getPrincipal().getUsername()}, offer=${offer.name})}" th:method="post">Save</a>
                     </div>
                 </div>
             </div>

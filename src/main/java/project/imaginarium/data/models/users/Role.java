@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 import project.imaginarium.data.models.BaseEntity;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table
-public class Role extends BaseEntity {
+public class Role extends BaseEntity implements GrantedAuthority {
 
     @Column
     private String authority;

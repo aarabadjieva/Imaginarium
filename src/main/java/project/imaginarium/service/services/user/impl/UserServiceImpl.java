@@ -1,6 +1,10 @@
 package project.imaginarium.service.services.user.impl;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.imaginarium.data.models.offers.Offer;
 import project.imaginarium.data.models.users.*;
@@ -11,7 +15,6 @@ import project.imaginarium.service.models.user.*;
 import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.OffersService;
 import project.imaginarium.service.services.RoleService;
-import project.imaginarium.service.services.user.HashingService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.service.services.user.UserValidationService;
 import project.imaginarium.web.api.models.user.response.GuideResponseModel;
@@ -27,25 +30,16 @@ import java.util.stream.Collectors;
 import static project.imaginarium.exeptions.ExceptionMessage.USER_NOT_FOUND_MESSAGE;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final OffersService offersService;
     private final ModelMapper mapper;
-    private final HashingService hashingService;
     private final UserValidationService userValidationService;
     private final CloudinaryService cloudinaryService;
-
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService, OffersService offersService, ModelMapper mapper, HashingService hashingService, UserValidationService userValidationService, CloudinaryService cloudinaryService) {
-        this.userRepository = userRepository;
-        this.roleService = roleService;
-        this.offersService = offersService;
-        this.mapper = mapper;
-        this.hashingService = hashingService;
-        this.userValidationService = userValidationService;
-        this.cloudinaryService = cloudinaryService;
-    }
+    private final BCryptPasswordEncoder encoder;
 
     @Override
     public void saveClient(ClientRegisterServiceModel serviceModel) throws Exception {
@@ -60,12 +54,11 @@ public class UserServiceImpl implements UserService {
             Role role = roleService.findRoleByName("CLIENT");
             serviceModel.setAuthorities(Collections.singleton(role));
         }
-        serviceModel.setPassword(hashingService.hash(serviceModel.getPassword()));
-        serviceModel.setConfirmPassword(hashingService.hash(serviceModel.getConfirmPassword()));
         if (!userValidationService.isValidClient(serviceModel)) {
             throw new Exception("Invalid data");
         }
         Client client = mapper.map(serviceModel, Client.class);
+        client.setPassword(encoder.encode(serviceModel.getPassword()));
         userRepository.saveAndFlush(client);
     }
 
@@ -77,9 +70,6 @@ public class UserServiceImpl implements UserService {
             Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
         }
-
-        serviceModel.setPassword(hashingService.hash(serviceModel.getPassword()));
-        serviceModel.setConfirmPassword(hashingService.hash(serviceModel.getConfirmPassword()));
         if (!userValidationService.isValidPartner(serviceModel)) {
             throw new Exception("Invalid data");
         }
@@ -91,7 +81,7 @@ public class UserServiceImpl implements UserService {
                     serviceModel.getAuthorities().add(role);
                 }
                 Guide guide = mapper.map(serviceModel, Guide.class);
-
+                guide.setPassword(encoder.encode(serviceModel.getPassword()));
                 userRepository.saveAndFlush(guide);
                 break;
             case "hotel":
@@ -102,6 +92,7 @@ public class UserServiceImpl implements UserService {
                     serviceModel.getAuthorities().add(role);
                 }
                 Partner partner = mapper.map(serviceModel, Partner.class);
+                partner.setPassword(encoder.encode(serviceModel.getPassword()));
 
                 userRepository.saveAndFlush(partner);
                 break;
@@ -111,7 +102,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoggedServiceModel login(UserServiceLoginModel serviceModel) {
-        User user = userRepository.findByUsernameAndPassword(serviceModel.getUsername(), hashingService.hash(serviceModel.getPassword())).orElseThrow(() -> new NoSuchUser("Wrong username or password"));
+        User user = userRepository.findByUsernameAndPassword(serviceModel.getUsername(), encoder.encode(serviceModel.getPassword()))
+                .orElseThrow(() -> new NoSuchUser("Wrong username or password"));
         return mapper.map(user, UserLoggedServiceModel.class);
     }
 
@@ -155,7 +147,7 @@ public class UserServiceImpl implements UserService {
         }
         client.setEmail(model.getEmail());
         if (!model.getPassword().equals("password%")) {
-            client.setPassword(hashingService.hash(model.getPassword()));
+            client.setPassword(encoder.encode(model.getPassword()));
         }
         client.setCountry(model.getCountry());
         userRepository.saveAndFlush(client);
@@ -169,7 +161,7 @@ public class UserServiceImpl implements UserService {
         }
         partner.setEmail(model.getEmail());
         if (!model.getPassword().equals("password%")) {
-            partner.setPassword(hashingService.hash(model.getPassword()));
+            partner.setPassword(encoder.encode(model.getPassword()));
         }
         partner.setName(model.getName());
         partner.setDescription(model.getDescription());
@@ -186,7 +178,7 @@ public class UserServiceImpl implements UserService {
         }
         guide.setEmail(model.getEmail());
         if (!model.getPassword().equals("password%")) {
-            guide.setPassword(hashingService.hash(model.getPassword()));
+            guide.setPassword(encoder.encode(model.getPassword()));
         }
         guide.setName(model.getName());
         guide.setDescription(model.getDescription());
@@ -227,5 +219,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(name).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE));
         user.getAuthorities().remove(roleService.findRoleByName("ADMIN"));
         userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("No user with this username"));
     }
 }

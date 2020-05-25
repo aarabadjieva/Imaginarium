@@ -5,7 +5,7 @@ const URL = {
 const partnerToString = (partner) => `
 <div class="col-lg-3 col-md-6 mb-lg-0 mb-5">
  <div class="avatar mx-auto">
- <img src="${partner.logo}" class="rounded-circle z-depth-1"
+ <img src="${partner.logo}" onerror="this.src = '/images/partner_no_pic.jpg';" class="rounded-circle z-depth-1"
   alt="Partner picture">
  </div>
  <h5 class="font-weight-bold mt-4 mb-3"><h3 class="font-weight-bold">${partner.name}</h3></h5>
@@ -18,7 +18,7 @@ const guideToString = (guide) => `
 <div class="col-lg-3 col-md-6 mb-lg-0 mb-5">
 <div class="avatar mx-auto">
 <img src="${guide.logo}" class="rounded-circle z-depth-1"
- alt="partner pictire">
+ alt="partner picture">
 </div>
 <h5 class="font-weight-bold mt-4 mb-3"><h3 class="font-weight-bold">${guide.name}</h3></h5>
 <p class="blue-text"><strong>Planet: </strong>${guide.planet}</p>
@@ -31,10 +31,10 @@ fetch(URL.about)
     .then(result => {
         let partnersResult = '';
         let guidesResult = '';
-        for (var key in result) {
-            if (result.hasOwnProperty(key)) {
-                Array.from(result[key]).forEach(partner => {
-                    if (partner.sector !== 'GUIDES') {
+        for (var partners in result) {
+            if (result.hasOwnProperty(partners)) {
+                Array.from(result[partners]).forEach(partner => {
+                    if (partner.sector !== 'GUIDE') {
                         const partnerString = partnerToString(partner);
                         partnersResult += partnerString;
                     } else {

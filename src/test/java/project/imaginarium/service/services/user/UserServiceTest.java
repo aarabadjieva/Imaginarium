@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import project.imaginarium.base.ImaginariumApplicationBaseTests;
 import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Offer;
@@ -48,7 +49,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
     private OffersService offersService;
 
     @MockBean
-    private HashingService hashingService;
+    private BCryptPasswordEncoder encoder;
 
     private ModelMapper mapper;
 
@@ -72,7 +73,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
         Role role = new Role("ADMIN");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.count()).thenReturn(0L);
-        Mockito.when(hashingService.hash(registerServiceModel.getPassword())).thenReturn("pass");
+        Mockito.when(encoder.encode(registerServiceModel.getPassword())).thenReturn("pass");
         Mockito.when(userValidationService.isValidClient(registerServiceModel)).thenReturn(true);
         service.saveClient(registerServiceModel);
         ArgumentCaptor<Client> captor = ArgumentCaptor.forClass(Client.class);
@@ -89,7 +90,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
         Role role = new Role("CLIENT");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.count()).thenReturn(4L);
-        Mockito.when(hashingService.hash(registerServiceModel.getPassword())).thenReturn("pass");
+        Mockito.when(encoder.encode(registerServiceModel.getPassword())).thenReturn("pass");
         Mockito.when(userValidationService.isValidClient(registerServiceModel)).thenReturn(true);
         service.saveClient(registerServiceModel);
         ArgumentCaptor<Client> captor = ArgumentCaptor.forClass(Client.class);
@@ -106,7 +107,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
         Role role = new Role("ADMIN");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.count()).thenReturn(0L);
-        Mockito.when(hashingService.hash(registerServiceModel.getPassword())).thenReturn("pass");
+        Mockito.when(encoder.encode(registerServiceModel.getPassword())).thenReturn("pass");
         Mockito.when(userValidationService.isValidClient(registerServiceModel)).thenReturn(false);
         assertThrows(Exception.class, () -> service.saveClient(registerServiceModel));
     }
@@ -118,7 +119,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
         Role role = new Role("ADMIN");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.count()).thenReturn(0L);
-        Mockito.when(hashingService.hash(registerServiceModel.getPassword())).thenReturn("pass");
+        Mockito.when(encoder.encode(registerServiceModel.getPassword())).thenReturn("pass");
         Mockito.when(userValidationService.isValidPartner(registerServiceModel)).thenReturn(true);
         service.savePartner(registerServiceModel);
         ArgumentCaptor<Partner> captor = ArgumentCaptor.forClass(Partner.class);
@@ -136,7 +137,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
         Role role = new Role("PARTNER");
         Mockito.when(roleService.findRoleByName(role.getAuthority())).thenReturn(role);
         Mockito.when(userRepository.count()).thenReturn(4L);
-        Mockito.when(hashingService.hash(registerServiceModel.getPassword())).thenReturn("pass");
+        Mockito.when(encoder.encode(registerServiceModel.getPassword())).thenReturn("pass");
         Mockito.when(userValidationService.isValidPartner(registerServiceModel)).thenReturn(false);
         assertThrows(Exception.class, () -> service.savePartner(registerServiceModel));
     }
@@ -146,7 +147,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
         UserServiceLoginModel loginUser = mapper.map(user, UserServiceLoginModel.class);
         Mockito.when(userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()))
                 .thenReturn(Optional.ofNullable(user));
-        Mockito.when(hashingService.hash(user.getPassword())).thenReturn("pass");
+        Mockito.when(encoder.encode(user.getPassword())).thenReturn("pass");
         UserLoggedServiceModel loggedUser = service.login(loginUser);
         assertEquals(loggedUser.getUsername(), loginUser.getUsername());
     }
@@ -156,7 +157,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
         UserServiceLoginModel loginUser = mapper.map(user, UserServiceLoginModel.class);
         Mockito.when(userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()))
                 .thenThrow(new NoSuchUser(USER_NOT_FOUND_MESSAGE));
-        Mockito.when(hashingService.hash(user.getPassword())).thenReturn("pass");
+        Mockito.when(encoder.encode(user.getPassword())).thenReturn("pass");
         assertThrows(NoSuchUser.class, () -> service.login(loginUser));
     }
 

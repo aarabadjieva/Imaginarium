@@ -1,18 +1,18 @@
 package project.imaginarium.web.view.controllers;
 
-import org.springframework.http.HttpStatus;
-import project.imaginarium.service.models.user.UserLoggedServiceModel;
-import project.imaginarium.service.services.CloudinaryService;
-import project.imaginarium.service.services.RoleService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
+import project.imaginarium.service.models.user.UserLoggedServiceModel;
 import project.imaginarium.service.models.user.UserServiceLoginModel;
+import project.imaginarium.service.services.CloudinaryService;
+import project.imaginarium.service.services.RoleService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.web.view.models.user.UserLoginModel;
 import project.imaginarium.web.view.models.user.register.ClientRegisterModel;
@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/users")
+@RequestMapping()
 public class UsersController {
 
     public final static String USERS_REGISTER_CLIENT_VIEW_NAME = "/users/register/client.html";
@@ -57,7 +57,9 @@ public class UsersController {
             }
             return new ModelAndView("redirect:/");
         } catch (Exception e) {
-            return new ModelAndView(USERS_REGISTER_CLIENT_VIEW_NAME);
+            ModelAndView modelAndView = new ModelAndView(USERS_REGISTER_CLIENT_VIEW_NAME);
+            modelAndView.addObject("countries", countries);
+            return modelAndView;
         }
     }
 
@@ -107,9 +109,10 @@ public class UsersController {
             if (user.getAuthorities().contains(roleService.findRoleByName("ADMIN"))){
                 session.setAttribute("role", "admin");
             }
-            return "redirect:/profile/" + session.getAttribute("role") + "/" + user.getUsername();
+            return "redirect:/users/profile/" + session.getAttribute("role") + "/" + user.getUsername();
 
     }
+
 
     @ExceptionHandler(NoSuchUser.class)
     public ModelAndView handleException(Throwable exception){

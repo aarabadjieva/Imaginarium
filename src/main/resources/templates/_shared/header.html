@@ -1,5 +1,6 @@
-<header class="header" xmlns:th="http://www.w3.org/1999/xhtml">
-    <div th:if="${session.user == null}">
+<header class="header" xmlns:th="http://www.w3.org/1999/xhtml"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div sec:authorize="isAnonymous()">
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -18,9 +19,9 @@
                             <ul class="main_nav_list">
                                 <li class="main_nav_item" id="home"><a th:href="@{/}">Home</a></li>
                                 <li class="main_nav_item" id="about"><a th:href="@{/about}">About us</a></li>
-                                <li class="main_nav_item" id="register"><a th:href="@{/users/register/user}">Register</a>
+                                <li class="main_nav_item" id="register"><a th:href="@{/register/user}">Register</a>
                                 </li>
-                                <li class="main_nav_item" id="partner"><a th:href="@{/users/register/partner}">Get involved</a>
+                                <li class="main_nav_item" id="partner"><a th:href="@{/register/partner}">Get involved</a>
                                 </li>
                                 <li class="main_nav_item" id="blog"><a th:href="@{/blog}">Blog</a></li>
                                 <li class="main_nav_item" id="contacts"><a th:href="@{/contacts}">Contacts</a></li>
@@ -32,7 +33,7 @@
                             <li class="main_nav_item" id="login"><img id="loginEvent"
                                                                       onclick="document.getElementById('id01').style.display='block'"
                                                                       class="login_form_img rounded-circle"
-                                                                      src="/images/login_picture.png" alt=""></li>
+                                                                      src="/images/login_picture.png" alt="profile picture"></li>
                         </div>
 
                         <!-- Hamburger -->
@@ -45,7 +46,7 @@
         <div id="id01" class="modal">
             <span onclick="document.getElementById('id01').style.display='none'" class="close"
                   title="Close Modal">×</span>
-            <form class="modal-content animated" th:action="@{/users/login}" th:method="post">
+            <form class="modal-content animated" th:action="@{/j_spring_security_check}" th:method="post">
                 <div class="form-group">
                     <div class="label-holder text-white d-flex justify-content-center">
                         <label for="username" class="h3 mb-2 modal_label">Username:</label>
@@ -71,7 +72,7 @@
     </div>
 
 
-    <div th:unless="${session.user ==null}">
+    <div sec:authorize="isAuthenticated()">
 
         <div class="container">
             <div class="row">
@@ -99,9 +100,11 @@
 
                             <!-- Search -->
                             <div class="search">
-                                <li class="main_nav_item" id="profile"><a th:href="@{/profile/{role}/{name}(role=${session.role}, name=${session.user.username})}"><img
+                                <li class="main_nav_item" id="profile"><a th:href="@{/profile/{role}/{name}(
+                                role=${(#authentication.getPrincipal().getSector().getName() == 'admin') ? 'admin' : (#authentication.getPrincipal().getSector().getName() == 'client') ? 'client' : 'partner'},
+                                name=${#authentication.getPrincipal().getUsername()})}"><img
                                         class="profile_img rounded-circle rounded"
-                                        th:src="${(session.user.logo !=null && !#strings.isEmpty(session.user.logo)) ? session.user.logo : '/images/client_no_picture.webp'}" alt=""></a>
+                                        th:src="${(#authentication.getPrincipal().getLogo() !=null && !#strings.isEmpty(#authentication.getPrincipal().getLogo)) ? #authentication.getPrincipal().getLogo() : '/images/client_no_picture.webp'}" alt=""></a>
                                 </li>
                                 <div>
                                     <a class="logout_btn" th:href="@{/profile/logout}"><strong class="logout_btn">Logout</strong></a>

@@ -10,7 +10,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import project.imaginarium.data.models.Article;
 import project.imaginarium.data.repositories.ArticleRepository;
 import project.imaginarium.service.models.ArticleServiceModel;
+import project.imaginarium.web.api.models.article.ArticleResponseModel;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -32,7 +34,7 @@ class ArticlesServiceTest extends ImaginariumApplicationBaseTests {
         articles.get(1).setDate("2021-05-24");
         articles.get(2).setDate("2019-05-24");
         Mockito.when(articleRepository.findAll()).thenReturn(articles);
-        List<ArticleServiceModel> allArticles = service.findAllArticles();
+        List<ArticleResponseModel> allArticles = service.findAllArticles();
         assertEquals(articles.size(), allArticles.size());
         assertEquals(articles.get(1).getTitle(), allArticles.get(0).getTitle());
         assertEquals(articles.get(0).getTitle(), allArticles.get(1).getTitle());
@@ -40,7 +42,7 @@ class ArticlesServiceTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void saveArticle_shouldSaveArticle() {
+    void saveArticle_shouldSaveArticle() throws IOException {
         ArticleServiceModel article = new ArticleServiceModel();
         service.saveArticle(article);
         ArgumentCaptor<Article> captor = ArgumentCaptor.forClass(Article.class);

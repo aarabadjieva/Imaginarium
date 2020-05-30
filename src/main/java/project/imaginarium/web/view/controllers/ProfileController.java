@@ -75,12 +75,6 @@ public class ProfileController {
         return modelAndView;
     }
 
-    @PostMapping("/logout")
-    public ModelAndView logout(HttpSession session) {
-        session.invalidate();
-        return new ModelAndView("redirect:/");
-    }
-
     @GetMapping("/edit/{role}/{name}")
     public ModelAndView editProfile(@PathVariable String name, @PathVariable String role, ModelAndView modelAndView) {
         switch (role) {
@@ -148,6 +142,13 @@ public class ProfileController {
     public String saveOffer(@PathVariable String user,
                                   @PathVariable String offer){
         userService.clientAddOffer(user, offer);
+        return "redirect:/profile/client/"+user;
+    }
+
+    @GetMapping("/{user}/delete/{offer}")
+    public String deleteOffer(@PathVariable String user,
+                            @PathVariable String offer){
+        userService.clientDeleteOffer(user, offer);
         return "redirect:/profile/client/"+user;
     }
 

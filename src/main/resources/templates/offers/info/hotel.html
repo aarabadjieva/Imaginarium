@@ -54,7 +54,12 @@
                 </div>
                 <div th:unless="${#authentication.getPrincipal().getUsername() == offer.provider.username}">
                     <div th:if="${#authentication.getPrincipal().getSector().getName() == 'client'}">
-                        <a class="btn btn-info text-white" th:href="@{/profile/{user}/save/{offer}(user=${#authentication.getPrincipal().getUsername()}, offer=${offer.name})}" th:method="post">Save</a>
+                        <a class="btn btn-info text-white"
+                           th:href="@{/profile/{user}/save/{offer}(user=${#authentication.getPrincipal().getUsername()}, offer=${offer.name})}"
+                           th:method="post">Save</a>
+                        <a class="btn btn-info text-white"
+                           th:href="@{/profile/{user}/delete/{offer}(user=${#authentication.getPrincipal().getUsername()}, offer=${offer.name})}"
+                           th:method="post">Delete</a>
                     </div>
                 </div>
             </div>

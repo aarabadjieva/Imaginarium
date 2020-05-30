@@ -1,14 +1,17 @@
 package project.imaginarium.service.services.impl;
 
-import project.imaginarium.data.repositories.ArticleRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.imaginarium.data.models.Article;
+import project.imaginarium.data.repositories.ArticleRepository;
 import project.imaginarium.service.models.ArticleServiceModel;
 import project.imaginarium.service.services.ArticlesService;
+import project.imaginarium.service.services.CloudinaryService;
+import project.imaginarium.web.api.models.article.ArticleRequestCreateModel;
 import project.imaginarium.web.api.models.article.ArticleResponseModel;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,19 +22,22 @@ public class ArticlesServiceImpl implements ArticlesService {
 
     private final ArticleRepository articleRepository;
     private final ModelMapper mapper;
+    private final CloudinaryService cloudinaryService;
 
 
     @Override
-    public List<ArticleServiceModel> findAllArticles() {
+    public List<ArticleResponseModel> findAllArticles() {
         return articleRepository.findAll().stream()
-                .map(a-> mapper.map(a, ArticleServiceModel.class))
-                .sorted(Comparator.comparing(ArticleServiceModel::getDate).reversed())
+                .map(a-> mapper.map(a, ArticleResponseModel.class))
+                .sorted(Comparator.comparing(ArticleResponseModel::getDate).reversed())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void saveArticle(ArticleServiceModel model) {
-        articleRepository.saveAndFlush(mapper.map(model, Article.class));
+    public void saveArticle(ArticleServiceModel model) throws IOException {
+        Article article = mapper.map(model, Article.class);
+        article.setPicture(cloudinaryService.upload(model.getPicture()));
+        articleRepository.saveAndFlush(article);
     }
 
     @Override
@@ -46,11 +52,11 @@ public class ArticlesServiceImpl implements ArticlesService {
     }
 
     @Override
-    public void editArticle(ArticleResponseModel model) {
-        Article article = articleRepository.findByTitle(model.getTitle());
+    public void editArticle(ArticleRequestCreateModel model, String title) throws IOException {
+        Article article = articleRepository.findByTitle(title);
         article.setTitle(model.getTitle());
         article.setContent(model.getContent());
-        article.setPicture(model.getPicture());
+        article.setPicture(cloudinaryService.upload(model.getPicture()));
         article.setDate(model.getDate());
         articleRepository.saveAndFlush(article);
     }

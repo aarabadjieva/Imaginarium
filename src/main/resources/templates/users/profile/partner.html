@@ -24,29 +24,36 @@
                 <img class="profile-pic" id="profile_pic" th:src="${partner.logo}" alt="">
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${partner.name}]]</strong></div>
-                    <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${partner.email}]]</div>
+                    <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${partner.email}]]
+                    </div>
                 </div>
                 <div class="rela-block profile-card-stats">
-                    <a class="justify-content-center" th:href="${partner.website}"><strong>[[${partner.website}]]</strong></a>
+                    <a class="justify-content-center"
+                       th:href="${partner.website}"><strong>[[${partner.website}]]</strong></a>
                 </div>
-                    <div class="description_profile"><strong>Description:</strong></div>
-                    <div class="description_profile">[[${partner.description}]]</div>
-                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role=${session.role}, name=${session.user.username})}">Edit</a>
+                <div class="description_profile"><strong>Description:</strong></div>
+                <div class="description_profile">[[${partner.description}]]</div>
+                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}
+      (role=${(#authentication.getPrincipal().getSector().getName() == 'admin') ? 'admin' : (#authentication.getPrincipal().getSector().getName() == 'client') ? 'client' : 'partner'},
+                name=${#authentication.getPrincipal().getUsername()})}">Edit</a>
             </div>
             <div class="rela-block content justify-content-center">
                 <!--/*@thymesVar id="partner" type="project.imaginarium.web.api.models.user.response.PartnerResponseModel"*/-->
                 <th:block th:each="offer : ${partner.offers}">
                     <div class="rela-inline image">
                         <div class="offer_name">[[${offer.name}]]</div>
-                        <img th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${session.user.sector.name}, name=${offer.name})} + '\'' " class="offer_pic" th:src="${offer.picture}" alt="">
+                        <img th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${#authentication.getPrincipal().getSector().getName()}, name=${offer.name})} + '\'' "
+                             class="offer_pic" th:src="${offer.picture}" alt="">
                     </div>
                 </th:block>
             </div>
-            <a class="btn about_button text-white position-relative" th:href="@{/offers/{partner}/add/{offer}(partner=${session.user.username}, offer=${session.user.sector.name})}">Add Offer</a>
+            <a class="btn about_button text-white position-relative"
+               th:href="@{/offers/{partner}/add/{offer}(partner=${#authentication.getPrincipal().getUsername()}, offer=${#authentication.getPrincipal().getSector().getName()})}">Add
+                Offer</a>
         </div>
     </div>
-        <th:block th:include="~{_shared/footer}"/>
-    </div>
-    <th:block th:include="~{_shared/scripts}"/>
+    <th:block th:include="~{_shared/footer}"/>
+</div>
+<th:block th:include="~{_shared/scripts}"/>
 </body>
 </html>

@@ -6,8 +6,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import project.imaginarium.service.services.user.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -15,28 +13,24 @@ import project.imaginarium.service.services.user.UserService;
 @AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
-    private final BCryptPasswordEncoder encoder;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/register/user", "/register/partner", "/about", "/blog", "/contacts").permitAll()
+                .antMatchers("/", "/register/user", "/register/partner", "/about", "/blog", "/contacts", "/api/about", "/api/blog").permitAll()
                 .antMatchers("/styles/**", "/plugins/**", "/js/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/")
                 .and()
-                .logout().logoutSuccessUrl("/login?logout").permitAll()
+                .logout().logoutSuccessUrl("/").permitAll()
                 .and()
                 .csrf().disable()
                 .exceptionHandling().accessDeniedPage("/unauthorized");
 
     }
-
-
+    
 }

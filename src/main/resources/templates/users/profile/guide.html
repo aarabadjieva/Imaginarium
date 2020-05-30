@@ -34,8 +34,8 @@
                 </div>
                 <div class="description_profile"><strong>Description:</strong></div>
                 <div class="description_profile">[[${guide.description}]]</div>
-                <div th:if="${session.user.username == guide.username}">
-                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{name}(name=${guide.username})}">Edit</a>
+                <div th:if="${#authentication.getPrincipal().getUsername() == guide.username}">
+                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/guide/{name}(name=${guide.username})}">Edit</a>
                 </div>
             </div>
         </div>

@@ -35,9 +35,12 @@ public interface UserService extends UserDetailsService {
 
     void clientAddOffer(String user, String offer);
 
+    void clientDeleteOffer(String user, String offer);
+
     List<UserServiceModel> findAllUsers();
 
     void makeAdmin(String name);
 
     void deleteAdmin(String name);
+
 }

@@ -11,4 +11,5 @@ public class ArticleResponseModel {
     private String content;
     private String date;
     private String picture;
+    private String id;
 }

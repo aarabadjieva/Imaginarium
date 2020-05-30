@@ -1,5 +1,6 @@
 package project.imaginarium.service.models.user;
 
+import org.springframework.web.multipart.MultipartFile;
 import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.users.Role;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class PartnerRegisterServiceModel {
     private Set<Role> authorities;
     private String name;
     private String description;
-    private String logo;
+    private MultipartFile logo;
     private Planet planet;
     private Sector sector;
     private String website;

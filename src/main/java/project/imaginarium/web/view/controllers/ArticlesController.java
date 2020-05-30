@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.service.services.ArticlesService;
+import project.imaginarium.web.api.models.article.ArticleRequestCreateModel;
 import project.imaginarium.web.api.models.article.ArticleResponseModel;
 
 @Controller
@@ -14,8 +15,8 @@ import project.imaginarium.web.api.models.article.ArticleResponseModel;
 @RequestMapping("/articles")
 public class ArticlesController {
 
-    public final static String ARTICLES_CREATE_VIEW_NAME = "articles/create.html";
-    public final static String ARTICLES_EDIT_VIEW_NAME = "articles/edit.html";
+    public final static String ARTICLES_CREATE_VIEW_NAME = "/articles/create.html";
+    public final static String ARTICLES_EDIT_VIEW_NAME = "/articles/edit.html";
 
     private final ArticlesService articlesService;
     private final ModelMapper mapper;
@@ -36,13 +37,13 @@ public class ArticlesController {
     }
 
     @PostMapping("/edit/{title}")
-    public ModelAndView getEditArticle(@PathVariable String title, @ModelAttribute ArticleResponseModel model) {
+    public ModelAndView getEditArticle(@ModelAttribute ArticleRequestCreateModel model, @PathVariable String title) {
         try{
-            articlesService.editArticle(model);
+            articlesService.editArticle(model, title);
         }catch (Exception ignored){
 
         }
-        return new ModelAndView("redirect:/articles/" + title);
+        return new ModelAndView("redirect:/blog");
     }
 
     @ExceptionHandler(Throwable.class)

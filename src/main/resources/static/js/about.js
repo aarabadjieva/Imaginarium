@@ -47,3 +47,19 @@ fetch(URL.about)
         $('#about_all_partners').html(partnersResult)
         $('#about_all_guides').html(guidesResult)
     })
+
+function readLess() {
+    const dots = document.getElementById("dots");
+    const moreText = document.getElementById("collapse");
+    const btnText = document.getElementById("readMoreBtn");
+
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "Read More";
+        moreText.style.display = "none";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "Read Less";
+        moreText.style.display = "inline";
+    }
+}

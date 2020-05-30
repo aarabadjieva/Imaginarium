@@ -34,13 +34,14 @@
                     <div class="justify-content-center">Price per child: <strong>[[${offer.pricePerChildren}]]$</strong>
                     </div>
                 </div>
+                <br>
                 <div class="description_profile"><strong>Description:</strong></div>
                 <div class="description_profile">[[${offer.description}]]</div>
                 <div th:if="${#authentication.getPrincipal().getUsername() == offer.provider.username}">
                     <a class="btn btn-info text-white mb-3 d-inline-block" id="offer_edit_btn"
                        th:href="@{/offers/{partner}/edit/{sector}/{name}(partner=${#authentication.getPrincipal().getUsername()}, sector=${offer.sector.name}, name=${offer.name})}">Edit</a>
                     <a class="btn btn-info text-white mb-3 d-inline-block" id="offer_delete_btn"
-                       onclick="document.getElementById('delete_hotel').style.display='block'">Delete</a>
+                       onclick="document.getElementById('delete_offer').style.display='block'">Delete</a>
                     <div id="delete_offer" class="modal">
             <span onclick="document.getElementById('delete_offer').style.display='none'" class="close"
                   title="Close Modal">×</span>
@@ -58,20 +59,25 @@
                         </form>
                     </div>
                     <a class="btn about_button text-white position-relative"
-                       th:href="@{/profile/partner/{name}(name=${#authentication.getPrincipal().getUsername()})}">Back to profile</a>
+                       th:href="@{/profile/partner/{name}(name=${#authentication.getPrincipal().getUsername()})}">Back
+                        to profile</a>
                 </div>
                 <div th:unless="${#authentication.getPrincipal().getUsername() == offer.provider.username}">
                     <div th:if="${#authentication.getPrincipal().getSector().getName() == 'client'}">
                         <a class="btn btn-info text-white"
                            th:href="@{/profile/{user}/save/{offer}(user=${#authentication.getPrincipal().getUsername()}, offer=${offer.name})}"
                            th:method="post">Save</a>
+                        <a class="btn btn-info text-white"
+                           th:href="@{/profile/{user}/delete/{offer}(user=${#authentication.getPrincipal().getUsername()}, offer=${offer.name})}"
+                           th:method="post">Delete</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-        <th:block th:include="~{_shared/footer}"/>
-    </div>
-    <th:block th:include="~{_shared/scripts}"/>
+    <th:block th:include="~{_shared/footer}"/>
+</div>
+<th:block th:include="~{_shared/scripts}"/>
+<script src="/js/offer_info.js"></script>
 </body>
 </html>

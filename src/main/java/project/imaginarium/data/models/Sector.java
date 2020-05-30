@@ -8,7 +8,8 @@ public enum Sector {
     VEHICLE("vehicle"),
     EVENT("event"),
     GUIDE("guide"),
-    CLIENT("client");
+    CLIENT("client"),
+    ADMIN("admin");
 
     public final String name;
 

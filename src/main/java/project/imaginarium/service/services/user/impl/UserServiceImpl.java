@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Offer;
 import project.imaginarium.data.models.users.*;
 import project.imaginarium.data.repositories.UserRepository;
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
             }
             Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
+            serviceModel.setSector(Sector.ADMIN);
             serviceModel.setLogo("/images/admin-image.gif");
         }else {
             Role role = roleService.findRoleByName("CLIENT");
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
             }
             Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
+            serviceModel.setSector(Sector.ADMIN);
         }
         if (!userValidationService.isValidPartner(serviceModel)) {
             throw new Exception("Invalid data");
@@ -82,6 +85,7 @@ public class UserServiceImpl implements UserService {
                 }
                 Guide guide = mapper.map(serviceModel, Guide.class);
                 guide.setPassword(encoder.encode(serviceModel.getPassword()));
+                guide.setLogo(cloudinaryService.upload(serviceModel.getLogo()));
                 userRepository.saveAndFlush(guide);
                 break;
             case "hotel":
@@ -93,7 +97,7 @@ public class UserServiceImpl implements UserService {
                 }
                 Partner partner = mapper.map(serviceModel, Partner.class);
                 partner.setPassword(encoder.encode(serviceModel.getPassword()));
-
+                partner.setLogo(cloudinaryService.upload(serviceModel.getLogo()));
                 userRepository.saveAndFlush(partner);
                 break;
 
@@ -197,6 +201,18 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchOffer("Offer not found");
         }
         client.getOffers().add(offer);
+        userRepository.saveAndFlush(client);
+    }
+
+    @Override
+    public void clientDeleteOffer(String username, String offerName) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        Client client = mapper.map(user, Client.class);
+        Offer offer = offersService.findOfferByName(offerName);
+        if (offer == null) {
+            throw new NoSuchOffer("Offer not found");
+        }
+        client.getOffers().remove(offer);
         userRepository.saveAndFlush(client);
     }
 

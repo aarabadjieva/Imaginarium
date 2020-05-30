@@ -36,7 +36,8 @@
                 <th:block th:each="offer : ${client.offers}">
                     <div class="rela-inline image">
                         <div class="offer_name">[[${offer.name}]]</div>
-                        <img class="offer_pic" th:src="${offer.picture}" alt="">
+                        <img class="offer_pic" th:src="${offer.picture}" alt=""
+                             th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${offer.getProvider().getSector().getName()}, name=${offer.name})} + '\'' ">
                     </div>
                 </th:block>
             </div>

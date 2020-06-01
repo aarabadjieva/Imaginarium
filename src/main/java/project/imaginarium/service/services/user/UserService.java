@@ -1,6 +1,7 @@
 package project.imaginarium.service.services.user;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 import project.imaginarium.service.models.user.*;
 import project.imaginarium.web.api.models.user.response.GuideResponseModel;
 import project.imaginarium.web.api.models.user.response.PartnerResponseModel;
@@ -8,6 +9,7 @@ import project.imaginarium.web.view.models.user.edit.ClientEditModel;
 import project.imaginarium.web.view.models.user.edit.GuideEditModel;
 import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -43,4 +45,5 @@ public interface UserService extends UserDetailsService {
 
     void deleteAdmin(String name);
 
+    void changePicture(String username, MultipartFile file) throws IOException;
 }

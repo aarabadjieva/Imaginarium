@@ -16,9 +16,11 @@ import project.imaginarium.web.view.models.user.UserMainView;
 import project.imaginarium.web.view.models.user.edit.ClientEditModel;
 import project.imaginarium.web.view.models.user.edit.GuideEditModel;
 import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
+import project.imaginarium.web.view.models.user.edit.UserChangePictureModel;
 import project.imaginarium.web.view.models.user.view.ClientViewModel;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,7 +122,6 @@ public class ProfileController {
                 try {
                     userService.updatePartner(partner);
                     modelAndView.setViewName("redirect:/profile/partner/" + name);
-                    modelAndView.addObject("partner", partner);
                 } catch (Exception e) {
                     modelAndView.setViewName("redirect:/profile/edit/partner/" + name);
                 }
@@ -136,6 +137,12 @@ public class ProfileController {
                 }
         }
         return modelAndView;
+    }
+
+    @PostMapping("/{username}/change_picture")
+    public String changePicture(@PathVariable String username, @ModelAttribute UserChangePictureModel model) throws IOException {
+        userService.changePicture(username, model.getPicture());
+        return "redirect:/";
     }
 
     @GetMapping("/{user}/save/{offer}")
@@ -157,6 +164,7 @@ public class ProfileController {
         userService.makeAdmin(name);
         return "redirect:/profile/admin/"+session.getAttribute("username");
     }
+
 
     @PostMapping("/delete/admin/{name}")
     public String deleteAdmin(@PathVariable String name, HttpSession session){

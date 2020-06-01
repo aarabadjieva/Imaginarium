@@ -15,7 +15,6 @@ import project.imaginarium.web.view.models.user.register.PartnerRegisterModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -57,7 +56,7 @@ public class UsersController {
     }
 
     @PostMapping("/register/partner")
-    public ModelAndView createPartner(@ModelAttribute PartnerRegisterModel model, HttpServletRequest request) throws IOException {
+    public ModelAndView createPartner(@ModelAttribute PartnerRegisterModel model, HttpServletRequest request) {
         PartnerRegisterServiceModel serviceModel = mapper.map(model, PartnerRegisterServiceModel.class);
         try {
             userService.savePartner(serviceModel);

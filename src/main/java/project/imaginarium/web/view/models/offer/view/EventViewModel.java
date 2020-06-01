@@ -25,4 +25,6 @@ public class EventViewModel {
     private int year;
     private int ageRestrictionMin;
     private Partner provider;
+    private List<String> clientNames;
+
 }

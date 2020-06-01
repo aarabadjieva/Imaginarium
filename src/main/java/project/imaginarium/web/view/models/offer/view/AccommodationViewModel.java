@@ -24,5 +24,6 @@ public class AccommodationViewModel {
     private BigDecimal pricePerAdult;
     private BigDecimal pricePerChildren;
     private Partner provider;
+    private List<String> clientNames;
 
 }

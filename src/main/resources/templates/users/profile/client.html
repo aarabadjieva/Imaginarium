@@ -20,8 +20,11 @@
 
         <div class="rela-block container">
             <div class="rela-block profile-card">
-                    <img class="profile-pic" id="profile_pic" src="/images/client_no_picture.webp" alt="">
-                <div class="rela-block profile-name-container">
+                <div class="profile-pic">
+                    <img class="pic" id="profile_pic" th:src="${#authentication.getPrincipal().getLogo()}" onerror="src = '/images/client_no_picture.webp'" alt="">
+                    <a class="middle btn" onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
+                </div>
+                    <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${client.username}]]</strong></div>
                     <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${client.email}]]</div>
                 </div>
@@ -29,7 +32,7 @@
                     <div class="justify-content-center"><strong>Country:</strong>[[${client.country}]]</div>
                 </div>
                 <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
-                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role = ${session.role}, name=${client.username})}">Edit</a>
+                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role = ${#authentication.getPrincipal().getSector().getName()}, name=${client.username})}">Edit</a>
             </div>
             <div class="rela-block content">
                 <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->

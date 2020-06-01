@@ -2,10 +2,14 @@ package project.imaginarium.service.services.user.impl;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Offer;
 import project.imaginarium.data.models.users.*;
@@ -24,6 +28,7 @@ import project.imaginarium.web.view.models.user.edit.ClientEditModel;
 import project.imaginarium.web.view.models.user.edit.GuideEditModel;
 import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -169,7 +174,6 @@ public class UserServiceImpl implements UserService {
         }
         partner.setName(model.getName());
         partner.setDescription(model.getDescription());
-        partner.setLogo(cloudinaryService.upload(model.getLogo()));
         partner.setWebsite(model.getWebsite());
         userRepository.saveAndFlush(partner);
     }
@@ -187,7 +191,6 @@ public class UserServiceImpl implements UserService {
         guide.setName(model.getName());
         guide.setDescription(model.getDescription());
         guide.setPlanet(model.getPlanet());
-        guide.setLogo(cloudinaryService.upload(model.getLogo()));
         guide.setPrice(model.getPrice());
         userRepository.saveAndFlush(guide);
     }
@@ -202,6 +205,8 @@ public class UserServiceImpl implements UserService {
         }
         client.getOffers().add(offer);
         userRepository.saveAndFlush(client);
+        System.out.println(offer.getClients().get(0));
+        System.out.println(offer.getClients().toString());
     }
 
     @Override
@@ -235,6 +240,15 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(name).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE));
         user.getAuthorities().remove(roleService.findRoleByName("ADMIN"));
         userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public void changePicture(String username, MultipartFile file) throws IOException {
+        User user = userRepository.findByUsername(username).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        user.setLogo(cloudinaryService.upload(file));
+        userRepository.saveAndFlush(user);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     @Override

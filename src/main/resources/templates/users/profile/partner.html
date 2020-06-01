@@ -21,7 +21,10 @@
         <div class="rela-block container">
             <div class="rela-block profile-card">
                 <!--/*@thymesVar id="partner" type="project.imaginarium.web.api.models.user.response.PartnerResponseModel"*/-->
-                <img class="profile-pic" id="profile_pic" th:src="${partner.logo}" alt="">
+                <div class="profile-pic">
+                    <img class="pic" id="profile_pic" th:src="${partner.logo}" alt="">
+                    <a class="middle btn" onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
+                </div>
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${partner.name}]]</strong></div>
                     <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${partner.email}]]

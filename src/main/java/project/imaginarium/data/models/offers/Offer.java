@@ -1,5 +1,6 @@
 package project.imaginarium.data.models.offers;
 
+import project.imaginarium.data.models.users.Client;
 import project.imaginarium.data.models.users.Partner;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,4 +41,7 @@ public class Offer extends BaseEntity {
     @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<Tag> tags;
+
+    @ManyToMany(mappedBy = "offers")
+    private List<Client> clients;
 }

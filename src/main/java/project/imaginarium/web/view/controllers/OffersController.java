@@ -1,27 +1,28 @@
 package project.imaginarium.web.view.controllers;
 
-import org.springframework.http.HttpStatus;
-import project.imaginarium.exeptions.NoSuchOffer;
-import project.imaginarium.exeptions.NoSuchUser;
-import project.imaginarium.service.services.CloudinaryService;
-import project.imaginarium.web.api.models.user.response.GuideResponseModel;
-import project.imaginarium.web.view.models.offer.add.AccommodationAdd;
-import project.imaginarium.web.view.models.offer.add.EventAdd;
-import project.imaginarium.web.view.models.offer.add.VehicleAdd;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import project.imaginarium.data.models.users.User;
+import project.imaginarium.exeptions.NoSuchOffer;
+import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.offer.AccommodationServiceModel;
 import project.imaginarium.service.models.offer.EventServiceModel;
 import project.imaginarium.service.models.offer.VehicleServiceModel;
+import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.OffersService;
 import project.imaginarium.service.services.user.UserService;
+import project.imaginarium.web.api.models.user.response.GuideResponseModel;
+import project.imaginarium.web.view.models.offer.add.AccommodationAdd;
+import project.imaginarium.web.view.models.offer.add.EventAdd;
+import project.imaginarium.web.view.models.offer.add.VehicleAdd;
 import project.imaginarium.web.view.models.offer.view.AccommodationViewModel;
-import project.imaginarium.web.view.models.offer.view.OfferShortViewModel;
 import project.imaginarium.web.view.models.offer.view.EventViewModel;
+import project.imaginarium.web.view.models.offer.view.OfferShortViewModel;
 import project.imaginarium.web.view.models.offer.view.VehicleViewModel;
 
 import javax.validation.Valid;
@@ -143,16 +144,19 @@ public class OffersController {
             case "hotel":
                 modelAndView.setViewName(OFFERS_INFO_HOTELS_VIEW_NAME);
                 AccommodationViewModel accommodation = mapper.map(offersService.findOfferByName(name), AccommodationViewModel.class);
+                accommodation.setClientNames(offersService.findOfferByName(name).getClients().stream().map(User::getUsername).collect(Collectors.toList()));
                 modelAndView.addObject("offer", accommodation);
                 break;
             case "event":
                 modelAndView.setViewName(OFFERS_INFO_EVENT_VIEW_NAME);
                 EventViewModel event = mapper.map(offersService.findOfferByName(name), EventViewModel.class);
+                event.setClientNames(offersService.findOfferByName(name).getClients().stream().map(User::getUsername).collect(Collectors.toList()));
                 modelAndView.addObject("offer", event);
                 break;
             case "vehicle":
                 modelAndView.setViewName(OFFERS_INFO_VEHICLES_VIEW_NAME);
                 VehicleViewModel vehicle = mapper.map(offersService.findOfferByName(name), VehicleViewModel.class);
+                vehicle.setClientNames(offersService.findOfferByName(name).getClients().stream().map(User::getUsername).collect(Collectors.toList()));
                 modelAndView.addObject("offer", vehicle);
                 break;
         }

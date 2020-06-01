@@ -147,3 +147,60 @@
 .planet{
     color:white;
 }
+
+.middle {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: 180px;
+    width: 180px;
+    border-radius: 100%;
+    background-size: cover;
+    opacity: 0;
+}
+
+.profile-pic:hover .pic {
+    opacity: 0.5;
+}
+
+.profile-pic:hover .middle {
+    opacity: 0.5;
+    background: url("/images/foto.png");
+    background-size:100%;
+}
+
+
+.pic{
+    display: false;
+    position: absolute;
+    margin: false;
+    top: -10px;
+    left: 50%;
+    right: false;
+    bottom: false;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    height: 180px;
+    width: 180px;
+    border: 10px solid #fff;
+    border-radius: 100%;
+    background-size: cover;
+}
+
+.middle:hover{
+    cursor:pointer;
+}
+
+.upload{
+    color: black;
+    margin-left:60%;
+}
+
+.form-control{
+    margin-left:10%;
+    margin-right:5%;
+}
+
+

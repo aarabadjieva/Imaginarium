@@ -22,5 +22,6 @@ public class VehicleViewModel {
     private List<Tag> tags;
     private BigDecimal pricePerDay;
     private Partner provider;
+    private List<String> clientNames;
 
 }

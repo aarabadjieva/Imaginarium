@@ -14,5 +14,6 @@ public class ClientViewModel {
     private String email;
     private String password;
     private String country;
+    private String logo;
     private List<Offer> offers;
 }

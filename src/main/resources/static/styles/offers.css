@@ -227,3 +227,12 @@
     -webkit-transition-delay: 0.2s;
     transition-delay: 0.2s;
 }
+
+.delete_offer{
+    margin-left:38%;
+    background-color:#a91c1c !important;
+}
+
+.save_offer{
+    margin-left:38%;
+}

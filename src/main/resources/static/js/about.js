@@ -9,7 +9,7 @@ const partnerToString = (partner) => `
   alt="Partner picture">
  </div>
  <h5 class="font-weight-bold mt-4 mb-3"><h3 class="font-weight-bold">${partner.name}</h3></h5>
- <p class="blue-text">Official page: <a href="${partner.website}"><strong>${partner.website}</strong></a></p>
+ <p class="blue-text">Official page: <a href="/dummy"><strong>${partner.website}</strong></a></p>
  <p class="grey-text">${partner.description}</p>
  </div>
 `

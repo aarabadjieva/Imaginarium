@@ -31,5 +31,13 @@
 		})
 	}
 
+function removeLoader(){
+	$( "#sending" ).fadeOut(500, function() {
+		$( "#sending" ).remove();
+	});
+}
+
+
+
 
 

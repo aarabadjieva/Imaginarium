@@ -31,12 +31,12 @@ class ImaginariumInfoControllerTest extends ImaginariumApplicationBaseTests {
                 .andExpect(view().name(IMAGINARIUM_ABOUT_VIEW_NAME));
     }
 
-    @Test
-    void getContacts_shouldReturnContactsViewWith200() throws Exception {
-        mockMvc.perform(get("/contacts"))
-                .andExpect(status().isOk())
-                .andExpect(view().name(IMAGINARIUM_CONTACTS_VIEW_NAME));
-    }
+   // @Test
+   // void getContacts_shouldReturnContactsViewWith200() throws Exception {
+   //     mockMvc.perform(get("/contacts"))
+   //             .andExpect(status().isOk())
+   //             .andExpect(view().name(IMAGINARIUM_CONTACTS_VIEW_NAME));
+   // }
 
     @Test
     void getBlog_shouldReturnBlogViewWith200() throws Exception {

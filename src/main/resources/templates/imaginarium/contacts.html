@@ -56,15 +56,15 @@
                                 <ul>
                                     <li>Address: Somewhere on the planet Earth</li>
                                     <li>Phone: +359 876 248 857</li>
-                                    <li>Email: aarabadjieva@students.softuni.com</li>
+                                    <li>Email: aarabadjieva@students.softuni.bg</li>
                                 </ul>
                             </div>
                             <div class="contact_info_social1">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li><a href="/dummy"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                    <li><a href="/dummy"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                    <li><a href="/dummy"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li><a href="/dummy"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -72,27 +72,22 @@
                 </div>
                 <div class="col-lg-7">
                     <div class="contact_form_container">
-                        <form action="#" id="contact_form" class="clearfix">
-                            <label for="contact_input_name"></label><input id="contact_input_name"
-                                                                           class="contact_input contact_input_name"
-                                                                           type="text" placeholder="Name"
-                                                                           required="required"
-                                                                           data-error="Name is required.">
-                            <label for="contact_input_email"></label><input id="contact_input_email"
+                        <form id="contact_form" class="clearfix">
+                            <label for="email"></label><input id="email" name="email"
                                                                             class="contact_input contact_input_email"
                                                                             type="text" placeholder="E-mail"
                                                                             required="required"
                                                                             data-error="E-mail is required.">
-                            <label for="contact_input_subject"></label><input id="contact_input_subject"
+                            <label for="subject"></label><input id="subject" name="subject"
                                                                               class="contact_input contact_input_subject"
                                                                               type="text" placeholder="Subject">
-                            <label for="contact_input_message"></label><textarea id="contact_input_message"
+                            <label for="message"></label><textarea id="message" name="message"
                                                                                  class="contact_message_input contact_input_message"
-                                                                                 name="message" placeholder="Message"
+                                                                                 placeholder="Message"
                                                                                  required="required"
                                                                                  data-error="Please, write us a message."></textarea>
-                            <button id="contact_send_btn" type="submit" class="contact_send_btn trans_200"
-                                    value="Submit">Send
+                            <button id="contact_send_btn" type="submit" class="contact_send_btn trans_200">
+                                Send
                             </button>
                         </form>
                     </div>
@@ -114,11 +109,32 @@
             </div>
         </div>
     </div>
+
     <th:block th:include="~{_shared/footer}"/>
 </div>
 <th:block th:include="~{_shared/scripts}"/>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu81TbOqR-V5dW8NWzbD0um4hrRzGccmU&callback=initMap"
         async defer></script>
 <script src="/js/contacts.js"></script>
+<script th:inline="javascript">
+    $('#contact_form').submit(function(e){
+        e.preventDefault();
+        $('body').append('<div id="sending">\n' +
+            '        <div class="sending-text">\n' +
+            '            Sending...\n' +
+            '        </div>\n' +
+            '    </div>')
+
+        setTimeout(removeLoader, 2000);
+
+        $.ajax({
+            type: 'post',
+            url: '/contacts',
+            data:  $('#contact_form').serialize(),
+        });
+        $('#contact_form input[type="text"]').val('');
+        $('#contact_form textarea').val('');
+    });
+</script>
 </body>
 </html>

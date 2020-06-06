@@ -197,3 +197,29 @@
     height: calc(33% + 300px);
 
 }
+
+#sending{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.3);
+    width: 100%;
+    height: 100vh;
+    color: white;
+    font-size:x-large;
+    font-weight:800;
+    font-style:oblique;
+    text-align: center;
+}
+#sending .sending-text{
+    top:40%;
+    left:40%;
+    width:20%;
+    height:57%;
+    padding-top:8%;
+    text-align:center;
+    background-image: url("https://media.giphy.com/media/xUOxfj6cTg3ezmjIoo/giphy.gif");
+    background-size:300px;
+    background-repeat:no-repeat;
+}
+

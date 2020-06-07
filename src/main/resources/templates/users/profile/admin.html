@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Admin</title>
@@ -92,6 +93,14 @@
         </table>
         <div class="button-holder d-flex justify-content-center">
             <a class="btn btn-info" th:href="@{/articles/create}">Add Article</a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <div th:if="${admin.username}==${#authentication.getPrincipal().getUsername()}">
+                <a class="about_button btn text-white" th:href="@{/{username}/inbox(username=${admin.username})}">Inbox</a>
+            </div>
+            <div th:unless="${admin.username}==${#authentication.getPrincipal().getUsername()}">
+                <a class="about_button btn text-white" th:href="@{/message/admin/{username}(username=${admin.username})}">Send message</a>
+            </div>
         </div>
     </div>
 </div>

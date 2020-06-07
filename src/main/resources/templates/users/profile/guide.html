@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Profile</title>
@@ -39,6 +40,14 @@
                 <div class="description_profile">[[${guide.description}]]</div>
                 <div th:if="${#authentication.getPrincipal().getUsername() == guide.username}">
                 <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/guide/{name}(name=${guide.username})}">Edit</a>
+                </div>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <div th:if="${guide.username}==${#authentication.getPrincipal().getUsername()}">
+                    <a class="about_button btn text-white" th:href="@{/{username}/inbox(username=${guide.username})}">Inbox</a>
+                </div>
+                <div th:unless="${guide.username}==${#authentication.getPrincipal().getUsername()}">
+                    <a class="about_button btn text-white" th:href="@{/message/guide/{username}(username=${guide.username})}">Send message</a>
                 </div>
             </div>
         </div>

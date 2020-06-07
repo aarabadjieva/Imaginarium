@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Profile</title>
@@ -16,23 +17,27 @@
         <div class="last_background parallax-window" data-parallax="scroll"
              data-image-src="/images/client_profile_background.webp"
              data-speed="0.8"></div>
-    <!-- PAGE STUFF -->
+        <!-- PAGE STUFF -->
 
         <div class="rela-block container">
             <div class="rela-block profile-card">
                 <div class="profile-pic">
-                    <img class="pic" id="profile_pic" th:src="${#authentication.getPrincipal().getLogo()}" onerror="src = '/images/client_no_picture.webp'" alt="">
-                    <a class="middle btn" onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
+                    <img class="pic" id="profile_pic" th:src="${#authentication.getPrincipal().getLogo()}"
+                         onerror="src = '/images/client_no_picture.webp'" alt="">
+                    <a class="middle btn"
+                       onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
                 </div>
-                    <div class="rela-block profile-name-container">
+                <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${client.username}]]</strong></div>
-                    <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${client.email}]]</div>
+                    <div class="rela-block user-desc" id="user_description"><strong>Email:</strong> [[${client.email}]]
+                    </div>
                 </div>
                 <div class="rela-block profile-card-stats">
                     <div class="justify-content-center"><strong>Country:</strong>[[${client.country}]]</div>
                 </div>
                 <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
-                <a class="btn btn-info text-white mb-3" id="profile_edit_btn" th:href="@{/profile/edit/{role}/{name}(role = ${#authentication.getPrincipal().getSector().getName()}, name=${client.username})}">Edit</a>
+                <a class="btn btn-info text-white mb-3" id="profile_edit_btn"
+                   th:href="@{/profile/edit/{role}/{name}(role = ${#authentication.getPrincipal().getSector().getName()}, name=${client.username})}">Edit</a>
             </div>
             <div class="rela-block content">
                 <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
@@ -43,6 +48,14 @@
                              th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${offer.getProvider().getSector().getName()}, name=${offer.name})} + '\'' ">
                     </div>
                 </th:block>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <div th:if="${client.username}==${#authentication.getPrincipal().getUsername()}">
+                    <a class="about_button btn text-white" th:href="@{/{username}/inbox(username=${client.username})}">Inbox</a>
+                </div>
+                <div th:unless="${client.username}==${#authentication.getPrincipal().getUsername()}">
+                    <a class="about_button btn text-white" th:href="@{/message/client/{username}(username=${client.username})}">Send message</a>
+                </div>
             </div>
         </div>
     </div>

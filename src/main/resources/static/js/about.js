@@ -5,8 +5,10 @@ const URL = {
 const partnerToString = (partner) => `
 <div class="col-lg-3 col-md-6 mb-lg-0 mb-5">
  <div class="avatar mx-auto">
+ <a href="/profile/partner/${partner.username}">
  <img src="${partner.logo}" onerror="this.src = '/images/partner_no_pic.jpg';" class="rounded-circle z-depth-1"
   alt="Partner picture">
+  </a>
  </div>
  <h5 class="font-weight-bold mt-4 mb-3"><h3 class="font-weight-bold">${partner.name}</h3></h5>
  <p class="blue-text">Official page: <a href="/dummy"><strong>${partner.website}</strong></a></p>
@@ -17,8 +19,10 @@ const partnerToString = (partner) => `
 const guideToString = (guide) => `
 <div class="col-lg-3 col-md-6 mb-lg-0 mb-5">
 <div class="avatar mx-auto">
+ <a href="/profile/guide/${guide.username}">
 <img src="${guide.logo}" class="rounded-circle z-depth-1"
  alt="partner picture">
+ </a>
 </div>
 <h5 class="font-weight-bold mt-4 mb-3"><h3 class="font-weight-bold">${guide.name}</h3></h5>
 <p class="blue-text"><strong>Planet: </strong>${guide.planet}</p>

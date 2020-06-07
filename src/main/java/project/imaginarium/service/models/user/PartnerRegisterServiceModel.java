@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import project.imaginarium.data.models.Planet;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ public class PartnerRegisterServiceModel {
     private Planet planet;
     private Sector sector;
     private String website;
+    private BigDecimal price;
 
     public PartnerRegisterServiceModel() {
         this.authorities = new HashSet<>();

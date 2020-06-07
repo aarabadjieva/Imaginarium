@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Profile</title>
@@ -53,6 +54,14 @@
             <a class="btn about_button text-white position-relative"
                th:href="@{/offers/{partner}/add/{offer}(partner=${#authentication.getPrincipal().getUsername()}, offer=${#authentication.getPrincipal().getSector().getName()})}">Add
                 Offer</a>
+            <div sec:authorize="isAuthenticated()">
+                <div th:if="${partner.username}==${#authentication.getPrincipal().getUsername()}">
+                    <a class="about_button btn text-white" th:href="@{/{username}/inbox(username=${partner.username})}">Inbox</a>
+                </div>
+                <div th:unless="${partner.username}==${#authentication.getPrincipal().getUsername()}">
+                    <a class="about_button btn text-white" th:href="@{/message/partner/{username}(username=${partner.username})}">Send message</a>
+                </div>
+            </div>
         </div>
     </div>
     <th:block th:include="~{_shared/footer}"/>

@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 import project.imaginarium.data.models.BaseEntity;
+import project.imaginarium.data.models.Message;
 import project.imaginarium.data.models.Sector;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -33,6 +35,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column
     private String logo;
+
+    @OneToMany(mappedBy = "recipient")
+    private List<Message> inbox;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",

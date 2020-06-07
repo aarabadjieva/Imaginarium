@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Message</title>
+    <th:block th:include="~{_shared/head}"/>
+</head>
+<body>
+
+<div class="super_container">
+    <th:block th:include="~{_shared/header}"/>
+    <th:block th:include="~{_shared/menu}"/>
+
+    <div class="last">
+        <div class="last_background parallax-window" data-parallax="scroll"
+             data-image-src="/images/message-background.webp"
+             data-speed="0.8"></div>
+
+        <div class="container_article">
+            <div class="row">
+                <div class="col-lg-10 last_col">
+                    <div class="last_item">
+                        <div class="last_item_content">
+                            <div class="last_subtitle">Create message</div>
+                            <form th:action="@{/message/{sector}/{username}(sector=${#request.getAttribute('sector')}, username=${#request.getAttribute('username')})}" id="create_message" class="mx-auto w-15" method="post">
+                                <div class="form-group row">
+                                    <div class="label-holder textCol d-flex justify-content-center">
+                                        <label for="recipient" class="h4 mb-2 last_text">To:</label>
+                                    </div>
+                                    <input type="text" class="form-control" id="recipient" name="recipient" th:value="${#request.getAttribute('username')}" readonly/>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="label-holder text-white textCol d-flex justify-content-center">
+                                        <label for="about"
+                                               class="h4 mb-2 last_text">About:</label>
+                                    </div>
+                                    <input class="form-control" type="text"
+                                           id="about" name="about" required/>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="label-holder text-white textCol d-flex justify-content-center">
+                                        <label for="text" class="h4 mb-2 last_text">Text:</label>
+                                    </div>
+                                    <textarea class="form-control"
+                                              id="text" rows="20"
+                                              name="text" required></textarea>
+
+                                </div>
+                                <div type="hidden">
+                                    <input type="hidden" id="date" name="date"
+                                           th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+                                </div>
+                                <div type="hidden">
+                                    <input type="hidden" id="sender" name="sender"
+                                           th:value="${#authentication.getPrincipal().getUsername()}">
+                                </div>
+                                <div class="button-holder d-flex justify-content-center">
+                                    <button id="create_message_btn" class="btn btn-info text-white mb-3" type="submit">
+                                        Send
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="~{_shared/footer}"/>
+<th:block th:include="~{_shared/scripts}"/>
+</body>
+</html>

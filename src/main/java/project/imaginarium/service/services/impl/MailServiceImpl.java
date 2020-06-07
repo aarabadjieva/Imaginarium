@@ -1,7 +1,8 @@
-package project.imaginarium.service.services;
+package project.imaginarium.service.services.impl;
 
 import org.springframework.stereotype.Service;
 import project.imaginarium.service.models.MailForm;
+import project.imaginarium.service.services.MailService;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

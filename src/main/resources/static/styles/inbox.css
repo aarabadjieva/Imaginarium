@@ -1,0 +1,30 @@
+.message_delete_btn{
+    background:red;
+    padding-left:1px;
+    padding-right:1px;
+}
+
+.empty{
+    margin-left:46%;
+    margin-bottom:1.4%
+}
+
+.delete_all{
+    position:absolute;
+    margin-left:-36%;
+}
+
+.read{
+    margin-left:-40%;
+}
+
+.delete{
+    margin-right:37%
+}
+
+#delete_all_messages{
+    width:20%;
+    margin-left:26%;
+    margin-top:-4%;
+    text-align:center;
+}

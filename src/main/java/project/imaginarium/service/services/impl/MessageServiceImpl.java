@@ -7,12 +7,15 @@ import project.imaginarium.data.models.Message;
 import project.imaginarium.data.models.users.User;
 import project.imaginarium.data.repositories.MessageRepository;
 import project.imaginarium.data.repositories.UserRepository;
+import project.imaginarium.exeptions.NoSuchMessage;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.MessageServiceModel;
 import project.imaginarium.service.services.MessageService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static project.imaginarium.exeptions.ExceptionMessage.MESSAGE_NOT_FOUND;
 import static project.imaginarium.exeptions.ExceptionMessage.USER_NOT_FOUND_MESSAGE;
 
 @Service
@@ -34,9 +37,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void delete(MessageServiceModel model) {
-        Message message = messageRepository.findBySenderAndAboutAndTextAndRecipientUsername(model.getSender(), model.getAbout(),
-                model.getText(), model.getRecipient());
+    public void delete(String id) {
+        Message message = messageRepository.findById(id).orElseThrow(() -> new NoSuchMessage(MESSAGE_NOT_FOUND));
         messageRepository.delete(message);
     }
 
@@ -50,13 +52,22 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void deleteAll(String username) {
-        List<Message> allMessages = messageRepository.findAllByRecipientUsername(username);
+    public void emptyInbox(String username) {
+        List<Message> allMessages = messageRepository.findAllByRecipientUsernameOrderByDateDesc(username);
         for (Message m : allMessages
-             ) {
+        ) {
             messageRepository.delete(m);
         }
     }
+
+    @Override
+    public List<MessageServiceModel> inbox(String username) {
+        return messageRepository.findAllByRecipientUsernameOrderByDateDesc(username)
+                .stream()
+                .map(m -> mapper.map(m, MessageServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
 
 
 }

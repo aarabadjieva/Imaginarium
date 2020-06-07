@@ -1,16 +1,16 @@
-package project.imaginarium.service.models;
+package project.imaginarium.web.view.models.message;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class MessageServiceModel {
+public class MessageViewModel {
 
     private String id;
     private String sender;
     private String about;
-    private String text;
+    private boolean isRead;
     private String date;
-    private String recipient;
+    private String text;
 }

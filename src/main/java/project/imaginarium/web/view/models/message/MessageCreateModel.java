@@ -1,4 +1,4 @@
-package project.imaginarium.web.view.models;
+package project.imaginarium.web.view.models.message;
 
 import lombok.Getter;
 import lombok.Setter;

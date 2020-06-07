@@ -17,4 +17,5 @@ public class ClientServiceModel {
     private String country;
     private List<Offer> offers;
     private Sector sector;
+    private String logo;
 }

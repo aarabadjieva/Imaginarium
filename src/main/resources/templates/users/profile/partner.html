@@ -24,7 +24,9 @@
                 <!--/*@thymesVar id="partner" type="project.imaginarium.web.api.models.user.response.PartnerResponseModel"*/-->
                 <div class="profile-pic">
                     <img class="pic" id="profile_pic" th:src="${partner.logo}" alt="">
+                    <div th:if="${#authentication.getPrincipal().getUsername()== partner.getUsername()}">
                     <a class="middle btn" onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
+                    </div>
                 </div>
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${partner.name}]]</strong></div>
@@ -51,9 +53,11 @@
                     </div>
                 </th:block>
             </div>
+            <div th:if="${partner.username}==${#authentication.getPrincipal().getUsername()}">
             <a class="btn about_button text-white position-relative"
                th:href="@{/offers/{partner}/add/{offer}(partner=${#authentication.getPrincipal().getUsername()}, offer=${#authentication.getPrincipal().getSector().getName()})}">Add
                 Offer</a>
+            </div>
             <div sec:authorize="isAuthenticated()">
                 <div th:if="${partner.username}==${#authentication.getPrincipal().getUsername()}">
                     <a class="about_button btn text-white" th:href="@{/{username}/inbox(username=${partner.username})}">Inbox</a>

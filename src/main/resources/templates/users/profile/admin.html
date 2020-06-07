@@ -69,18 +69,19 @@
                     <td class="text-center" th:utext="${article.title}"></td>
                     <td class="text-center" th:utext="${article.date}"></td>
                     <td class="text-center">
+                        <input name="title" type="hidden" th:value="${article.title}">
                             <a class="btn btn-info text-white mb-3" id="offer_edit_btn" th:href="@{/articles/edit/{title}(title=${article.title})}">Edit</a>
-                            <a class="btn btn-info text-white mb-3" id="offer_delete_btn" onclick="document.getElementById('delete_article').style.display='block'">Delete</a>
-                            <div id="delete_article" class="modal">
-            <span onclick="document.getElementById('delete_article').style.display='none'" class="close"
+                            <a class="btn btn-info text-white mb-3" id="offer_delete_btn" th:data-id="${article.title}" onclick="document.getElementById(this.getAttribute('data-id')).style.display='block'">Delete</a>
+                        <div th:id="${article.title}" class="modal">
+            <span th:data-id="${article.title}" onclick="document.getElementById(this.getAttribute('data-id')).style.display='none'" class="close"
                   title="Close Modal">×</span>
                             <form class="modal-content animated"
                                   th:action="@{/articles/delete/{title}(title= ${article.title})}" th:method="post">
                                 <div class="text-dark">Are you sure you want to delete [[${article.title}]]?</div>
                                 <div class="button-holder d-flex justify-content-center">
                                     <button class="btn signup_btn" type="submit">Yes</button>
-                                    <button type="button"
-                                            onclick="document.getElementById('delete_article').style.display='none'"
+                                    <button type="button" th:data-id="${article.title}"
+                                            onclick="document.getElementById(this.getAttribute('data-id')).style.display='none'"
                                             class="cancel_btn btn">No
                                     </button>
                                 </div>
@@ -103,8 +104,8 @@
             </div>
         </div>
     </div>
-</div>
 <th:block th:include="~{_shared/footer}"/>
+</div>
 <th:block th:include="~{_shared/scripts}"/>
 </body>
 </html>

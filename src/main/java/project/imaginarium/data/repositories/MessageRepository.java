@@ -9,5 +9,5 @@ public interface MessageRepository extends JpaRepository<Message, String> {
 
     Message findBySenderAndAboutAndTextAndRecipientUsername(String sender, String about, String text, String recipient);
     List<Message> findAllBySenderAndRecipientUsername(String sender, String recipient);
-    List<Message> findAllByRecipientUsername(String username);
+    List<Message> findAllByRecipientUsernameOrderByDateDesc(String username);
 }

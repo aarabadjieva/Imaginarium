@@ -22,10 +22,12 @@
         <div class="rela-block container">
             <div class="rela-block profile-card">
                 <div class="profile-pic">
-                    <img class="pic" id="profile_pic" th:src="${#authentication.getPrincipal().getLogo()}"
+                    <img class="pic" id="profile_pic" th:src="${client.getLogo()}"
                          onerror="src = '/images/client_no_picture.webp'" alt="">
+                    <div th:if="${#authentication.getPrincipal().getUsername()== client.getUsername()}">
                     <a class="middle btn"
                        onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
+                </div>
                 </div>
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${client.username}]]</strong></div>

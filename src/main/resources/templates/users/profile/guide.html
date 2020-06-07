@@ -24,7 +24,9 @@
                 <!--/*@thymesVar id="guide" type="project.imaginarium.web.api.models.user.response.GuideResponseModel"*/-->
                 <div class="profile-pic">
                     <img class="pic" id="profile_pic" th:src="${guide.logo}" alt="">
+                    <div th:if="${#authentication.getPrincipal().getUsername()== guide.getUsername()}">
                     <a class="middle btn" onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
+                    </div>
                 </div>
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${guide.name}]]</strong></div>

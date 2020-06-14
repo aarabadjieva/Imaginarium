@@ -28,3 +28,16 @@
     margin-top:-4%;
     text-align:center;
 }
+
+.hello_inbox{
+    padding-top:70px;
+}
+
+.new_message{
+    text-align:center;
+    font-size:25px;
+    font-weight:800;
+    padding-top:10px;
+    padding-bottom:20px;
+
+}

@@ -3,6 +3,7 @@ package project.imaginarium.web.view.controllers;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -61,17 +62,23 @@ public class ProfileController {
                 modelAndView.setViewName(GUIDE_PROFILE_VIEW_NAME);
                 break;
             case "admin":
-                UserMainView admin = mapper.map(userService.findClientByUsername(name), UserMainView.class);
-                List<UserMainView> allUsers = userService.findAllUsers().stream()
-                        .map(u->mapper.map(u, UserMainView.class))
-                        .collect(Collectors.toList());
-                List<ArticleResponseModel> allArticles = articlesService.findAllArticles().stream()
-                        .map(a->mapper.map(a, ArticleResponseModel.class))
-                        .collect(Collectors.toList());
-                modelAndView.addObject("admin", admin);
-                modelAndView.addObject("users", allUsers);
-                modelAndView.addObject("articles", allArticles);
-                modelAndView.setViewName(ADMIN_PROFILE_VIEW_NAME);
+                if (SecurityContextHolder.getContext().getAuthentication().getName().equals(name)) {
+                    UserMainView admin = mapper.map(userService.findClientByUsername(name), UserMainView.class);
+                    List<UserMainView> allUsers = userService.findAllUsers().stream()
+                            .map(u -> mapper.map(u, UserMainView.class))
+                            .collect(Collectors.toList());
+                    List<ArticleResponseModel> allArticles = articlesService.findAllArticles().stream()
+                            .map(a -> mapper.map(a, ArticleResponseModel.class))
+                            .collect(Collectors.toList());
+                    modelAndView.addObject("admin", admin);
+                    modelAndView.addObject("users", allUsers);
+                    modelAndView.addObject("articles", allArticles);
+                    modelAndView.setViewName(ADMIN_PROFILE_VIEW_NAME);
+                }else {
+                    client = mapper.map(userService.findClientByUsername(name), ClientViewModel.class);
+                    modelAndView.addObject("client", client);
+                    modelAndView.setViewName(CLIENT_PROFILE_VIEW_NAME);
+                }
                 break;
         }
         return modelAndView;

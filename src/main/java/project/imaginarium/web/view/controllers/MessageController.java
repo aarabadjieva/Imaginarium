@@ -2,11 +2,15 @@ package project.imaginarium.web.view.controllers;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import project.imaginarium.exeptions.UnauthorizedUser;
 import project.imaginarium.service.models.MessageServiceModel;
 import project.imaginarium.service.services.MessageService;
 import project.imaginarium.web.view.models.message.MessageCreateModel;
@@ -14,6 +18,8 @@ import project.imaginarium.web.view.models.message.MessageViewModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static project.imaginarium.exeptions.ExceptionMessage.UNAUTHORIZED;
 
 @Controller
 @AllArgsConstructor
@@ -46,12 +52,16 @@ public class MessageController {
 
     @GetMapping("/{username}/inbox")
     public ModelAndView getInbox(@PathVariable String username, ModelAndView modelAndView){
-        List<MessageViewModel> inbox = messageService.inbox(username).stream()
-                .map(m->mapper.map(m, MessageViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("inbox", inbox);
-        modelAndView.setViewName(INBOX_VIEW);
-        return modelAndView;
+        if(SecurityContextHolder.getContext().getAuthentication().getName().equals(username)) {
+            List<MessageViewModel> inbox = messageService.inbox(username).stream()
+                    .map(m -> mapper.map(m, MessageViewModel.class))
+                    .collect(Collectors.toList());
+            int unread = (int) inbox.stream().filter(m -> !m.isRead()).count();
+            modelAndView.addObject("inbox", inbox);
+            modelAndView.addObject("unread", unread);
+            modelAndView.setViewName(INBOX_VIEW);
+            return modelAndView;
+        }throw new UnauthorizedUser(UNAUTHORIZED);
     }
 
     @PostMapping("/{name}/delete/message{id}")
@@ -70,5 +80,14 @@ public class MessageController {
     public String deleteAllMessages(@PathVariable String name, @PathVariable String sender){
         messageService.deleteAllFrom(sender, name);
         return "redirect:/" + name + "/inbox";
+    }
+
+    @ExceptionHandler(UnauthorizedUser.class)
+    public ModelAndView handleException(Throwable exception){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error-custom.html");
+        modelAndView.addObject("message", exception.getMessage());
+        modelAndView.setStatus(HttpStatus.UNAUTHORIZED);
+        return modelAndView;
     }
 }

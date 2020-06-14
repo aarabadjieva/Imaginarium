@@ -36,7 +36,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column
     private String logo;
 
-    @OneToMany(mappedBy = "recipient")
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.EAGER)
     private List<Message> inbox;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -68,4 +68,5 @@ public class User extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

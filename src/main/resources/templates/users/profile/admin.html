@@ -21,7 +21,7 @@
                 <th class="col-md-auto text-center">#</th>
                 <th class="col-md-auto text-center">Username</th>
                 <th class="col-md-auto text-center">Email</th>
-                <th class="col-md-auto text-center">Role</th>
+                <th class="col-md-auto text-center">Admin</th>
                 <th class="col-md-auto text-center">Origin</th>
             </tr>
             </thead>
@@ -33,14 +33,15 @@
                     <!--/*@thymesVar id="user" type="project.imaginarium.web.view.models.user.UserMainView"*/-->
                     <td class="text-center" th:utext="${user.username}"></td>
                     <td class="text-center" th:utext="${user.email}"></td>
-                    <td class="text-center" th:utext="${session.role}"></td>
+                    <td class="text-center" th:utext="${user.isAdmin()}"></td>
+                    <td class="text-center" th:utext="${user.sector.name}"></td>
                     <td class="text-center">
-                        <div th:if="${session.role}=='admin'">
+                        <div th:if="${user.isAdmin()}=='true'">
                             <form th:action="@{/profile/delete/admin/{name}(name=${user.username})}" th:method="post">
                                 <button type="submit" class="btn btn-info">Delete Admin</button>
                             </form>
                         </div>
-                        <div th:if="${session.role}=='client'">
+                        <div th:if="${user.isAdmin()}=='false'">
                             <form th:action="@{/profile/create/admin/{name}(name=${user.username})}" th:method="post">
                                 <button type="submit" class="btn btn-info">Make Admin</button>
                             </form>

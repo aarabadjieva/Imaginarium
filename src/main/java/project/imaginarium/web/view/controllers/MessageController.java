@@ -35,19 +35,18 @@ public class MessageController {
     public ModelAndView getMessageCreate(@PathVariable String username,
                                          @PathVariable String sector,
                                          ModelAndView modelAndView, MessageCreateModel model){
-        modelAndView.addObject(model);
+        modelAndView.addObject("model", model);
         modelAndView.setViewName(CREATE_MESSAGE_VIEW);
         return modelAndView;
     }
 
-    @PostMapping("/message/{sector}/{username}")
+    @PostMapping("/message/user{username}")
     public String sendMessage(@PathVariable String username,
-                              @PathVariable String sector,
                               MessageCreateModel createModel){
         MessageServiceModel serviceModel = mapper.map(createModel, MessageServiceModel.class);
-        createModel.setRecipient(username);
+        serviceModel.setRecipient(username);
         messageService.send(serviceModel);
-        return "redirect:/profile/" + sector + "/" + username;
+        return "redirect:/" + serviceModel.getSender() + "/inbox";
     }
 
     @GetMapping("/{username}/inbox")
@@ -62,6 +61,36 @@ public class MessageController {
             modelAndView.setViewName(INBOX_VIEW);
             return modelAndView;
         }throw new UnauthorizedUser(UNAUTHORIZED);
+    }
+
+    @GetMapping("/reply/{id}/{username}")
+    public ModelAndView replyMessage(@PathVariable String username,
+                                     @PathVariable String id,
+                                     ModelAndView modelAndView, MessageCreateModel model){
+        model.setRecipient(username);
+        MessageViewModel messageModel = mapper.map(messageService.findMessageById(id), MessageViewModel.class);
+        model.setText(messageModel.toString());
+        model.setAbout("Re: " + messageModel.getAbout());
+        modelAndView.addObject("model", model);
+        modelAndView.setViewName(CREATE_MESSAGE_VIEW);
+        messageService.readMessage(id);
+        return modelAndView;
+    }
+
+    @GetMapping("/read/{username}/{id}")
+    public String readMessage(@PathVariable String username, @PathVariable String id){
+        messageService.readMessage(id);
+        return "redirect:/" + username + "/inbox";
+    }
+
+    @PostMapping("/reply/{id}/{username}")
+    public String replyMessage(@PathVariable String username,
+                              @PathVariable String id,
+                              MessageCreateModel createModel){
+        MessageServiceModel serviceModel = mapper.map(createModel, MessageServiceModel.class);
+        serviceModel.setRecipient(username);
+        messageService.send(serviceModel);
+        return "redirect:/" + serviceModel.getSender() + "/inbox";
     }
 
     @PostMapping("/{name}/delete/message{id}")

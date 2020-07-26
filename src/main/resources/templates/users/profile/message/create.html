@@ -22,7 +22,7 @@
                     <div class="last_item">
                         <div class="last_item_content">
                             <div class="last_subtitle">Create message</div>
-                            <form th:action="@{/message/{sector}/{username}(sector=${#request.getAttribute('sector')}, username=${#request.getAttribute('username')})}" id="create_message" class="mx-auto w-15" method="post">
+                            <form th:action="@{/message/user{username}(username=${#request.getAttribute('username')})}" id="create_message" class="mx-auto w-15" method="post">
                                 <div class="form-group row">
                                     <div class="label-holder textCol d-flex justify-content-center">
                                         <label for="recipient" class="h4 mb-2 last_text">To:</label>
@@ -34,8 +34,9 @@
                                         <label for="about"
                                                class="h4 mb-2 last_text">About:</label>
                                     </div>
+                                    <!--/*@thymesVar id="model" type="project.imaginarium.web.view.models.message.MessageCreateModel"*/-->
                                     <input class="form-control" type="text"
-                                           id="about" name="about" required/>
+                                           id="about" name="about" required th:value="${model.about}"/>
                                 </div>
                                 <div class="form-group row">
                                     <div class="label-holder text-white textCol d-flex justify-content-center">
@@ -43,12 +44,12 @@
                                     </div>
                                     <textarea class="form-control"
                                               id="text" rows="20"
-                                              name="text" required></textarea>
+                                              name="text" required>[[${model.text}]]</textarea>
 
                                 </div>
                                 <div type="hidden">
                                     <input type="hidden" id="date" name="date"
-                                           th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+                                           th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm:ss')}">
                                 </div>
                                 <div type="hidden">
                                     <input type="hidden" id="sender" name="sender"

@@ -14,6 +14,9 @@ public interface MessageService {
 
     void emptyInbox(String username);
 
+    MessageServiceModel findMessageById(String id);
+
     List<MessageServiceModel> inbox(String username);
 
+    void readMessage(String id);
 }

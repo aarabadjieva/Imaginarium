@@ -33,4 +33,9 @@ public class AppBeanConfig {
     public BCryptPasswordEncoder encoder(){
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler(){
+        return new AuthenticationSuccessHandler();
+    }
 }

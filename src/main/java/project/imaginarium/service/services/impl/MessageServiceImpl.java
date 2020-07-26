@@ -61,6 +61,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public MessageServiceModel findMessageById(String id) {
+        Message message = messageRepository.findById(id).orElseThrow(() -> new NoSuchMessage(MESSAGE_NOT_FOUND));
+        return mapper.map(message, MessageServiceModel.class);
+    }
+
+    @Override
     public List<MessageServiceModel> inbox(String username) {
         return messageRepository.findAllByRecipientUsernameOrderByDateDesc(username)
                 .stream()
@@ -68,6 +74,12 @@ public class MessageServiceImpl implements MessageService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void readMessage(String id) {
+        Message message = messageRepository.findById(id).orElseThrow(() -> new NoSuchMessage(MESSAGE_NOT_FOUND));
+        message.setRead(true);
+        messageRepository.saveAndFlush(message);
+    }
 
 
 }

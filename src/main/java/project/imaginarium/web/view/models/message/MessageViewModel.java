@@ -13,4 +13,12 @@ public class MessageViewModel {
     private boolean isRead;
     private String date;
     private String text;
+
+    @Override
+    public String toString() {
+        return "\n\n\n\n\n-------------------------------------------------------------------------------------------------------------------------------------" +
+        "\n\n\nFROM: " + sender +
+                "\nDATE: " + date +
+                "\nABOUT: " + about + "\n\n\n"+ text;
+    }
 }

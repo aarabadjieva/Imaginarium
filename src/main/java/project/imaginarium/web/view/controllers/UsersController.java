@@ -42,7 +42,7 @@ public class UsersController {
         try {
             userService.saveClient(serviceModel);
             authWithHttpServletRequest(request, serviceModel.getUsername(), serviceModel.getPassword());
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/profile/client/" + serviceModel.getUsername());
         } catch (Exception e) {
             ModelAndView modelAndView = new ModelAndView(USERS_REGISTER_CLIENT_VIEW_NAME);
             modelAndView.addObject("countries", countries);
@@ -61,7 +61,7 @@ public class UsersController {
         try {
             userService.savePartner(serviceModel);
             authWithHttpServletRequest(request, serviceModel.getUsername(), serviceModel.getPassword());
-            return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/profile/" + serviceModel.getSector() + "/" + serviceModel.getUsername());
         } catch (Exception e) {
             return new ModelAndView(USERS_REGISTER_PARTNER_VIEW_NAME);
         }

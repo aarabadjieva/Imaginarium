@@ -13,4 +13,5 @@ public class MessageServiceModel {
     private String text;
     private String date;
     private String recipient;
+    private boolean isRead;
 }

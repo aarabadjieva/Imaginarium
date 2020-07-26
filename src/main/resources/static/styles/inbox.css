@@ -41,3 +41,32 @@
     padding-bottom:20px;
 
 }
+
+.modalMessage {
+    display: none;
+    position: relative;
+    z-index: 1;
+    left: -19.6%;
+    top: -150px;
+    width: 100%;
+    height:auto;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding-top:40px;
+    padding-bottom:-20px;
+}
+
+.modalMessage-content {
+    padding-top:25px;
+    padding-left:25px;
+    padding-right:25px;
+    background-color: #fefefe;
+    margin: 0% auto 5% auto;
+    border: 1px solid #888;
+    width: 75%;
+}
+
+.message_identification{
+    text-align:left;
+    padding-bottom:30px;
+}

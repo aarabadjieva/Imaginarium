@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div id="id01" class="modal">
+        <div id="id01" class="modal" th:style="${#httpServletRequest.requestURL=='http://localhost:8080/login' ? 'display:block' : 'display:none'}">
             <span onclick="document.getElementById('id01').style.display='none'" class="close"
                   title="Close Modal">×</span>
             <form class="modal-content animated" th:action="@{/login}" th:method="post">
@@ -63,6 +63,7 @@
                     <input type="password" class="form-control login_input" id="password" name="password"
                            placeholder="Enter your password"/>
                 </div>
+                <div class="wrong" th:if="${#httpServletRequest.parameterNames.hasMoreElements()}">Wrong username or password</div>
                 <div class="button-holder d-flex justify-content-center">
                     <button class="btn signup_btn" type="submit">Login</button>
                     <button type="button" onclick="document.getElementById('id01').style.display='none'"

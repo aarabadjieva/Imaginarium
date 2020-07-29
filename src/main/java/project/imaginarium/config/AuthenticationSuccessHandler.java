@@ -17,7 +17,7 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
 
 
 
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -56,4 +56,5 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
 
         throw new IllegalStateException();
     }
+
 }

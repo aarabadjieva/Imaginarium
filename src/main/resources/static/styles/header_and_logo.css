@@ -83,3 +83,9 @@
 .logo_image img {
     max-width: 100%;
 }
+
+.wrong{
+    color: darkred;
+    text-align: center;
+    font-size: larger;
+}

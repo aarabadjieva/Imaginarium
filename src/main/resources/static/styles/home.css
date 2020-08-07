@@ -50,7 +50,7 @@
 
 .special {
     padding-bottom: 6px;
-    background: #FFFFFF;
+    background: #8B5A83;
 }
 .special_content {
     margin-top: 76px;
@@ -68,16 +68,17 @@
 }
 .special_category {
     font-size: 24px;
-    font-weight: 300;
-    color: #FFFFFF;
+    font-weight: 500;
+    color: #8B5A83;
 }
 .special_title a {
-    font-size: 36px;
-    font-weight: 300;
-    color: #FFFFFF;
+    font-size: 30px;
+    font-weight: 800;
+    color: #8B5B83;
 }
 .special_item_background {
-    width: 100%;
+    width: 700px;
+    height:300px;
 }
 .special .owl-item .special_item_background::after {
     display: block;

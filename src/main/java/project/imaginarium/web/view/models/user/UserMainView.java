@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class UserMainView {
 
     private String username;
+    private String name;
     private String email;
     private Set<Role> authorities;
     private Sector sector;

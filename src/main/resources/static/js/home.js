@@ -8,13 +8,13 @@
  3. Init Video
  ******************************/
 
+
 $(document).ready(function () {
     "use strict";
 
     /*======================
     1. Vars & Inits
     ======================*/
-
 
 
     const specialSlider = $('.special_slider');
@@ -70,9 +70,8 @@ $(document).ready(function () {
         });
     }
 
+
 })
-
-
 
 
 

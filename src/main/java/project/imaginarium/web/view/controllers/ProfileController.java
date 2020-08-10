@@ -3,10 +3,12 @@ package project.imaginarium.web.view.controllers;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import project.imaginarium.data.models.users.User;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.services.ArticlesService;
 import project.imaginarium.service.services.user.UserService;
@@ -20,7 +22,6 @@ import project.imaginarium.web.view.models.user.edit.PartnerEditModel;
 import project.imaginarium.web.view.models.user.edit.UserChangePictureModel;
 import project.imaginarium.web.view.models.user.view.ClientViewModel;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -167,16 +168,18 @@ public class ProfileController {
     }
 
     @PostMapping("/create/admin/{name}")
-    public String createAdmin(@PathVariable String name, HttpSession session){
+    public String createAdmin(@PathVariable String name, Authentication authentication){
         userService.makeAdmin(name);
-        return "redirect:/profile/admin/"+session.getAttribute("username");
+        User admin = (User) authentication.getPrincipal();
+        return "redirect:/profile/admin/"+ admin.getUsername();
     }
 
 
     @PostMapping("/delete/admin/{name}")
-    public String deleteAdmin(@PathVariable String name, HttpSession session){
+    public String deleteAdmin(@PathVariable String name, Authentication authentication){
         userService.deleteAdmin(name);
-        return "redirect:/profile/admin/"+session.getAttribute("username");
+        User admin = (User) authentication.getPrincipal();
+        return "redirect:/profile/admin/"+ admin.getUsername();
     }
 
     @ExceptionHandler(NoSuchUser.class)

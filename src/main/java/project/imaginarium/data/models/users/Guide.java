@@ -18,9 +18,6 @@ public class Guide extends User {
     @Column
     private BigDecimal price;
 
-    @Column
-    private String name;
-
     @Column(length = 5000)
     private String description;
 

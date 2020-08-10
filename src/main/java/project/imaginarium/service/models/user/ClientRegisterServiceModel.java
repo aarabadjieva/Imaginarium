@@ -14,6 +14,7 @@ public class ClientRegisterServiceModel {
 
     private String username;
     private String password;
+    private String name;
     private String confirmPassword;
     private String email;
     private Set<Role> authorities;
@@ -22,6 +23,7 @@ public class ClientRegisterServiceModel {
     private Sector sector;
 
     public ClientRegisterServiceModel() {
-        this.authorities = new HashSet<>();
+        authorities = new HashSet<>();
+        name = username;
     }
 }

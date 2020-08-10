@@ -60,6 +60,11 @@
                 </div>
             </div>
         </div>
+        <div th:if="${client.getUsername()}==${#authentication.getPrincipal().getUsername()}">
+            <div th:if="${client.isAdmin()}">
+                <a class="about_button btn text-white" id="go_to_admin" th:href="@{/profile/admin/{username}(username=${client.username})}">Go to admin</a>
+            </div>
+        </div>
     </div>
 
     <th:block th:include="~{_shared/footer}"/>

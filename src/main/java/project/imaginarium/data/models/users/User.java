@@ -3,12 +3,14 @@ package project.imaginarium.data.models.users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.userdetails.UserDetails;
 import project.imaginarium.data.models.BaseEntity;
 import project.imaginarium.data.models.Message;
 import project.imaginarium.data.models.Sector;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +27,11 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column
+    @NotEmpty
+    @Length(min = 3)
+    private String name;
 
     @Column(nullable = false, unique = true)
     private String email;

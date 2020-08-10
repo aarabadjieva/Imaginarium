@@ -25,7 +25,8 @@
                 <div class="profile-pic">
                     <img class="pic" id="profile_pic" th:src="${partner.logo}" alt="">
                     <div th:if="${#authentication.getPrincipal().getUsername()== partner.getUsername()}">
-                    <a class="middle btn" onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
+                        <a class="middle btn"
+                           onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
                     </div>
                 </div>
                 <div class="rela-block profile-name-container">
@@ -53,18 +54,25 @@
                     </div>
                 </th:block>
             </div>
-            <div th:if="${partner.username}==${#authentication.getPrincipal().getUsername()}">
-            <a class="btn about_button text-white position-relative"
-               th:href="@{/offers/{partner}/add/{offer}(partner=${#authentication.getPrincipal().getUsername()}, offer=${#authentication.getPrincipal().getSector().getName()})}">Add
-                Offer</a>
+            <div th:if="${partner.sector.name!='admin'&&partner.username==#authentication.getPrincipal().getUsername()}">
+                <a class="btn about_button text-white position-relative"
+                   th:href="@{/offers/{partner}/add/{offer}(partner=${#authentication.getPrincipal().getUsername()}, offer=${#authentication.getPrincipal().getSector().getName()})}">Add
+                    Offer</a>
             </div>
             <div sec:authorize="isAuthenticated()">
                 <div th:if="${partner.username}==${#authentication.getPrincipal().getUsername()}">
                     <a class="about_button btn text-white" th:href="@{/{username}/inbox(username=${partner.username})}">Inbox</a>
                 </div>
                 <div th:unless="${partner.username}==${#authentication.getPrincipal().getUsername()}">
-                    <a class="about_button btn text-white" th:href="@{/message/partner/{username}(username=${partner.username})}">Send message</a>
+                    <a class="about_button btn text-white"
+                       th:href="@{/message/partner/{username}(username=${partner.username})}">Send message</a>
                 </div>
+            </div>
+        </div>
+        <div th:if="${partner.getUsername()}==${#authentication.getPrincipal().getUsername()}">
+            <div th:if="${partner.isAdmin()}">
+                <a class="about_button btn text-white" id="go_to_admin"
+                   th:href="@{/profile/admin/{username}(username=${partner.username})}">Go to admin</a>
             </div>
         </div>
     </div>

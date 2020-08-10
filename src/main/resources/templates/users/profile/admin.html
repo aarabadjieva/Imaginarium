@@ -23,6 +23,7 @@
                 <th class="col-md-auto text-center">Email</th>
                 <th class="col-md-auto text-center">Admin</th>
                 <th class="col-md-auto text-center">Origin</th>
+                <th class="col-md-auto text-center">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -36,14 +37,18 @@
                     <td class="text-center" th:utext="${user.isAdmin()}"></td>
                     <td class="text-center" th:utext="${user.sector.name}"></td>
                     <td class="text-center">
-                        <div th:if="${user.isAdmin()}=='true'">
+                        <div th:if="${user.isAdmin()&&!user.isRoot()&&admin.isRoot()}">
                             <form th:action="@{/profile/delete/admin/{name}(name=${user.username})}" th:method="post">
-                                <button type="submit" class="btn btn-info">Delete Admin</button>
+                                <button type="submit" class="btn delete_admin_btn">
+                                    Delete Admin
+                                </button>
                             </form>
                         </div>
-                        <div th:if="${user.isAdmin()}=='false'">
+                        <div th:unless="${user.isAdmin()}">
                             <form th:action="@{/profile/create/admin/{name}(name=${user.username})}" th:method="post">
-                                <button type="submit" class="btn btn-info">Make Admin</button>
+                                <button type="submit" class="btn make_admin_btn">
+                                    Make Admin
+                                </button>
                             </form>
                         </div>
                     </td>
@@ -52,7 +57,7 @@
             </tbody>
         </table>
 
-        <h1 class="table_name text-center text-white">Articles:</h1>
+        <h1 class="table_name text-center text-black">Articles:</h1>
         <table class="table text-white table-hover">
             <thead>
             <tr>
@@ -71,10 +76,13 @@
                     <td class="text-center" th:utext="${article.date}"></td>
                     <td class="text-center">
                         <input name="title" type="hidden" th:value="${article.title}">
-                            <a class="btn btn-info text-white mb-3" id="offer_edit_btn" th:href="@{/articles/edit/{title}(title=${article.title})}">Edit</a>
-                            <a class="btn btn-info text-white mb-3" id="offer_delete_btn" th:data-id="${article.title}" onclick="document.getElementById(this.getAttribute('data-id')).style.display='block'">Delete</a>
+                        <a class="btn btn-info text-white mb-3" id="offer_edit_btn"
+                           th:href="@{/articles/edit/{title}(title=${article.title})}">Edit</a>
+                        <a class="btn btn-info text-white mb-3" id="offer_delete_btn" th:data-id="${article.title}"
+                           onclick="document.getElementById(this.getAttribute('data-id')).style.display='block'">Delete</a>
                         <div th:id="${article.title}" class="modal">
-            <span th:data-id="${article.title}" onclick="document.getElementById(this.getAttribute('data-id')).style.display='none'" class="close"
+            <span th:data-id="${article.title}"
+                  onclick="document.getElementById(this.getAttribute('data-id')).style.display='none'" class="close"
                   title="Close Modal">×</span>
                             <form class="modal-content animated"
                                   th:action="@{/articles/delete/{title}(title= ${article.title})}" th:method="post">
@@ -93,19 +101,33 @@
             </th:block>
             </tbody>
         </table>
+        <h1 class="table_name text-center text-black">Options:</h1>
         <div class="button-holder d-flex justify-content-center">
-            <a class="btn btn-info" th:href="@{/articles/create}">Add Article</a>
+            <a class="btn btn-info" id="add_article" th:href="@{/articles/create}">Add Article</a>
         </div>
         <div sec:authorize="isAuthenticated()">
             <div th:if="${admin.username}==${#authentication.getPrincipal().getUsername()}">
-                <a class="about_button btn text-white" th:href="@{/{username}/inbox(username=${admin.username})}">Inbox</a>
+                <a class="about_button btn text-white" id="admin_inbox"
+                   th:href="@{/{username}/inbox(username=${admin.username})}">Inbox</a>
             </div>
             <div th:unless="${admin.username}==${#authentication.getPrincipal().getUsername()}">
-                <a class="about_button btn text-white" th:href="@{/message/admin/{username}(username=${admin.username})}">Send message</a>
+                <a class="about_button btn text-white"
+                   th:href="@{/message/admin/{username}(username=${admin.username})}">Send message</a>
+            </div>
+        </div>
+        <div th:if="${admin.username}==${#authentication.getPrincipal().getUsername()}">
+            <div th:if="${admin.sector=='client'||admin.sector=='guide'}">
+                <a class="about_button btn text-white" id="go_to_profile"
+                   th:href="@{/profile/{sector}/{username}(sector=${admin.sector.name}, username=${admin.username})}">Profile</a>
+            </div>
+            <div th:unless="${admin.sector=='client'||admin.sector=='guide'}">
+                <a class="about_button btn text-white" id="go_to_profile"
+                   th:href="@{/profile/partner/{username}(username=${admin.username})}">Profile</a>
+
             </div>
         </div>
     </div>
-<th:block th:include="~{_shared/footer}"/>
+    <th:block th:include="~{_shared/footer}"/>
 </div>
 <th:block th:include="~{_shared/scripts}"/>
 </body>

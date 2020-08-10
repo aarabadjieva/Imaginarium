@@ -129,21 +129,6 @@
     margin-left:40px;
 }
 
-#offer_delete_btn{
-    background:red;
-    padding-left:1px;
-    padding-right:1px;
-}
-
-#offer_edit_btn {
-    margin-left:33%;
-}
-
-
-#delete_offer{
-    width:100%;
-    text-align:center;
-}
 .planet{
     color:white;
 }

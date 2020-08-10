@@ -1,24 +1,21 @@
 package project.imaginarium.web.api.models.user.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import project.imaginarium.data.models.Sector;
-import project.imaginarium.data.models.offers.Offer;
 import lombok.Getter;
 import lombok.Setter;
+import project.imaginarium.data.models.offers.Offer;
+import project.imaginarium.web.view.models.user.UserMainView;
 
 import java.util.List;
 
 @Getter
 @Setter
-public class PartnerResponseModel {
+public class PartnerResponseModel extends UserMainView {
 
-    private String username;
-    private String email;
-    private String name;
     private String logo;
     private String website;
     private String description;
-    private Sector sector;
     @JsonIgnore
     private List<Offer> offers;
+
 }

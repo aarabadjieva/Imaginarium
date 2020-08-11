@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import project.imaginarium.data.models.offers.Tag;
 import project.imaginarium.data.models.users.User;
 import project.imaginarium.exeptions.NoSuchOffer;
 import project.imaginarium.exeptions.NoSuchUser;
@@ -27,6 +28,7 @@ import project.imaginarium.web.view.models.offer.view.VehicleViewModel;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -262,6 +264,68 @@ public class OffersController {
         return modelAndView;
     }
 
+    @GetMapping("/{tag}")
+    public ModelAndView getAllVehicles(@PathVariable String tag, ModelAndView modelAndView){
+        List<OfferShortViewModel> sortedOffers = new ArrayList<>();
+        switch (tag){
+            case "vehicle":
+                 sortedOffers = offersService.findAllVehicles()
+                        .stream()
+                        .map(v->mapper.map(v, OfferShortViewModel.class))
+                        .collect(Collectors.toList());
+                 break;
+            case "accommodations":
+                sortedOffers = offersService.findAllAccommodations()
+                        .stream()
+                        .map(a->mapper.map(a, OfferShortViewModel.class))
+                        .collect(Collectors.toList());
+                break;
+            case "events":
+                sortedOffers = offersService.findAllEvents()
+                        .stream()
+                        .map(e->mapper.map(e, OfferShortViewModel.class))
+                        .collect(Collectors.toList());
+                break;
+            case "adventures":
+                sortedOffers = offersByTag(Tag.ADVENTURE);
+                break;
+            case "extreme":
+                sortedOffers = offersByTag(Tag.EXTREME);
+                break;
+            case "explore":
+                sortedOffers = offersByTag(Tag.EXPLORE);
+                break;
+            case "fly":
+                sortedOffers = offersByTag(Tag.FLY);
+                break;
+            case "meeting":
+                sortedOffers = offersByTag(Tag.MEETING);
+                break;
+            case "mystery":
+                sortedOffers = offersByTag(Tag.MYSTERY);
+                break;
+            case "party":
+                sortedOffers = offersByTag(Tag.PARTY);
+                break;
+            case "relax":
+                sortedOffers = offersByTag(Tag.RELAX);
+                break;
+            case "ride":
+                sortedOffers = offersByTag(Tag.RIDE);
+                break;
+            case "timeTravel":
+                sortedOffers = offersByTag(Tag.TIME_TRAVEL);
+                break;
+        }
+
+        List<GuideResponseModel> allGuides = userService.guides();
+        modelAndView.addObject("offers", sortedOffers);
+        modelAndView.addObject("guides", allGuides);
+        modelAndView.setViewName(ALL_OFFERS_VIEW_NAME);
+        return modelAndView;
+    }
+
+
     @ExceptionHandler({NoSuchUser.class, NoSuchOffer.class})
     public ModelAndView handleException(Exception exception){
         ModelAndView modelAndView = new ModelAndView();
@@ -269,5 +333,12 @@ public class OffersController {
         modelAndView.addObject("message", exception.getMessage());
         modelAndView.setStatus(HttpStatus.NOT_FOUND);
         return modelAndView;
+    }
+
+    private List<OfferShortViewModel> offersByTag(Tag tag){
+        return  offersService.findAllByTag(tag)
+                .stream()
+                .map(o->mapper.map(o, OfferShortViewModel.class))
+                .collect(Collectors.toList());
     }
 }

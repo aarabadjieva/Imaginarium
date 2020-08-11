@@ -3,10 +3,8 @@ package project.imaginarium.service.services.impl;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import project.imaginarium.data.models.offers.Accommodation;
-import project.imaginarium.data.models.offers.Event;
-import project.imaginarium.data.models.offers.Offer;
-import project.imaginarium.data.models.offers.Vehicle;
+import project.imaginarium.data.models.Sector;
+import project.imaginarium.data.models.offers.*;
 import project.imaginarium.data.models.users.Partner;
 import project.imaginarium.data.repositories.OfferRepository;
 import project.imaginarium.data.repositories.UserRepository;
@@ -115,6 +113,34 @@ public class OffersServiceImpl implements OffersService {
     @Override
     public Offer findOfferByName(String offerName) {
         return offerRepository.findByName(offerName).orElseThrow(() -> new NoSuchOffer(OFFER_NOT_FOUND_MESSAGE));
+    }
+
+    @Override
+    public List<VehicleServiceModel> findAllVehicles() {
+        return offerRepository.findAllBySector(Sector.VEHICLE).stream()
+                .map(v->mapper.map(v, VehicleServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AccommodationServiceModel> findAllAccommodations() {
+        return offerRepository.findAllBySector(Sector.HOTEL).stream()
+                .map(a-> mapper.map(a, AccommodationServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EventServiceModel> findAllEvents() {
+        return offerRepository.findAllBySector(Sector.EVENT).stream()
+                .map(e-> mapper.map(e, EventServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OfferServiceModel> findAllByTag(Tag tag) {
+        return offerRepository.findAllByTagsContains(tag).stream()
+                .map(o->mapper.map(o, OfferServiceModel.class))
+                .collect(Collectors.toList());
     }
 
 }

@@ -1,13 +1,14 @@
 package project.imaginarium.service.services;
 
 import project.imaginarium.data.models.offers.Offer;
+import project.imaginarium.data.models.offers.Tag;
+import project.imaginarium.service.models.offer.AccommodationServiceModel;
+import project.imaginarium.service.models.offer.EventServiceModel;
+import project.imaginarium.service.models.offer.OfferServiceModel;
+import project.imaginarium.service.models.offer.VehicleServiceModel;
 import project.imaginarium.web.view.models.offer.add.AccommodationAdd;
 import project.imaginarium.web.view.models.offer.add.EventAdd;
 import project.imaginarium.web.view.models.offer.add.VehicleAdd;
-import project.imaginarium.service.models.offer.AccommodationServiceModel;
-import project.imaginarium.service.models.offer.OfferServiceModel;
-import project.imaginarium.service.models.offer.EventServiceModel;
-import project.imaginarium.service.models.offer.VehicleServiceModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,4 +31,12 @@ public interface OffersService {
     List<OfferServiceModel> findAllOffers();
 
     Offer findOfferByName(String offerName);
+
+    List<VehicleServiceModel> findAllVehicles();
+
+    List<AccommodationServiceModel> findAllAccommodations();
+
+    List<EventServiceModel> findAllEvents();
+
+    List <OfferServiceModel> findAllByTag(Tag tag);
 }

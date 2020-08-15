@@ -1,15 +1,16 @@
 package project.imaginarium.service.services.impl;
 
-import project.imaginarium.base.ImaginariumApplicationBaseTests;
-import project.imaginarium.service.services.ArticlesService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import project.imaginarium.base.ImaginariumApplicationBaseTests;
 import project.imaginarium.data.models.Article;
 import project.imaginarium.data.repositories.ArticleRepository;
 import project.imaginarium.service.models.ArticleServiceModel;
+import project.imaginarium.service.services.ArticlesService;
+import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.web.api.models.article.ArticleResponseModel;
 
 import java.io.IOException;
@@ -24,6 +25,9 @@ class ArticlesServiceTest extends ImaginariumApplicationBaseTests {
 
     @MockBean
     private ArticleRepository articleRepository;
+
+    @MockBean
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private ArticlesService service;
@@ -44,6 +48,7 @@ class ArticlesServiceTest extends ImaginariumApplicationBaseTests {
     @Test
     void saveArticle_shouldSaveArticle() throws IOException {
         ArticleServiceModel article = new ArticleServiceModel();
+        Mockito.when(cloudinaryService.upload(article.getPicture())).thenReturn("pictureURL");
         service.saveArticle(article);
         ArgumentCaptor<Article> captor = ArgumentCaptor.forClass(Article.class);
         Mockito.verify(articleRepository).saveAndFlush(captor.capture());

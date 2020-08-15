@@ -10,10 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import project.imaginarium.base.ImaginariumApplicationBaseTests;
 import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.users.Role;
-import project.imaginarium.data.models.users.User;
 import project.imaginarium.data.repositories.RoleRepository;
 import project.imaginarium.data.repositories.UserRepository;
-import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.services.CloudinaryService;
 
 import java.util.Optional;
@@ -45,35 +43,33 @@ class UsersControllerTest extends ImaginariumApplicationBaseTests {
 
     @Test
     void getClientRegister_shouldReturnClientRegisterViewWithCountriesAttributeAndStatus200() throws Exception {
-        mockMvc.perform(get("/users/register/user/"))
+        mockMvc.perform(get("/register/user"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("countries"))
                 .andExpect(view().name(USERS_REGISTER_CLIENT_VIEW_NAME));
     }
 
     @Test
-    void createClient_shouldRedirectToHomePageAndSetSessionAttributesAndStatus302IfModel_HAS_NO_EmptyFields() throws Exception {
+    void createClient_shouldRedirectToClientProfileIfModel_HAS_NO_EmptyFields() throws Exception {
 
         Mockito.when(mockUserRepo.count()).thenReturn(5L);
         Mockito.when(mockEncoder.encode("pass")).thenReturn("pass");
         Mockito.when(mockRoleRepo.findByAuthority("CLIENT")).thenReturn(Optional.of(new Role("CLIENT")));
         Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
-        mockMvc.perform(post("/users/register/user")
+        mockMvc.perform(post("/register/user")
                 .param("username", "username")
                 .param("email", "mail@mail.com")
                 .param("password", "pass")
                 .param("confirmPassword", "pass")
                 .param("country", "Bulgaria"))
                 .andExpect(status().isFound())
-                .andExpect(request().sessionAttribute("username", "username"))
-                .andExpect(request().sessionAttribute("role", "client"))
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/profile/client/username"));
     }
 
     @Test
     void createClient_shouldReturnClientRegisterViewIfClientRegisterModel_HAS_EmptyFields() throws Exception {
         Mockito.when(mockUserRepo.count()).thenReturn(5L);
-        mockMvc.perform(post("/users/register/user")
+        mockMvc.perform(post("/register/user")
                 .param("username", "username") //missing email
                 .param("password", "pass")
                 .param("confirmPassword", "pass")
@@ -84,18 +80,18 @@ class UsersControllerTest extends ImaginariumApplicationBaseTests {
 
     @Test
     void getPartnerRegister_shouldReturnPartnerRegisterViewWithCountriesAttributeAndStatus200() throws Exception {
-        mockMvc.perform(get("/users/register/partner"))
+        mockMvc.perform(get("/register/partner"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(USERS_REGISTER_PARTNER_VIEW_NAME));
     }
 
     @Test
-    void createPartner_shouldRedirectToHomePageAndSetSessionAttributeUsernameAndStatus302IfModel_HAS_NO_EmptyFields() throws Exception {
+    void createPartner_shouldRedirectToPartnerProfileAndStatus302IfModel_HAS_NO_EmptyFields() throws Exception {
         Mockito.when(mockUserRepo.count()).thenReturn(5L);
         Mockito.when(mockEncoder.encode("pass")).thenReturn("pass");
         Mockito.when(mockRoleRepo.findByAuthority("PARTNER")).thenReturn(Optional.of(new Role("PARTNER")));
         Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
-        mockMvc.perform(post("/users/register/partner")
+        mockMvc.perform(post("/register/partner")
                 .param("username", "username")
                 .param("email", "mail@mail.com")
                 .param("password", "pass")
@@ -104,109 +100,17 @@ class UsersControllerTest extends ImaginariumApplicationBaseTests {
                 .param("description", "description")
                 .param("sector", String.valueOf(Sector.HOTEL)))
                 .andExpect(status().isFound())
-                .andExpect(request().sessionAttribute("username", "username"))
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/profile/partner/username"));
     }
 
     @Test
     void createPartner_shouldReturnPartnerRegisterViewIfClientRegisterModel_HAS_EmptyFields() throws Exception {
         Mockito.when(mockUserRepo.count()).thenReturn(5L);
-        mockMvc.perform(post("/users/register/partner")
+        mockMvc.perform(post("/register/partner")
                 .param("username", "username"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(USERS_REGISTER_PARTNER_VIEW_NAME));
     }
 
-    @Test
-    void getLogin_shouldRedirectToClientProfileAndSetSessionAttributesIfCredentialsAreCorrectAndUserIsClientWithStatus302() throws Exception {
-        User client = new User();
-        client.setUsername("username");
-        client.setPassword("pass");
-        client.setSector(Sector.CLIENT);
-        Mockito.when(mockUserRepo.findByUsernameAndPassword(client.getUsername(), client.getPassword()))
-                .thenReturn(Optional.of(client));
-        Mockito.when(mockEncoder.encode(client.getPassword())).thenReturn(client.getPassword());
-        Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
-        mockMvc.perform(post("/users/login")
-        .param("username", client.getUsername())
-        .param("password", client.getPassword()))
-                .andExpect(status().isFound())
-                .andExpect(request().sessionAttribute("username", "username"))
-                .andExpect(request().sessionAttribute("role", "client"))
-                .andExpect(view().name("redirect:/profile/client/"+ client.getUsername()));
-    }
 
-    @Test
-    void getLogin_shouldRedirectToPartnerProfileAndSetSessionAttributesIfCredentialsAreCorrectAndUserIsPartnerWithStatus302() throws Exception {
-        User partner = new User();
-        partner.setUsername("username");
-        partner.setPassword("pass");
-        partner.setSector(Sector.HOTEL);
-        Mockito.when(mockUserRepo.findByUsernameAndPassword(partner.getUsername(), partner.getPassword()))
-                .thenReturn(Optional.of(partner));
-        Mockito.when(mockEncoder.encode(partner.getPassword())).thenReturn(partner.getPassword());
-        Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
-        mockMvc.perform(post("/users/login")
-                .param("username", partner.getUsername())
-                .param("password", partner.getPassword()))
-                .andExpect(status().isFound())
-                .andExpect(request().sessionAttribute("username", "username"))
-                .andExpect(request().sessionAttribute("role", "partner"))
-                .andExpect(view().name("redirect:/profile/partner/"+ partner.getUsername()));
-    }
-
-    @Test
-    void getLogin_shouldRedirectToGuideProfileAndSetSessionAttributesIfCredentialsAreCorrectAndUserIsGuideWithStatus302() throws Exception {
-        User guide = new User();
-        guide.setUsername("username");
-        guide.setPassword("pass");
-        guide.setSector(Sector.GUIDE);
-        Mockito.when(mockUserRepo.findByUsernameAndPassword(guide.getUsername(), guide.getPassword()))
-                .thenReturn(Optional.of(guide));
-        Mockito.when(mockEncoder.encode(guide.getPassword())).thenReturn(guide.getPassword());
-        Mockito.when(mockRoleRepo.findByAuthority("ADMIN")).thenReturn(Optional.of(new Role("ADMIN")));
-        mockMvc.perform(post("/users/login")
-                .param("username", guide.getUsername())
-                .param("password", guide.getPassword()))
-                .andExpect(status().isFound())
-                .andExpect(request().sessionAttribute("username", "username"))
-                .andExpect(request().sessionAttribute("role", "guide"))
-                .andExpect(view().name("redirect:/profile/guide/"+ guide.getUsername()));
-    }
-
-    @Test
-    void getLogin_shouldRedirectToAdminProfileAndSetSessionAttributesIfCredentialsAreCorrectAndUserIsAdminWithStatus302() throws Exception {
-        Role role = new Role("ADMIN");
-        User admin = new User();
-        admin.setUsername("username");
-        admin.setPassword("pass");
-        admin.setSector(Sector.CLIENT);
-        admin.getAuthorities().add(role);
-        Mockito.when(mockRoleRepo.findByAuthority(role.getAuthority())).thenReturn(Optional.of(role));
-        Mockito.when(mockUserRepo.findByUsernameAndPassword(admin.getUsername(), admin.getPassword()))
-                .thenReturn(Optional.of(admin));
-        Mockito.when(mockEncoder.encode(admin.getPassword())).thenReturn(admin.getPassword());
-        mockMvc.perform(post("/users/login")
-                .param("username", admin.getUsername())
-                .param("password", admin.getPassword()))
-                .andExpect(status().isFound())
-                .andExpect(request().sessionAttribute("username", "username"))
-                .andExpect(request().sessionAttribute("role", "admin"))
-                .andExpect(view().name("redirect:/profile/admin/"+ admin.getUsername()));
-    }
-
-    @Test
-    void getLogin_shouldThrowIfCredentials_ARE_NOT_CorrectWith404() throws Exception {
-        User user = new User();
-        user.setUsername("username");
-        user.setPassword("pass");
-        Mockito.when(mockUserRepo.findByUsernameAndPassword(user.getUsername(), user.getPassword()))
-                .thenThrow(NoSuchUser.class);
-        Mockito.when(mockEncoder.encode(user.getPassword())).thenReturn(user.getPassword());
-        mockMvc.perform(post("/users/login")
-                .param("username", user.getUsername())
-                .param("password", user.getPassword()))
-                .andExpect(status().isNotFound())
-                .andExpect(view().name("error-custom.html"));
-    }
 }

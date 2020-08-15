@@ -20,6 +20,7 @@ import project.imaginarium.data.repositories.UserRepository;
 import project.imaginarium.exeptions.NoSuchOffer;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.user.*;
+import project.imaginarium.service.services.CloudinaryService;
 import project.imaginarium.service.services.OffersService;
 import project.imaginarium.service.services.RoleService;
 import project.imaginarium.web.api.models.user.response.GuideResponseModel;
@@ -47,6 +48,9 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
 
     @MockBean
     private OffersService offersService;
+
+    @MockBean
+    private CloudinaryService cloudinaryService;
 
     @MockBean
     private BCryptPasswordEncoder encoder;
@@ -121,6 +125,7 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
         Mockito.when(userRepository.count()).thenReturn(0L);
         Mockito.when(encoder.encode(registerServiceModel.getPassword())).thenReturn("pass");
         Mockito.when(userValidationService.isValidPartner(registerServiceModel)).thenReturn(true);
+        Mockito.when(cloudinaryService.upload(registerServiceModel.getLogo())).thenReturn("logoURL");
         service.savePartner(registerServiceModel);
         ArgumentCaptor<Partner> captor = ArgumentCaptor.forClass(Partner.class);
         Mockito.verify(userRepository).saveAndFlush(captor.capture());

@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Offer;
 import project.imaginarium.data.models.users.*;
 import project.imaginarium.data.repositories.UserRepository;
@@ -55,7 +54,6 @@ public class UserServiceImpl implements UserService {
             }
             Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
-            serviceModel.setSector(Sector.ADMIN);
             serviceModel.setLogo("/images/admin-image.gif");
         }else {
             Role role = roleService.findRoleByName("CLIENT");
@@ -76,7 +74,6 @@ public class UserServiceImpl implements UserService {
             }
             Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
-            serviceModel.setSector(Sector.ADMIN);
         }
         if (!userValidationService.isValidPartner(serviceModel)) {
             throw new Exception("Invalid data");
@@ -205,8 +202,6 @@ public class UserServiceImpl implements UserService {
         }
         client.getOffers().add(offer);
         userRepository.saveAndFlush(client);
-        System.out.println(offer.getClients().get(0));
-        System.out.println(offer.getClients().toString());
     }
 
     @Override

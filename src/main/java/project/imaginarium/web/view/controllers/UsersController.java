@@ -61,7 +61,7 @@ public class UsersController {
         try {
             userService.savePartner(serviceModel);
             authWithHttpServletRequest(request, serviceModel.getUsername(), serviceModel.getPassword());
-            return new ModelAndView("redirect:/profile/" + serviceModel.getSector() + "/" + serviceModel.getUsername());
+            return new ModelAndView("redirect:/profile/partner/" + serviceModel.getUsername());
         } catch (Exception e) {
             return new ModelAndView(USERS_REGISTER_PARTNER_VIEW_NAME);
         }

@@ -9,6 +9,7 @@ import project.imaginarium.base.ImaginariumApplicationBaseTests;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static project.imaginarium.web.view.controllers.ContactsController.IMAGINARIUM_CONTACTS_VIEW_NAME;
 import static project.imaginarium.web.view.controllers.ImaginariumInfoController.*;
 
 @AutoConfigureMockMvc
@@ -31,12 +32,12 @@ class ImaginariumInfoControllerTest extends ImaginariumApplicationBaseTests {
                 .andExpect(view().name(IMAGINARIUM_ABOUT_VIEW_NAME));
     }
 
-   // @Test
-   // void getContacts_shouldReturnContactsViewWith200() throws Exception {
-   //     mockMvc.perform(get("/contacts"))
-   //             .andExpect(status().isOk())
-   //             .andExpect(view().name(IMAGINARIUM_CONTACTS_VIEW_NAME));
-   // }
+    @Test
+    void getContacts_shouldReturnContactsViewWith200() throws Exception {
+        mockMvc.perform(get("/contacts"))
+                .andExpect(status().isOk())
+                .andExpect(view().name(IMAGINARIUM_CONTACTS_VIEW_NAME));
+    }
 
     @Test
     void getBlog_shouldReturnBlogViewWith200() throws Exception {

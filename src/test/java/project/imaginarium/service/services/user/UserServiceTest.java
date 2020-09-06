@@ -189,7 +189,8 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
 
     @Test
     void findPartnerByUsername_shouldReturnPartnerIfExist() {
-        Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
+        user.setSector(Sector.HOTEL);
+        Mockito.when(userRepository.findByUsernameAndSector(user.getUsername(), user.getSector())).thenReturn(Optional.ofNullable(user));
         PartnerServiceModel partner = service.findPartnerByUsername(user.getUsername());
         assertEquals(partner.getUsername(), user.getUsername());
     }

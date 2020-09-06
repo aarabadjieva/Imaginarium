@@ -1,5 +1,6 @@
 package project.imaginarium.data.repositories;
 
+import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.users.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import project.imaginarium.data.models.users.User;
@@ -17,5 +18,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     List<User> findAllByAuthoritiesContaining(Role role);
 
     Optional<User> findByUsername(String name);
+
+    Optional<User> findByUsernameAndSector(String name, Sector sector);
 
 }

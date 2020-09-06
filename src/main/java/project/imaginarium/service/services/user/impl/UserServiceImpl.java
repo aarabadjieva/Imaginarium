@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import project.imaginarium.data.models.Sector;
 import project.imaginarium.data.models.offers.Offer;
 import project.imaginarium.data.models.users.*;
 import project.imaginarium.data.repositories.UserRepository;
@@ -48,14 +49,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveClient(ClientRegisterServiceModel serviceModel) throws Exception {
-        if (userRepository.count()==0) {
+        if (userRepository.count() == 0) {
             if (roleService.allRoles().isEmpty()) {
                 roleService.seedRolesInDB();
             }
             Role role = roleService.findRoleByName("ADMIN");
             serviceModel.setAuthorities(Collections.singleton(role));
             serviceModel.setLogo("/images/admin-image.gif");
-        }else {
+        } else {
             Role role = roleService.findRoleByName("CLIENT");
             serviceModel.setAuthorities(Collections.singleton(role));
         }
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void savePartner(PartnerRegisterServiceModel serviceModel) throws Exception {
-        if (userRepository.count()==0) {
+        if (userRepository.count() == 0) {
             if (roleService.allRoles().isEmpty()) {
                 roleService.seedRolesInDB();
             }
@@ -81,7 +82,7 @@ public class UserServiceImpl implements UserService {
         switch (serviceModel.getSector().name) {
             case "guide":
 
-                if (serviceModel.getAuthorities().isEmpty()){
+                if (serviceModel.getAuthorities().isEmpty()) {
                     Role role = roleService.findRoleByName("GUIDE");
                     serviceModel.getAuthorities().add(role);
                 }
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
             case "hotel":
             case "vehicle":
             case "event":
-                if (serviceModel.getAuthorities().isEmpty()){
+                if (serviceModel.getAuthorities().isEmpty()) {
                     Role role = roleService.findRoleByName("PARTNER");
                     serviceModel.getAuthorities().add(role);
                 }
@@ -114,20 +115,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ClientServiceModel findClientByUsername(String name) {
+    public ClientServiceModel findUserByUsername(String name){
         User client = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
         return mapper.map(client, ClientServiceModel.class);
     }
 
     @Override
+    public ClientServiceModel findClientByUsername(String name) {
+        User client = userRepository.findByUsernameAndSector(name, Sector.CLIENT).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        return mapper.map(client, ClientServiceModel.class);
+    }
+
+    @Override
     public PartnerServiceModel findPartnerByUsername(String name) {
-        User partner = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        User partner = userRepository.findByUsernameAndSector(name, Sector.HOTEL).orElse(null);
+        if (partner == null) {
+            partner = userRepository.findByUsernameAndSector(name, Sector.EVENT).orElse(null);
+        }
+        if (partner == null) {
+            partner = userRepository.findByUsernameAndSector(name, Sector.VEHICLE).orElse(null);
+        }
+        if (partner == null) {
+            throw new NoSuchUser(USER_NOT_FOUND_MESSAGE);
+        }
         return mapper.map(partner, PartnerServiceModel.class);
     }
 
     @Override
     public GuideServiceModel findGuideByUsername(String name) {
-        User guide = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        User guide = userRepository.findByUsernameAndSector(name, Sector.GUIDE).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
         return mapper.map(guide, GuideServiceModel.class);
     }
 
@@ -218,28 +234,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserServiceModel> findAllUsers() {
-       return userRepository.findAll().stream()
-                .map(u->mapper.map(u, UserServiceModel.class))
+        return userRepository.findAll().stream()
+                .map(u -> mapper.map(u, UserServiceModel.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void makeAdmin(String name) {
-        User user = userRepository.findByUsername(name).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        User user = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
         user.getAuthorities().add(roleService.findRoleByName("ADMIN"));
         userRepository.saveAndFlush(user);
     }
 
     @Override
     public void deleteAdmin(String name) {
-        User user = userRepository.findByUsername(name).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        User user = userRepository.findByUsername(name).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
         user.getAuthorities().remove(roleService.findRoleByName("ADMIN"));
         userRepository.saveAndFlush(user);
     }
 
     @Override
     public void changePicture(String username, MultipartFile file) throws IOException {
-        User user = userRepository.findByUsername(username).orElseThrow(()->new NoSuchUser(USER_NOT_FOUND_MESSAGE));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NoSuchUser(USER_NOT_FOUND_MESSAGE));
         user.setLogo(cloudinaryService.upload(file));
         userRepository.saveAndFlush(user);
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());

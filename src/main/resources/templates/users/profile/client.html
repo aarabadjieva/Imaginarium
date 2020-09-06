@@ -25,9 +25,9 @@
                     <img class="pic" id="profile_pic" th:src="${client.getLogo()}"
                          onerror="src = '/images/client_no_picture.webp'" alt="">
                     <div th:if="${#authentication.getPrincipal().getUsername()== client.getUsername()}">
-                    <a class="middle btn"
-                       onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
-                </div>
+                        <a class="middle btn"
+                           onclick="document.getElementById('change-pic-modal').style.display='block'"></a>
+                    </div>
                 </div>
                 <div class="rela-block profile-name-container">
                     <div class="rela-block user-name" id="user_name"><strong>[[${client.username}]]</strong></div>
@@ -37,32 +37,39 @@
                 <div class="rela-block profile-card-stats">
                     <div class="justify-content-center"><strong>Country:</strong>[[${client.country}]]</div>
                 </div>
-                <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
-                <a class="btn btn-info text-white mb-3" id="profile_edit_btn"
-                   th:href="@{/profile/edit/{role}/{name}(role = ${#authentication.getPrincipal().getSector().getName()}, name=${client.username})}">Edit</a>
+                <div th:if="${#authentication.getPrincipal().getUsername()== client.getUsername()}">
+                    <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
+                    <a class="btn btn-info text-white mb-3" id="profile_edit_btn"
+                       th:href="@{/profile/edit/{role}/{name}(role = ${#authentication.getPrincipal().getSector().getName()}, name=${client.username})}">Edit</a>
+                </div>
             </div>
-            <div class="rela-block content">
-                <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
-                <th:block th:each="offer : ${client.offers}">
-                    <div class="rela-inline image">
-                        <div class="offer_name">[[${offer.name}]]</div>
-                        <img class="offer_pic" th:src="${offer.picture}" alt=""
-                             th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${offer.getProvider().getSector().getName()}, name=${offer.name})} + '\'' ">
-                    </div>
-                </th:block>
+
+            <div th:if="${#authentication.getPrincipal().getUsername()== client.getUsername()}">
+                <div class="rela-block content">
+                    <!--/*@thymesVar id="client" type="project.imaginarium.web.view.models.user.view.ClientViewModel"*/-->
+                    <th:block th:each="offer : ${client.offers}">
+                        <div class="rela-inline image">
+                            <div class="offer_name">[[${offer.name}]]</div>
+                            <img class="offer_pic" th:src="${offer.picture}" alt=""
+                                 th:onclick="'location.href = \''+ @{/offers/info/{sector}/{name}(sector=${offer.getProvider().getSector().getName()}, name=${offer.name})} + '\'' ">
+                        </div>
+                    </th:block>
+                </div>
             </div>
             <div sec:authorize="isAuthenticated()">
                 <div th:if="${client.username}==${#authentication.getPrincipal().getUsername()}">
                     <a class="about_button btn text-white" th:href="@{/{username}/inbox(username=${client.username})}">Inbox</a>
                 </div>
                 <div th:unless="${client.username}==${#authentication.getPrincipal().getUsername()}">
-                    <a class="about_button btn text-white" th:href="@{/message/client/{username}(username=${client.username})}">Send message</a>
+                    <a class="about_button btn text-white"
+                       th:href="@{/message/client/{username}(username=${client.username})}">Send message</a>
                 </div>
             </div>
         </div>
         <div th:if="${client.getUsername()}==${#authentication.getPrincipal().getUsername()}">
             <div th:if="${client.isAdmin()}">
-                <a class="about_button btn text-white" id="go_to_admin" th:href="@{/profile/admin/{username}(username=${client.username})}">Go to admin</a>
+                <a class="about_button btn text-white" id="go_to_admin"
+                   th:href="@{/profile/admin/{username}(username=${client.username})}">Go to admin</a>
             </div>
         </div>
     </div>

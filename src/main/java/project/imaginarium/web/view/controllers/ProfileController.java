@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.imaginarium.data.models.users.User;
-import project.imaginarium.exeptions.NoSuchUser;
+import project.imaginarium.exeptions.NoSuchAdmin;
 import project.imaginarium.service.services.ArticlesService;
 import project.imaginarium.service.services.user.UserService;
 import project.imaginarium.web.api.models.article.ArticleResponseModel;
@@ -25,6 +25,8 @@ import project.imaginarium.web.view.models.user.view.ClientViewModel;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static project.imaginarium.exeptions.ExceptionMessage.ADMIN_NOT_FOUND_MESSAGE;
 
 @Controller
 @RequestMapping("/profile")
@@ -64,21 +66,29 @@ public class ProfileController {
                 break;
             case "admin":
                 if (SecurityContextHolder.getContext().getAuthentication().getName().equals(name)) {
-                    UserMainView admin = mapper.map(userService.findClientByUsername(name), UserMainView.class);
-                    List<UserMainView> allUsers = userService.findAllUsers().stream()
-                            .map(u -> mapper.map(u, UserMainView.class))
-                            .collect(Collectors.toList());
-                    List<ArticleResponseModel> allArticles = articlesService.findAllArticles().stream()
-                            .map(a -> mapper.map(a, ArticleResponseModel.class))
-                            .collect(Collectors.toList());
-                    modelAndView.addObject("admin", admin);
-                    modelAndView.addObject("users", allUsers);
-                    modelAndView.addObject("articles", allArticles);
-                    modelAndView.setViewName(ADMIN_PROFILE_VIEW_NAME);
+                    UserMainView admin = mapper.map(userService.findUserByUsername(name), UserMainView.class);
+                    if (admin.isAdmin()) {
+                        List<UserMainView> allUsers = userService.findAllUsers().stream()
+                                .map(u -> mapper.map(u, UserMainView.class))
+                                .collect(Collectors.toList());
+                        List<ArticleResponseModel> allArticles = articlesService.findAllArticles().stream()
+                                .map(a -> mapper.map(a, ArticleResponseModel.class))
+                                .collect(Collectors.toList());
+                        modelAndView.addObject("admin", admin);
+                        modelAndView.addObject("users", allUsers);
+                        modelAndView.addObject("articles", allArticles);
+                        modelAndView.setViewName(ADMIN_PROFILE_VIEW_NAME);
+                    }else {
+                        throw new NoSuchAdmin(ADMIN_NOT_FOUND_MESSAGE);
+                    }
                 }else {
-                    client = mapper.map(userService.findClientByUsername(name), ClientViewModel.class);
-                    modelAndView.addObject("client", client);
-                    modelAndView.setViewName(CLIENT_PROFILE_VIEW_NAME);
+                    client = mapper.map(userService.findUserByUsername(name), ClientViewModel.class);
+                    if (client.isAdmin()) {
+                        modelAndView.addObject("client", client);
+                        modelAndView.setViewName(CLIENT_PROFILE_VIEW_NAME);
+                    }else {
+                        throw new NoSuchAdmin(ADMIN_NOT_FOUND_MESSAGE);
+                    }
                 }
                 break;
         }
@@ -182,7 +192,7 @@ public class ProfileController {
         return "redirect:/profile/admin/"+ admin.getUsername();
     }
 
-    @ExceptionHandler(NoSuchUser.class)
+    @ExceptionHandler
     public ModelAndView handleException(Exception exception){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error-custom.html");

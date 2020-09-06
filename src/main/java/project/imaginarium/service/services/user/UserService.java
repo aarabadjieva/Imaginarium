@@ -19,6 +19,8 @@ public interface UserService extends UserDetailsService {
 
     UserLoggedServiceModel login(UserServiceLoginModel serviceModel) throws Exception;
 
+    ClientServiceModel findUserByUsername(String name);
+
     ClientServiceModel findClientByUsername(String name);
 
     PartnerServiceModel findPartnerByUsername(String name);

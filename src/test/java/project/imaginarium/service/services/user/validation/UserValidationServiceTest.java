@@ -32,7 +32,7 @@ class UserValidationServiceTest extends ImaginariumApplicationBaseTests {
     protected void beforeEach() {
         user = new User();
         user.setUsername("pesho");
-        user.setPassword("password");
+        user.setPassword("Password11");
         user.setEmail("pesho@makarona.com");
         mapper = new ModelMapper();
     }
@@ -44,8 +44,22 @@ class UserValidationServiceTest extends ImaginariumApplicationBaseTests {
     }
 
     @Test
-    void isValidUser_shouldReturnFalseWithWrongPassword(){
+    void isValidUser_shouldReturnFalseWithWrongConfirmPassword(){
         boolean isValidUser = service.isValidUser(user.getPassword(), "Password", user.getEmail(), user.getUsername());
+        assertFalse(isValidUser);
+    }
+
+    @Test
+    void isValidUser_shouldReturnFalseWithTooShortPassword(){
+        user.setPassword("pass");
+        boolean isValidUser = service.isValidUser(user.getPassword(), "pass", user.getEmail(), user.getUsername());
+        assertFalse(isValidUser);
+    }
+
+    @Test
+    void isValidUser_shouldReturnFalseWithNotCompliantPass(){
+        user.setPassword("pass123"); //Pass with no upper letter
+        boolean isValidUser = service.isValidUser(user.getPassword(), "pass123", user.getEmail(), user.getUsername());
         assertFalse(isValidUser);
     }
 

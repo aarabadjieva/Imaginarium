@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
         }
         Client client = mapper.map(serviceModel, Client.class);
         client.setPassword(encoder.encode(serviceModel.getPassword()));
+        client.setName(client.getUsername());
         userRepository.saveAndFlush(client);
     }
 

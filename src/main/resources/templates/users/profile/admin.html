@@ -116,11 +116,11 @@
             </div>
         </div>
         <div th:if="${admin.username}==${#authentication.getPrincipal().getUsername()}">
-            <div th:if="${admin.sector=='client'||admin.sector=='guide'}">
+            <div th:if="${admin.sector.name=='client'||admin.sector.name=='guide'}">
                 <a class="about_button btn text-white" id="go_to_profile"
                    th:href="@{/profile/{sector}/{username}(sector=${admin.sector.name}, username=${admin.username})}">Profile</a>
             </div>
-            <div th:unless="${admin.sector=='client'||admin.sector=='guide'}">
+            <div th:unless="${admin.sector.name=='client'||admin.sector.name=='guide'}">
                 <a class="about_button btn text-white" id="go_to_profile"
                    th:href="@{/profile/partner/{username}(username=${admin.username})}">Profile</a>
 

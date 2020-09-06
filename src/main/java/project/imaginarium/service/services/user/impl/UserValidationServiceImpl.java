@@ -52,7 +52,10 @@ public class UserValidationServiceImpl implements UserValidationService {
     }
 
     public boolean isPasswordValid(String password, String confirmPassword) {
-        return password.equals(confirmPassword) && !password.equals("");
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$";
+        Pattern pattern = Pattern.compile(passwordRegex);
+        Matcher matcher = pattern.matcher(password);
+        return password.equals(confirmPassword) && !password.equals("") && matcher.matches();
     }
 
     public boolean isEmailValid(String email) {
@@ -87,8 +90,8 @@ public class UserValidationServiceImpl implements UserValidationService {
 
     @Override
     public boolean isValidEditGuide(Guide guide, GuideEditModel model) {
-        return (isEmailValid(model.getEmail())||model.getEmail().equals(guide.getEmail()))&&
-                isPasswordValid(model.getPassword(), model.getConfirmPassword())&&
-                (isValidName(model.getName())||model.getName().equals(guide.getName()));
+        return (isEmailValid(model.getEmail()) || model.getEmail().equals(guide.getEmail())) &&
+                isPasswordValid(model.getPassword(), model.getConfirmPassword()) &&
+                (isValidName(model.getName()) || model.getName().equals(guide.getName()));
     }
 }

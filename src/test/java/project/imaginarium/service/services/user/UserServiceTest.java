@@ -168,7 +168,8 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
 
     @Test
     void findClientByUsername_shouldReturnClientIfExist() {
-        Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
+        user.setSector(Sector.CLIENT);
+        Mockito.when(userRepository.findByUsernameAndSector(user.getUsername(), user.getSector())).thenReturn(Optional.ofNullable(user));
         ClientServiceModel client = service.findClientByUsername(user.getUsername());
         assertEquals(client.getUsername(), user.getUsername());
     }
@@ -176,6 +177,13 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
     @Test
     void findClientByUsername_shouldThrowIfClient_NOT_Exist() {
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenThrow(NoSuchUser.class);
+        assertThrows(NoSuchUser.class, () -> service.findClientByUsername(user.getUsername()));
+    }
+
+    @Test
+    void findClientByUsername_shouldThrowIfUserIsNotClient() {
+        user.setSector(Sector.GUIDE);
+        Mockito.when(userRepository.findByUsernameAndSector(user.getUsername(), user.getSector())).thenThrow(NoSuchUser.class);
         assertThrows(NoSuchUser.class, () -> service.findClientByUsername(user.getUsername()));
     }
 
@@ -188,13 +196,14 @@ class UserServiceTest extends ImaginariumApplicationBaseTests {
 
     @Test
     void findPartnerByUsername_shouldThrowIfPartner_NOT_Exist() {
-        Mockito.when(userRepository.findByUsername(user.getUsername())).thenThrow(NoSuchUser.class);
+        Mockito.when(userRepository.findByUsernameAndSector(user.getUsername(), user.getSector())).thenThrow(NoSuchUser.class);
         assertThrows(NoSuchUser.class, () -> service.findPartnerByUsername(user.getUsername()));
     }
 
     @Test
     void findGuideByUsername_shouldReturnGuideIfExists() {
-        Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.ofNullable(user));
+        user.setSector(Sector.GUIDE);
+        Mockito.when(userRepository.findByUsernameAndSector(user.getUsername(), user.getSector())).thenReturn(Optional.ofNullable(user));
         GuideServiceModel guide = service.findGuideByUsername(user.getUsername());
         assertEquals(guide.getUsername(), user.getUsername());
     }

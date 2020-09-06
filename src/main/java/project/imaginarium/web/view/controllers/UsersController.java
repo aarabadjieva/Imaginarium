@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import project.imaginarium.data.models.Sector;
 import project.imaginarium.exeptions.NoSuchUser;
 import project.imaginarium.service.models.user.ClientRegisterServiceModel;
 import project.imaginarium.service.models.user.PartnerRegisterServiceModel;
@@ -61,7 +62,10 @@ public class UsersController {
         try {
             userService.savePartner(serviceModel);
             authWithHttpServletRequest(request, serviceModel.getUsername(), serviceModel.getPassword());
-            return new ModelAndView("redirect:/profile/partner/" + serviceModel.getUsername());
+            if (serviceModel.getSector().equals(Sector.GUIDE)){
+                return new ModelAndView("redirect:/profile/guide/"+ serviceModel.getUsername());
+            }
+            return new ModelAndView("redirect:/profile/partner/"+ serviceModel.getUsername());
         } catch (Exception e) {
             return new ModelAndView(USERS_REGISTER_PARTNER_VIEW_NAME);
         }
